@@ -1,0 +1,19 @@
+/* Main CSS Entry Point - Imports all style modules */
+
+/* Base styles - Reset and core styles (must be first) */
+@import './styles/base.css';
+
+/* Layout styles - Container and positioning */
+@import './styles/layout.css';
+
+/* Component styles - Buttons and UI elements */
+@import './styles/components.css';
+
+/* Animation utilities - General purpose animations */
+@import './styles/animations.css';
+
+/* Transition styles - Page transitions and view transitions */
+@import './styles/transitions.css';
+
+/* Responsive styles - Media queries (should be last) */
+@import './styles/responsive.css';

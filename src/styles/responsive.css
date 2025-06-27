@@ -1,0 +1,164 @@
+/* Responsive Styles - Media queries for different screen sizes */
+
+/* Tablet and smaller screens */
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .test-text {
+    font-size: 1.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+  .welcome-text {
+    font-size: 1.5rem;
+  }
+
+  .test-text {
+    font-size: 1.2rem;
+  }
+}
+
+/* ===== RESPONSIVE STYLES FOR NEW PAGES ===== */
+
+/* Tablet and smaller screens */
+@media (max-width: 768px) {
+  /* Welcome page responsive */
+  .welcome-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .welcome-header p {
+    font-size: 1.1rem;
+  }
+
+  .welcome-features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .feature-item {
+    padding: 1rem;
+  }
+
+  /* Test page responsive */
+  .test-header h1 {
+    font-size: 2rem;
+  }
+
+  .test-header p {
+    font-size: 1rem;
+  }
+
+  .recording-duration {
+    font-size: 1.25rem;
+  }
+
+  .instructions-card {
+    padding: 1rem;
+  }
+
+  /* Result page responsive */
+  .result-container {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .result-header h1 {
+    font-size: 2rem;
+  }
+
+  .result-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .confidence-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .confidence-value {
+    font-size: 1.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+  /* Welcome page mobile */
+  .welcome-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .welcome-header h1 {
+    font-size: 2rem;
+  }
+
+  .welcome-header p {
+    font-size: 1rem;
+  }
+
+  .welcome-description {
+    font-size: 1rem;
+  }
+
+  /* Test page mobile */
+  .test-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .test-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .recording-duration {
+    font-size: 1.1rem;
+  }
+
+  .instructions-list li {
+    font-size: 0.9rem;
+  }
+
+  /* Result page mobile */
+  .result-container {
+    padding: 0.5rem;
+  }
+
+  .audio-section,
+  .loading-section,
+  .result-section {
+    padding: 1rem;
+  }
+
+  .result-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .confidence-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .confidence-value {
+    font-size: 1.25rem;
+  }
+}

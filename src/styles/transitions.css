@@ -1,0 +1,303 @@
+/* View Transition API Configuration */
+@view-transition {
+  navigation: auto;
+}
+
+/* Force enable view transitions */
+html {
+  view-transition-name: none;
+}
+
+/* ===== DEFAULT TRANSITIONS ===== */
+/* Default page transition - smooth crossfade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in-out;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+/* Default microphone button transition */
+::view-transition-old(microphone-button),
+::view-transition-new(microphone-button) {
+  animation-duration: 0.6s;
+  animation-timing-function: ease-in-out;
+}
+
+/* ===== WELCOME TO TEST TRANSITION ===== */
+.welcome-to-test-transition ::view-transition-old(root) {
+  animation-name: welcome-fade-out;
+  animation-duration: 0.4s;
+}
+
+.welcome-to-test-transition ::view-transition-new(root) {
+  animation-name: test-fade-in;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+/* Let View Transition API handle microphone morphing automatically */
+.welcome-to-test-transition ::view-transition-old(microphone-button),
+.welcome-to-test-transition ::view-transition-new(microphone-button) {
+  animation: none !important;
+}
+
+/* ===== TEST TO WELCOME TRANSITION ===== */
+.test-to-welcome-transition ::view-transition-old(root) {
+  animation-name: test-fade-out;
+  animation-duration: 0.4s;
+}
+
+.test-to-welcome-transition ::view-transition-new(root) {
+  animation-name: welcome-fade-in;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+/* Let View Transition API handle microphone morphing automatically */
+.test-to-welcome-transition ::view-transition-old(microphone-button),
+.test-to-welcome-transition ::view-transition-new(microphone-button) {
+  animation: none !important;
+}
+
+/* ===== TEST TO RESULT TRANSITION ===== */
+.test-to-result-transition ::view-transition-old(root) {
+  animation-name: test-fade-out;
+  animation-duration: 0.4s;
+}
+
+.test-to-result-transition ::view-transition-new(root) {
+  animation-name: result-fade-in;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+/* Microphone button disappears during test to result transition */
+.test-to-result-transition .microphone-button {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+/* ===== RESULT TO TEST TRANSITION ===== */
+.result-to-test-transition ::view-transition-old(root) {
+  animation-name: result-fade-out;
+  animation-duration: 0.4s;
+}
+
+.result-to-test-transition ::view-transition-new(root) {
+  animation-name: test-fade-in;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+/* ===== RESULT TO WELCOME TRANSITION ===== */
+.result-to-welcome-transition ::view-transition-old(root) {
+  animation-name: result-fade-out;
+  animation-duration: 0.4s;
+}
+
+.result-to-welcome-transition ::view-transition-new(root) {
+  animation-name: welcome-fade-in;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+/* ===== ANIMATION KEYFRAMES ===== */
+
+/* Basic fade animations */
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Welcome page specific animations */
+@keyframes welcome-fade-out {
+  from { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes welcome-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+/* Test page specific animations */
+@keyframes test-fade-out {
+  from { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(30px);
+  }
+}
+
+@keyframes test-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Result page specific animations */
+@keyframes result-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes result-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Default microphone animations */
+@keyframes microphone-morph-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes microphone-morph-in {
+  from {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Welcome to Test microphone animations */
+@keyframes mic-center-to-float-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    background: red !important;
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(2) translate(100px, 100px);
+    background: yellow !important;
+  }
+  to {
+    opacity: 0.2;
+    transform: scale(0.5) translate(200px, 200px);
+    background: blue !important;
+  }
+}
+
+@keyframes mic-center-to-float-in {
+  from {
+    opacity: 0.8;
+    transform: scale(0.8) translate(0, 0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(0.9) translate(0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+/* Test to Welcome microphone animations */
+@keyframes mic-float-to-center-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1) translate(0, 0);
+  }
+  to {
+    opacity: 0.8;
+    transform: scale(1.2) translate(0, 0);
+  }
+}
+
+@keyframes mic-float-to-center-in {
+  from {
+    opacity: 0.8;
+    transform: scale(1.2) translate(0, 0);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1) translate(0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+/* Fallback for browsers that don't support View Transitions */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(microphone-button),
+  ::view-transition-new(microphone-button) {
+    animation: none;
+  }
+}
