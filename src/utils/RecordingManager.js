@@ -31,7 +31,6 @@ class RecordingManager {
       await RecordingStorage.initialize();
 
       this.isInitialized = true;
-      console.log('🎙️ RecordingManager initialized');
 
       this.notifyListeners('stateChange', { initialized: true });
       return true;
@@ -47,8 +46,6 @@ class RecordingManager {
    */
   async startRecordingFromWelcome() {
     try {
-      console.log('🎙️ Starting recording initialization...');
-
       if (!this.isInitialized) {
         await this.initialize();
       }
@@ -57,17 +54,13 @@ class RecordingManager {
       this.audioRecorder = new AudioRecorder();
 
       // Initialize audio recorder (this requests microphone permission)
-      console.log('🎙️ Requesting microphone permission...');
       await this.audioRecorder.initialize();
 
       // Start recording
-      console.log('🎙️ Starting audio recording...');
       await this.audioRecorder.startRecording();
 
       this.isRecording = true;
       this.recordingStartedFromWelcome = true;
-
-      console.log('🎙️ Recording started successfully from welcome page');
       this.notifyListeners('recordingStart', {
         source: 'welcome',
         timestamp: Date.now()
@@ -100,11 +93,8 @@ class RecordingManager {
   async stopRecording(metadata = {}) {
     try {
       if (!this.isRecording || !this.audioRecorder) {
-        console.warn('No active recording to stop');
         return null;
       }
-
-      console.log('🎙️ Stopping recording...');
       
       // Stop recording and get audio data
       const recordingData = await this.audioRecorder.stopRecording();
@@ -133,8 +123,6 @@ class RecordingManager {
       this.currentRecording = savedRecording;
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
-
-      console.log('🎙️ Recording stopped and saved:', savedRecording.filename);
       
       this.notifyListeners('recordingStop', {
         recording: savedRecording,
@@ -244,8 +232,6 @@ class RecordingManager {
       if (window.gc) {
         window.gc();
       }
-
-      console.log('🎙️ RecordingManager resources cleaned up');
     } catch (error) {
       console.error('Error during cleanup:', error);
     }

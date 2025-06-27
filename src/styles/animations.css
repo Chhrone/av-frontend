@@ -1,21 +1,6 @@
 /* Animation Styles - Keyframes and animation utilities */
 
-/* Animation utilities */
-.fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
 
-.fade-out {
-  animation: fadeOut 0.5s ease-out forwards;
-}
-
-.slide-up {
-  animation: slideUp 0.5s ease-out forwards;
-}
-
-.slide-down {
-  animation: slideDown 0.5s ease-out forwards;
-}
 
 /* Recording pulse animation */
 @keyframes recording-pulse {

@@ -3,6 +3,7 @@ class AppModel {
     this.currentPage = 'welcome';
     this.isRecording = false;
     this.testText = 'I went to the store to buy some groceries. The store was busy, and there was a long line at the checkout. I still managed to get everything I needed before going home.';
+    this.lastResult = null;
   }
 
   setCurrentPage(page) {
@@ -23,6 +24,14 @@ class AppModel {
 
   getTestText() {
     return this.testText;
+  }
+
+  setLastResult(result) {
+    this.lastResult = result;
+  }
+
+  getLastResult() {
+    return this.lastResult;
   }
 }
 

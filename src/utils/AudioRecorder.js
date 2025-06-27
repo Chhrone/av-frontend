@@ -55,12 +55,8 @@ class AudioRecorder {
       let mimeType = 'audio/webm;codecs=opus';
       if (MediaRecorder.isTypeSupported('audio/wav')) {
         mimeType = 'audio/wav';
-        console.log('🎤 Using native WAV recording format');
       } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=pcm')) {
         mimeType = 'audio/webm;codecs=pcm';
-        console.log('🎤 Using WebM PCM recording format');
-      } else {
-        console.log('🎤 Using WebM Opus recording format (will convert to WAV)');
       }
 
       this.mediaRecorder = new MediaRecorder(this.destinationNode.stream, {
@@ -68,8 +64,6 @@ class AudioRecorder {
       });
 
       this.setupMediaRecorderEvents();
-      
-      console.log('🎤 AudioRecorder initialized successfully');
       return true;
     } catch (error) {
       console.error('Failed to initialize AudioRecorder:', error);
@@ -88,7 +82,6 @@ class AudioRecorder {
     };
 
     this.mediaRecorder.onstop = async () => {
-      console.log('🎤 Recording stopped, processing audio...');
       await this.processRecording();
     };
 
@@ -106,7 +99,6 @@ class AudioRecorder {
     }
 
     if (this.isRecording) {
-      console.warn('Recording already in progress');
       return;
     }
 
@@ -115,8 +107,7 @@ class AudioRecorder {
       this.startTime = Date.now();
       this.mediaRecorder.start(100); // Collect data every 100ms
       this.isRecording = true;
-      
-      console.log('🎤 Recording started');
+
       return true;
     } catch (error) {
       console.error('Failed to start recording:', error);
@@ -129,7 +120,6 @@ class AudioRecorder {
    */
   async stopRecording() {
     if (!this.isRecording) {
-      console.warn('No recording in progress');
       return null;
     }
 
@@ -137,8 +127,6 @@ class AudioRecorder {
       this.mediaRecorder.stop();
       this.isRecording = false;
       this.duration = Date.now() - this.startTime;
-
-      console.log(`🎤 Recording stopped after ${this.duration}ms`);
 
       // Return a promise that resolves when processing is complete
       return new Promise((resolve) => {
@@ -163,27 +151,22 @@ class AudioRecorder {
    */
   async processRecording() {
     if (this.audioChunks.length === 0) {
-      console.warn('No audio data to process');
       return;
     }
 
     try {
       // Get the MIME type that was actually used
       const recordedMimeType = this.mediaRecorder.mimeType;
-      console.log('🎤 Recorded MIME type:', recordedMimeType);
 
       // Create blob from recorded chunks with correct type
       const audioBlob = new Blob(this.audioChunks, { type: recordedMimeType });
-      console.log('🎤 Original audio blob size:', audioBlob.size);
 
       let finalBlob;
 
       // If already WAV, use as-is, otherwise convert
       if (recordedMimeType.includes('wav')) {
-        console.log('🎤 Audio already in WAV format, using directly');
         finalBlob = audioBlob;
       } else {
-        console.log('🎤 Converting audio to WAV format...');
         finalBlob = await this.convertToWav(audioBlob);
       }
 
@@ -196,8 +179,6 @@ class AudioRecorder {
         sampleRate: 16000,
         format: 'wav'
       };
-
-      console.log('🎤 Audio processing complete:', this.lastRecording);
     } catch (error) {
       console.error('Failed to process recording:', error);
       throw error;
@@ -209,41 +190,25 @@ class AudioRecorder {
    */
   async convertToWav(audioBlob) {
     try {
-      console.log('🔄 Converting audio to WAV format...');
-      console.log('📁 Original blob type:', audioBlob.type);
-      console.log('📁 Original blob size:', audioBlob.size);
-
       // Create audio buffer from blob
       const arrayBuffer = await audioBlob.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-
-      console.log('🔄 Audio buffer decoded successfully');
-      console.log('📊 Sample rate:', audioBuffer.sampleRate);
-      console.log('📊 Channels:', audioBuffer.numberOfChannels);
-      console.log('📊 Duration:', audioBuffer.duration);
 
       // Convert to WAV
       const wavBuffer = this.audioBufferToWav(audioBuffer);
       const wavBlob = new Blob([wavBuffer], { type: 'audio/wav' });
 
-      console.log('✅ WAV conversion successful');
-      console.log('📁 WAV blob type:', wavBlob.type);
-      console.log('📁 WAV blob size:', wavBlob.size);
-
       return wavBlob;
     } catch (error) {
-      console.error('❌ Failed to convert to WAV:', error);
-      console.error('❌ Error details:', error.message);
+      console.error('Failed to convert to WAV:', error);
 
       // Create a proper WAV blob as fallback using a different method
-      console.log('🔄 Attempting fallback WAV conversion...');
       try {
         const fallbackWav = await this.createFallbackWav(audioBlob);
         return fallbackWav;
       } catch (fallbackError) {
-        console.error('❌ Fallback WAV conversion also failed:', fallbackError);
+        console.error('Fallback WAV conversion also failed:', fallbackError);
         // Last resort: return original blob but with WAV type
-        console.log('⚠️ Using original blob with WAV type as last resort');
         return new Blob([audioBlob], { type: 'audio/wav' });
       }
     }
@@ -254,8 +219,6 @@ class AudioRecorder {
    */
   async createFallbackWav(originalBlob) {
     try {
-      console.log('🔄 Creating fallback WAV using manual conversion');
-
       // Create a simple WAV header for the blob
       // This is a basic approach that creates a valid WAV file structure
       const wavHeader = this.createWavHeader(originalBlob.size, 16000, 1);
@@ -263,7 +226,6 @@ class AudioRecorder {
       // Combine WAV header with original audio data
       const wavBlob = new Blob([wavHeader, originalBlob], { type: 'audio/wav' });
 
-      console.log('✅ Fallback WAV created, size:', wavBlob.size);
       return wavBlob;
     } catch (error) {
       console.error('Fallback WAV conversion failed:', error);
@@ -377,13 +339,10 @@ class AudioRecorder {
    */
   async cleanupMicrophoneResources() {
     try {
-      console.log('🎤 Cleaning up microphone resources...');
-
       // Stop all media stream tracks immediately
       if (this.mediaStream) {
         this.mediaStream.getTracks().forEach(track => {
           track.stop();
-          console.log('🎤 Media track stopped:', track.kind, track.readyState);
         });
       }
 
@@ -405,15 +364,12 @@ class AudioRecorder {
       // Close audio context
       if (this.audioContext && this.audioContext.state !== 'closed') {
         await this.audioContext.close();
-        console.log('🎤 AudioContext closed');
       }
 
       // Clear media stream reference
       this.mediaStream = null;
       this.mediaRecorder = null;
       this.audioContext = null;
-
-      console.log('🎤 Microphone resources cleaned up successfully');
     } catch (error) {
       console.error('Error cleaning up microphone resources:', error);
     }
@@ -438,8 +394,6 @@ class AudioRecorder {
       this.isRecording = false;
       this.startTime = null;
       this.duration = 0;
-
-      console.log('🎤 AudioRecorder destroyed and all resources released');
     } catch (error) {
       console.error('Error destroying AudioRecorder:', error);
     }

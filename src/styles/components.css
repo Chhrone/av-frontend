@@ -62,6 +62,90 @@
   box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
 }
 
+/* Processing state for microphone */
+.floating-microphone.processing {
+  background-color: #ed8936;
+  cursor: not-allowed;
+}
+
+.floating-microphone.processing:hover {
+  background-color: #ed8936;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+}
+
+/* Processing spinner */
+.processing-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Try again button styles */
+.try-again-button {
+  padding: 12px 32px;
+  border-radius: 8px;
+  background-color: #4299e1;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.try-again-button.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease-out;
+  transition-delay: 0.2s;
+}
+
+.try-again-button:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
+}
+
+/* Test result button (temporary for demo) */
+.test-result-button {
+  margin-top: 1rem;
+  padding: 8px 24px;
+  border-radius: 6px;
+  background-color: #48bb78;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.test-result-button.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s ease-out;
+  transition-delay: 0.4s;
+}
+
+.test-result-button:hover {
+  background-color: #38a169;
+  transform: translateY(-2px);
+}
+
 .floating-microphone.recording {
   background-color: #ff6b6b;
   animation: recording-pulse 1.5s ease-in-out infinite;
@@ -93,35 +177,7 @@
   fill: currentColor;
 }
 
-/* Button styles */
-.btn {
-  padding: 0.75rem 1.5rem;
-  background-color: #4299e1;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
 
-.btn:hover {
-  background-color: #3182ce;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-}
-
-.btn.btn-outline {
-  background-color: transparent;
-  color: #4299e1;
-  border: 1px solid #4299e1;
-}
-
-.btn.btn-outline:hover {
-  background-color: #4299e1;
-  color: white;
-}
 
 /* Recording duration display */
 .recording-duration {
@@ -143,14 +199,3 @@
 
 
 
-.completion-message h3 {
-  margin: 0 0 10px 0;
-  color: #4CAF50;
-  text-align: center;
-}
-
-.completion-message p {
-  margin: 5px 0;
-  font-size: 14px;
-  text-align: center;
-}

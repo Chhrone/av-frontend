@@ -6,11 +6,20 @@
     font-size: 2rem;
     margin-bottom: 2rem;
   }
-  
+
   .test-text {
     font-size: 1.5rem;
   }
-  
+
+  .result-text {
+    font-size: 1.8rem;
+  }
+
+  .result-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
   .container {
     padding: 1rem;
   }
@@ -21,8 +30,16 @@
   .welcome-text {
     font-size: 1.5rem;
   }
-  
+
   .test-text {
     font-size: 1.2rem;
+  }
+
+  .result-text {
+    font-size: 1.4rem;
+  }
+
+  .result-description {
+    font-size: 1rem;
   }
 }

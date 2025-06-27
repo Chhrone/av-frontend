@@ -37,7 +37,19 @@ class Router {
 
       // Execute navigation with appropriate transition
       TransitionController.navigate(toRoute, transitionType, () => {
-        route();
+        // Check if this is the result route and we have stored data
+        if (hash === '/result') {
+          const storedResult = sessionStorage.getItem('accentResult');
+          if (storedResult) {
+            const resultData = JSON.parse(storedResult);
+            sessionStorage.removeItem('accentResult'); // Clean up
+            route(resultData);
+          } else {
+            route();
+          }
+        } else {
+          route();
+        }
       });
 
       // Mark that initial load is complete

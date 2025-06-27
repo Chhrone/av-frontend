@@ -18,16 +18,26 @@ src/
 │   └── AppModel.js
 ├── views/           # UI components and rendering
 │   ├── WelcomeView.js
-│   └── TestView.js
+│   ├── TestView.js
+│   └── ResultView.js
 ├── presenters/      # Controllers that connect models and views
 │   ├── WelcomePresenter.js
-│   └── TestPresenter.js
+│   ├── TestPresenter.js
+│   └── ResultPresenter.js
 ├── utils/           # Utility functions and helpers
-│   └── router.js
-├── styles/          # Style components and base styles
-│   └── base.js
-├── assets/          # Static assets
-│   └── microphone.svg
+│   ├── router.js
+│   ├── AudioRecorder.js
+│   ├── RecordingManager.js
+│   ├── RecordingStorage.js
+│   ├── TransitionController.js
+│   └── AccentDetectionService.js
+├── styles/          # CSS modules for styling
+│   ├── base.css
+│   ├── layout.css
+│   ├── components.css
+│   ├── animations.css
+│   ├── transitions.css
+│   └── responsive.css
 └── main.js          # Application entry point
 ```
 
@@ -42,6 +52,13 @@ src/
 - Shows the test text for reading practice
 - Features a floating microphone button for recording
 - Text is optimized for readability with 1200px+ width
+- Automatically processes recording and navigates to results
+
+### Result Page (`/result`)
+- Displays US accent confidence percentage
+- Shows descriptive feedback based on confidence level
+- Includes "Try Again" button to return to welcome page
+- Receives data from accent detection API
 
 ## Getting Started
 
@@ -61,23 +78,24 @@ src/
 
 - **Home**: `http://localhost:5173/#/` or `http://localhost:5173/`
 - **Test**: `http://localhost:5173/#/test`
+- **Result**: `http://localhost:5173/#/result`
 
 ## Styling Approach
 
-This project uses a "style components" approach where styles are defined as JavaScript objects and applied programmatically. This provides:
+This project uses a modular CSS approach with organized CSS files for different concerns. This provides:
 
-- Type safety and IDE support
-- Dynamic styling capabilities
-- Consistent design system
+- Clear separation of styling concerns
+- Maintainable and organized CSS structure
+- Efficient browser caching of individual CSS modules
 - Easy maintenance and updates
 
 ## Technologies Used
 
 - **Vite**: Fast build tool and development server
 - **Vanilla JavaScript**: No framework dependencies
-- **CSS-in-JS**: Style components approach
+- **Modular CSS**: Organized CSS structure with separate modules
 - **Google Fonts**: Inter font family for typography
-- **SVG Icons**: Custom microphone icon
+- **SVG Icons**: Inline SVG microphone icon
 
 ## Browser Support
 

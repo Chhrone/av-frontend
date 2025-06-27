@@ -24,7 +24,6 @@ class RecordingStorage {
 
       request.onsuccess = () => {
         this.db = request.result;
-        console.log('📦 IndexedDB initialized successfully');
         resolve(this.db);
       };
 
@@ -104,7 +103,6 @@ class RecordingStorage {
 
         request.onsuccess = () => {
           const recordingId = request.result;
-          console.log(`📦 Recording saved with ID: ${recordingId}, filename: ${filename}`);
           resolve({
             id: recordingId,
             filename: filename,
@@ -221,7 +219,6 @@ class RecordingStorage {
       const request = store.delete(id);
 
       request.onsuccess = () => {
-        console.log(`📦 Recording deleted: ${id}`);
         resolve(true);
       };
 
@@ -302,7 +299,6 @@ class RecordingStorage {
       const request = store.clear();
 
       request.onsuccess = () => {
-        console.log('📦 All recordings cleared');
         resolve(true);
       };
 
@@ -320,7 +316,6 @@ class RecordingStorage {
     if (this.db) {
       this.db.close();
       this.db = null;
-      console.log('📦 IndexedDB connection closed');
     }
   }
 }

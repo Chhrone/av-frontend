@@ -1,4 +1,5 @@
 import RecordingManager from '../utils/RecordingManager.js';
+import AccentDetectionService from '../utils/AccentDetectionService.js';
 
 // SVG microphone icon as string
 const microphoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -183,8 +184,6 @@ class TestView {
 
     // Start timer
     this.startTimer();
-
-    console.log('🎤 Recording UI started');
   }
 
   /**
@@ -198,17 +197,40 @@ class TestView {
         category: 'speech-test'
       });
 
-      // Update UI
-      this.stopRecordingUI();
+      // Update UI to show processing state
+      this.showProcessingUI();
 
-      console.log('🎤 Recording saved:', savedRecording.filename);
-
-      // Note: Notification removed as per user preference
+      // Process recording for accent detection and navigate to result
+      await AccentDetectionService.processRecordingAndShowResult(savedRecording);
 
     } catch (error) {
       console.error('Failed to stop recording:', error);
       this.stopRecordingUI();
     }
+  }
+
+  /**
+   * Show processing UI state
+   */
+  showProcessingUI() {
+    this.isRecording = false;
+
+    // Update microphone button appearance
+    this.floatingMic.classList.remove('recording');
+    this.floatingMic.classList.add('processing');
+
+    // Update button content to show processing
+    this.floatingMic.innerHTML = `
+      <div class="processing-spinner"></div>
+    `;
+
+    // Hide duration display
+    this.durationDisplay.style.display = 'none';
+
+    // Stop timer
+    this.stopTimer();
+
+    console.log('🎤 Processing UI started');
   }
 
   /**

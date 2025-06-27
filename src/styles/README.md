@@ -38,22 +38,17 @@ The CSS files are imported in a specific order to ensure proper cascading:
 ### layout.css
 - Container layouts and positioning
 - Welcome and test page text styles
-- Back button and demo link positioning
 
 ### components.css
 - Microphone button styles (both center and floating)
 - Recording states (recording, loading)
-- General button styles (.btn, .btn-outline)
 - Recording duration display
-- Recording complete message
 - Microphone icon styles
 
 ### animations.css
-- Animation utility classes (.fade-in, .fade-out, .slide-up, .slide-down)
 - Recording pulse animation
 - Loading spin animation
 - Basic fade and slide keyframes
-- Fade in up animation for completion message
 
 ### transitions.css
 - View Transition API configuration
