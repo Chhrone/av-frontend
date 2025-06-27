@@ -195,13 +195,6 @@ class RecordingManager {
   }
 
   /**
-   * Get current recording data
-   */
-  getCurrentRecording() {
-    return this.currentRecording;
-  }
-
-  /**
    * Add event listener
    */
   addEventListener(event, callback) {

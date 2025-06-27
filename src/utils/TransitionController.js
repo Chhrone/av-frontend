@@ -8,22 +8,13 @@ class TransitionController {
     this.transitionTypes = {
       // Initial page load - no transition
       INITIAL_LOAD: 'initial-load',
-
+    
       // Welcome to Test transitions
       WELCOME_TO_TEST: 'welcome-to-test',
-
-      // Test to Welcome transitions
+      
+      // Test to Welcome transitions  
       TEST_TO_WELCOME: 'test-to-welcome',
-
-      // Test to Result transitions (microphone disappears)
-      TEST_TO_RESULT: 'test-to-result',
-
-      // Result to Test transitions
-      RESULT_TO_TEST: 'result-to-test',
-
-      // Result to Welcome transitions
-      RESULT_TO_WELCOME: 'result-to-welcome',
-
+      
       // Direct navigation (fallback)
       DIRECT: 'direct'
     };
@@ -34,42 +25,21 @@ class TransitionController {
         duration: 0,
         microphoneTransition: false
       },
-
+      
       [this.transitionTypes.WELCOME_TO_TEST]: {
         useViewTransition: true,
         duration: 600,
         microphoneTransition: true,
         cssClass: 'welcome-to-test-transition'
       },
-
+      
       [this.transitionTypes.TEST_TO_WELCOME]: {
         useViewTransition: true,
         duration: 600,
         microphoneTransition: true,
         cssClass: 'test-to-welcome-transition'
       },
-
-      [this.transitionTypes.TEST_TO_RESULT]: {
-        useViewTransition: true,
-        duration: 600,
-        microphoneTransition: false, // Microphone disappears
-        cssClass: 'test-to-result-transition'
-      },
-
-      [this.transitionTypes.RESULT_TO_TEST]: {
-        useViewTransition: true,
-        duration: 600,
-        microphoneTransition: false,
-        cssClass: 'result-to-test-transition'
-      },
-
-      [this.transitionTypes.RESULT_TO_WELCOME]: {
-        useViewTransition: true,
-        duration: 600,
-        microphoneTransition: false,
-        cssClass: 'result-to-welcome-transition'
-      },
-
+      
       [this.transitionTypes.DIRECT]: {
         useViewTransition: false,
         duration: 0,
@@ -142,10 +112,7 @@ class TransitionController {
 
     const transitionMap = {
       '/ -> /test': this.transitionTypes.WELCOME_TO_TEST,
-      '/test -> /': this.transitionTypes.TEST_TO_WELCOME,
-      '/test -> /result': this.transitionTypes.TEST_TO_RESULT,
-      '/result -> /test': this.transitionTypes.RESULT_TO_TEST,
-      '/result -> /': this.transitionTypes.RESULT_TO_WELCOME
+      '/test -> /': this.transitionTypes.TEST_TO_WELCOME
     };
 
     const transitionKey = `${fromRoute} -> ${toRoute}`;

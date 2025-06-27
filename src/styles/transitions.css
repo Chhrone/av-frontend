@@ -67,49 +67,6 @@ html {
   animation: none !important;
 }
 
-/* ===== TEST TO RESULT TRANSITION ===== */
-.test-to-result-transition ::view-transition-old(root) {
-  animation-name: test-fade-out;
-  animation-duration: 0.4s;
-}
-
-.test-to-result-transition ::view-transition-new(root) {
-  animation-name: result-fade-in;
-  animation-duration: 0.6s;
-  animation-delay: 0.2s;
-}
-
-/* Microphone button disappears during test to result transition */
-.test-to-result-transition .microphone-button {
-  opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.3s ease;
-}
-
-/* ===== RESULT TO TEST TRANSITION ===== */
-.result-to-test-transition ::view-transition-old(root) {
-  animation-name: result-fade-out;
-  animation-duration: 0.4s;
-}
-
-.result-to-test-transition ::view-transition-new(root) {
-  animation-name: test-fade-in;
-  animation-duration: 0.6s;
-  animation-delay: 0.2s;
-}
-
-/* ===== RESULT TO WELCOME TRANSITION ===== */
-.result-to-welcome-transition ::view-transition-old(root) {
-  animation-name: result-fade-out;
-  animation-duration: 0.4s;
-}
-
-.result-to-welcome-transition ::view-transition-new(root) {
-  animation-name: welcome-fade-in;
-  animation-duration: 0.6s;
-  animation-delay: 0.2s;
-}
-
 /* ===== ANIMATION KEYFRAMES ===== */
 
 /* Basic fade animations */
@@ -159,35 +116,12 @@ html {
 }
 
 @keyframes test-fade-in {
-  from {
-    opacity: 0;
+  from { 
+    opacity: 0; 
     transform: translateY(-30px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Result page specific animations */
-@keyframes result-fade-out {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes result-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
+  to { 
+    opacity: 1; 
     transform: translateY(0);
   }
 }

@@ -1,5 +1,4 @@
 import RecordingManager from '../utils/RecordingManager.js';
-import ResultPresenter from '../presenters/ResultPresenter.js';
 
 // SVG microphone icon as string
 const microphoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -204,11 +203,7 @@ class TestView {
 
       console.log('🎤 Recording saved:', savedRecording.filename);
 
-      // Get audio blob for result page
-      const audioBlob = await this.getAudioBlobFromRecording(savedRecording);
-
-      // Navigate to result page with recording data
-      await ResultPresenter.navigateWithRecording(savedRecording, audioBlob);
+      // Note: Notification removed as per user preference
 
     } catch (error) {
       console.error('Failed to stop recording:', error);
@@ -264,21 +259,6 @@ class TestView {
 
     const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     this.durationDisplay.textContent = formattedTime;
-  }
-
-  /**
-   * Get audio blob from saved recording
-   */
-  async getAudioBlobFromRecording(recording) {
-    try {
-      // Get audio blob from storage using recording ID
-      const storage = await import('../utils/RecordingStorage.js');
-      const recordingData = await storage.default.getRecording(recording.id);
-      return recordingData ? recordingData.audioBlob : null;
-    } catch (error) {
-      console.error('Failed to get audio blob:', error);
-      return null;
-    }
   }
 
 
