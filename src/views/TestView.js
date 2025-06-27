@@ -1,12 +1,6 @@
 import RecordingManager from '../utils/RecordingManager.js';
 import AccentDetectionService from '../utils/AccentDetectionService.js';
-
-// SVG microphone icon as string
-const microphoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-  <path d="M19 10v2a7 7 0 0 1-14 0v-2a1 1 0 0 1 2 0v2a5 5 0 0 0 10 0v-2a1 1 0 0 1 2 0z"/>
-  <path d="M12 19a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1z"/>
-</svg>`;
+import MicrophoneIcon from '../assets/MicrophoneIcon.js';
 
 class TestView {
   constructor() {
@@ -28,14 +22,9 @@ class TestView {
     testText.className = 'test-text';
 
     this.floatingMic = document.createElement('button');
-    this.floatingMic.innerHTML = microphoneIcon;
+    MicrophoneIcon.setInnerHTML(this.floatingMic, { className: 'microphone-icon' });
     this.floatingMic.className = 'floating-microphone';
     this.floatingMic.style.viewTransitionName = 'microphone-button';
-
-    const svgIcon = this.floatingMic.querySelector('svg');
-    if (svgIcon) {
-      svgIcon.setAttribute('class', 'microphone-icon');
-    }
 
     // Create duration display
     this.durationDisplay = document.createElement('div');
@@ -77,14 +66,14 @@ class TestView {
   /**
    * Handle page unload/reload
    */
-  handlePageUnload(event) {
+  handlePageUnload() {
     RecordingManager.forceStop();
   }
 
   /**
    * Handle navigation away from test page
    */
-  handleNavigation(event) {
+  handleNavigation() {
     const currentHash = window.location.hash;
     if (currentHash !== '#/test' && this.isRecording) {
       console.log('🎤 Navigating away from test page, cleaning up recording...');
@@ -218,7 +207,7 @@ class TestView {
     this.floatingMic.classList.remove('recording');
     this.floatingMic.classList.add('processing');
 
-    // Update button content to show processing
+    // Update button content to show processing spinner
     this.floatingMic.innerHTML = `
       <div class="processing-spinner"></div>
     `;
@@ -228,8 +217,6 @@ class TestView {
 
     // Stop timer
     this.stopTimer();
-
-    console.log('🎤 Processing UI started');
   }
 
   /**

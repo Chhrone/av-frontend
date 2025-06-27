@@ -1,12 +1,6 @@
 import TransitionController from '../utils/TransitionController.js';
 import RecordingManager from '../utils/RecordingManager.js';
-
-// SVG microphone icon as string
-const microphoneIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-  <path d="M19 10v2a7 7 0 0 1-14 0v-2a1 1 0 0 1 2 0v2a5 5 0 0 0 10 0v-2a1 1 0 0 1 2 0z"/>
-  <path d="M12 19a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1z"/>
-</svg>`;
+import MicrophoneIcon from '../assets/MicrophoneIcon.js';
 
 class WelcomeView {
   constructor() {
@@ -22,13 +16,8 @@ class WelcomeView {
     welcomeText.className = 'welcome-text';
 
     const micButton = document.createElement('button');
-    micButton.innerHTML = microphoneIcon;
+    MicrophoneIcon.setInnerHTML(micButton, { className: 'microphone-icon' });
     micButton.className = 'microphone-button';
-
-    const svgIcon = micButton.querySelector('svg');
-    if (svgIcon) {
-      svgIcon.setAttribute('class', 'microphone-icon');
-    }
 
     micButton.addEventListener('click', () => {
       // Navigate immediately for smooth transition
