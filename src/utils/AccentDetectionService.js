@@ -3,7 +3,7 @@
  */
 class AccentDetectionService {
   constructor() {
-    this.apiEndpoint = '/api/accent-detection'; // Replace with your actual API endpoint
+    this.apiEndpoint = 'http://localhost:8000/identify';
   }
 
   /**
@@ -13,24 +13,20 @@ class AccentDetectionService {
    */
   async analyzeAccent(audioBlob) {
     try {
-      // Simulate API delay for realistic experience
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Always return mock data for now
-      return this.getMockResult();
-
-      /*
-      // Real API implementation (commented out for mock mode)
-      // Uncomment this section when ready to use real API
+      // Ensure the audio blob is in WAV format
+      if (!audioBlob.type.includes('wav')) {
+        throw new Error('Audio file must be in WAV format');
+      }
 
       // Create FormData to send the audio file
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'recording.wav');
+      formData.append('file', audioBlob, 'recording.wav');
 
       // Make API call
       const response = await fetch(this.apiEndpoint, {
         method: 'POST',
         body: formData,
+        mode: 'cors',
         headers: {
           // Don't set Content-Type header - let browser set it with boundary for FormData
         }
@@ -42,33 +38,28 @@ class AccentDetectionService {
 
       const result = await response.json();
 
-      // Validate response format
-      if (typeof result.us_confidence !== 'number') {
-        throw new Error('Invalid API response format: missing us_confidence');
+      // Validate response format - check for various possible response formats
+      let us_confidence;
+
+      if (typeof result.us_confidence === 'number') {
+        us_confidence = result.us_confidence;
+      } else if (typeof result.confidence === 'number') {
+        us_confidence = result.confidence;
+      } else if (typeof result === 'number') {
+        us_confidence = result;
+      } else {
+        throw new Error('Invalid API response format: no confidence value found');
       }
 
-      return result;
-      */
+      return { us_confidence };
 
     } catch (error) {
       console.error('Accent detection failed:', error);
-
-      // Fallback to mock data
-      return this.getMockResult();
+      throw error;
     }
   }
 
-  /**
-   * Get mock result for development/testing
-   * @returns {Object} - Mock result with random confidence
-   */
-  getMockResult() {
-    // Generate a random confidence between 50-95 for demo purposes
-    const us_confidence = Math.random() * 45 + 50; // 50-95 range
-    return {
-      us_confidence: Math.round(us_confidence * 100) / 100 // Round to 2 decimal places
-    };
-  }
+
 
   /**
    * Process recording and navigate to result page
@@ -96,7 +87,7 @@ class AccentDetectionService {
     } catch (error) {
       console.error('Failed to process recording:', error);
 
-      // Show error to user or fallback behavior
+      // Show error to user
       alert('Sorry, there was an error analyzing your recording. Please try again.');
     }
   }

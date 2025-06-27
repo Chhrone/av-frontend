@@ -50,20 +50,17 @@ class App {
   setupGlobalCleanup() {
     // Global cleanup on page unload/reload
     window.addEventListener('beforeunload', () => {
-      console.log('🎤 App unloading, forcing cleanup...');
       RecordingManager.forceStop();
     });
 
     // Global cleanup on page hide (mobile/tab switch)
     window.addEventListener('pagehide', () => {
-      console.log('🎤 Page hidden, forcing cleanup...');
       RecordingManager.forceStop();
     });
 
     // Global cleanup on visibility change
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        console.log('🎤 Document hidden, forcing cleanup...');
         RecordingManager.forceStop();
       }
     });

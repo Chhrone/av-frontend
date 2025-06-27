@@ -40,22 +40,8 @@ class WelcomeView {
       });
     });
 
-    // Temporary test button for result view (remove in production)
-    const testButton = document.createElement('button');
-    testButton.textContent = 'Test Result View (Demo)';
-    testButton.className = 'test-result-button';
-    testButton.addEventListener('click', () => {
-      // Generate random mock data and navigate to result
-      const mockResult = {
-        us_confidence: Math.random() * 45 + 50 // 50-95 range
-      };
-      sessionStorage.setItem('accentResult', JSON.stringify(mockResult));
-      window.location.hash = '#/result';
-    });
-
     this.container.appendChild(welcomeText);
     this.container.appendChild(micButton);
-    this.container.appendChild(testButton);
 
     // Skip entrance animation only for specific transitions, not initial load
     const currentTransition = TransitionController.getCurrentTransition();
@@ -65,13 +51,11 @@ class WelcomeView {
       // Coming from test page - let View Transition API handle animation
       welcomeText.classList.add('visible');
       micButton.classList.add('visible');
-      testButton.classList.add('visible');
     } else {
       // Initial load or other cases - use entrance animation
       setTimeout(() => {
         welcomeText.classList.add('visible');
         micButton.classList.add('visible');
-        testButton.classList.add('visible');
       }, 100);
     }
 

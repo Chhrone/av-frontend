@@ -118,33 +118,7 @@
   box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
 }
 
-/* Test result button (temporary for demo) */
-.test-result-button {
-  margin-top: 1rem;
-  padding: 8px 24px;
-  border-radius: 6px;
-  background-color: #48bb78;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
-}
 
-.test-result-button.visible {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
-  transition-delay: 0.4s;
-}
-
-.test-result-button:hover {
-  background-color: #38a169;
-  transform: translateY(-2px);
-}
 
 .floating-microphone.recording {
   background-color: #ff6b6b;

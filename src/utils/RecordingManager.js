@@ -290,8 +290,6 @@ class RecordingManager {
    */
   async forceStop() {
     try {
-      console.log('🎙️ Force stopping recording...');
-
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
 
@@ -304,8 +302,7 @@ class RecordingManager {
 
       // Additional cleanup - try to stop any remaining media streams
       try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        console.log('🎙️ Available devices after cleanup:', devices.length);
+        await navigator.mediaDevices.enumerateDevices();
       } catch (e) {
         // Ignore errors in device enumeration
       }

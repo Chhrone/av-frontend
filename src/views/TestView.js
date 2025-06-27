@@ -78,7 +78,6 @@ class TestView {
    * Handle page unload/reload
    */
   handlePageUnload(event) {
-    console.log('🎤 Page unloading, cleaning up recording...');
     RecordingManager.forceStop();
   }
 
