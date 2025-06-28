@@ -1,4 +1,4 @@
-class AppModel {
+class IntroModel {
   constructor() {
     this.currentPage = 'welcome';
     this.isRecording = false;
@@ -10,9 +10,9 @@ class AppModel {
       'The line moved faster than I expected.',
       'I felt glad to get it all done and head home.',
       'While waiting for the bus, I saw a cat chasing a butterfly.',
-      'You can try restarting it, but I’m not sure it’ll work.',
-      'Honestly, I didn’t expect them to arrive so early.',
-      'She said she would call, but I haven’t heard from her yet.'
+      'You can try restarting it, but I\'m not sure it\'ll work.',
+      'Honestly, I didn\'t expect them to arrive so early.',
+      'She said she would call, but I haven\'t heard from her yet.'
     ];
 
     // UI Text Content (Indonesian)
@@ -89,4 +89,4 @@ class AppModel {
   }
 }
 
-export default AppModel;
+export default IntroModel;

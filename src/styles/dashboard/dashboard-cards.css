@@ -1,0 +1,264 @@
+/* Dashboard Cards Styles */
+
+/* Base Card Styles */
+.dashboard-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  padding: 2rem 1.5rem;
+  border: 1px solid #f1f5f9; /* slate-100 */
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e293b; /* slate-800 */
+  margin-bottom: 1.5rem;
+}
+
+/* Chart Card Specific */
+.chart-card {
+  padding: 2rem 1.5rem;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card .card-title {
+  margin-bottom: 1rem;
+}
+
+/* Recommendation Card */
+.recommendation-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #f8fafc; /* slate-50 */
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0; /* slate-200 */
+}
+
+.recommendation-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.recommendation-content {
+  flex-grow: 1;
+}
+
+.recommendation-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b; /* slate-800 */
+  margin-bottom: 0.5rem;
+}
+
+.recommendation-description {
+  color: #64748b; /* slate-600 */
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1.25rem;
+}
+
+.recommendation-button {
+  background-color: #0079FF; /* AureaVoice bright blue */
+  color: #ffffff;
+  border: none;
+  padding: 0.875rem 1.75rem;
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.recommendation-button:hover {
+  background-color: #004AAD; /* AureaVoice deep blue */
+}
+
+/* Profile Card */
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  border: 1px solid #f1f5f9; /* slate-100 */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-gradient {
+  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
+  color: #ffffff;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.score-label {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.score-value {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.score-percentage {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.score-improvement {
+  font-size: 1.125rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.profile-content {
+  padding: 2rem 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.profile-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b; /* slate-800 */
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.profile-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e2e8f0; /* slate-200 */
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  flex-grow: 1;
+  align-content: center;
+  padding: 1rem 0;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.stat-label {
+  font-size: 1.375rem;
+  color: #64748b; /* slate-600 */
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #1e293b; /* slate-800 */
+  font-size: 2rem;
+  display: block;
+}
+
+/* Responsive card adjustments */
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
+  .chart-card {
+    min-height: 400px;
+  }
+  
+  .recommendation-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .recommendation-button {
+    width: 100%;
+  }
+  
+  .main-gradient {
+    padding: 1.5rem 1rem;
+  }
+  
+  .score-value {
+    font-size: 2.5rem;
+  }
+  
+  .profile-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-item {
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-card {
+    padding: 1rem 0.75rem;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+  }
+  
+  .chart-card {
+    min-height: 300px;
+  }
+  
+  .score-value {
+    font-size: 2rem;
+  }
+  
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -2,45 +2,59 @@ import Router from './utils/router.js';
 import WelcomePresenter from './presenters/WelcomePresenter.js';
 import TestPresenter from './presenters/TestPresenter.js';
 import ResultPresenter from './presenters/ResultPresenter.js';
-import AppModel from './models/AppModel.js';
+import DashboardPresenter from './presenters/DashboardPresenter.js';
+import IntroModel from './models/IntroModel.js';
+import DashboardModel from './models/DashboardModel.js';
 import RecordingManager from './utils/RecordingManager.js';
+import FooterPresenter from './presenters/FooterPresenter.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
 
 class App {
   constructor() {
     this.router = new Router();
-    this.model = new AppModel();
+    this.introModel = new IntroModel();
+    this.dashboardModel = new DashboardModel();
     this.currentPresenter = null;
+    this.footer = new FooterPresenter();
 
     this.setupRoutes();
     this.setupGlobalCleanup();
+    this.initializeFooter();
   }
 
   setupRoutes() {
     this.router.addRoute('/', () => this.showWelcome());
     this.router.addRoute('/test', () => this.showTest());
     this.router.addRoute('/result', (resultData) => this.showResult(resultData));
+    this.router.addRoute('/dashboard', () => this.showDashboard());
   }
 
   showWelcome() {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new WelcomePresenter(this.model);
+    this.currentPresenter = new WelcomePresenter(this.introModel);
     this.currentPresenter.init();
-    this.model.setCurrentPage('welcome');
+    this.introModel.setCurrentPage('welcome');
   }
 
   showTest() {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new TestPresenter(this.model);
+    this.currentPresenter = new TestPresenter(this.introModel);
     this.currentPresenter.init();
-    this.model.setCurrentPage('test');
+    this.introModel.setCurrentPage('test');
   }
 
   showResult(resultData = null) {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new ResultPresenter(resultData, this.model);
+    this.currentPresenter = new ResultPresenter(resultData, this.introModel);
     this.currentPresenter.init();
-    this.model.setCurrentPage('result');
+    this.introModel.setCurrentPage('result');
+  }
+
+  showDashboard() {
+    this.destroyCurrentPresenter();
+    this.currentPresenter = new DashboardPresenter(this.dashboardModel);
+    this.currentPresenter.init();
+    this.dashboardModel.setCurrentPage('dashboard');
   }
 
   setupGlobalCleanup() {
@@ -64,6 +78,11 @@ class App {
       this.currentPresenter.destroy();
       this.currentPresenter = null;
     }
+  }
+
+  initializeFooter() {
+    // Mount footer to body, it will be persistent across all pages
+    this.footer.mount(document.body);
   }
 }
 

@@ -1,0 +1,38 @@
+/* Footer Bottom Styles */
+
+.footer-bottom {
+  border-top: 1px solid #e2e8f0;
+  padding: 1.5rem 0;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.copyright {
+  text-align: center;
+}
+
+.copyright p {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Responsive bottom adjustments */
+@media (max-width: 768px) {
+  .footer-bottom {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-bottom {
+    margin-bottom: 20px;
+  }
+
+  .copyright p {
+    font-size: 1rem;
+  }
+}

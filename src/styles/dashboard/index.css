@@ -1,0 +1,8 @@
+/* Dashboard Styles Index */
+/* Import all dashboard-related CSS files */
+
+@import './dashboard-base.css';
+@import './dashboard-navigation.css';
+@import './dashboard-cards.css';
+@import './dashboard-chart.css';
+@import './dashboard-categories.css';

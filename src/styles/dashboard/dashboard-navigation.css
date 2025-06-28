@@ -1,0 +1,69 @@
+/* Dashboard Navigation Styles */
+
+/* Navigation */
+.dashboard-nav {
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border-bottom: 1px solid #e2e8f0; /* slate-200 */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem 0rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2563eb; /* blue-600 */
+}
+
+.nav-button {
+  background-color: #374151; /* slate-700 */
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+  background-color: #1f2937; /* slate-800 */
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0.75rem 1rem;
+    justify-content: space-between;
+  }
+  
+  .nav-logo {
+    font-size: 1.5rem;
+  }
+  
+  .nav-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo {
+    font-size: 1.25rem;
+  }
+  
+  .nav-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}

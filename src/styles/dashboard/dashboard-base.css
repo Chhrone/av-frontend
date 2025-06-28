@@ -1,0 +1,126 @@
+/* AureaVoice Dashboard Base Styles */
+
+/* Dashboard Container */
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f8fafc; /* slate-50 */
+  color: #1f2937; /* gray-800 */
+  font-family: 'Inter', sans-serif;
+}
+
+/* Main Content */
+.dashboard-main {
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #1e293b; /* slate-800 */
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+  font-size: 1.5rem;
+  color: #64748b; /* slate-600 */
+  margin: 0;
+}
+
+/* Grid Layouts */
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "main"
+    "sidebar";
+  max-height: 900px;
+  height: 900px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 550px;
+    grid-template-areas: "main sidebar";
+    gap: 30px;
+  }
+}
+
+.main-column {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  height: 100%;
+  max-height: 900px;
+}
+
+/* Recommendation card should be at top */
+.main-column > .dashboard-card:first-child {
+  flex-shrink: 0;
+}
+
+/* Chart card should be at bottom and take remaining space */
+.main-column > .dashboard-card:last-child {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-column {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  height: 100%;
+  max-height: 900px;
+  align-self: stretch;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1023px) {
+  .dashboard-main {
+    padding: 1.5rem 1rem;
+  }
+  
+  .dashboard-title {
+    font-size: 2rem;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .dashboard-grid {
+    max-height: none;
+    height: auto;
+  }
+  
+  .main-column,
+  .sidebar-column {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: 1rem 0.75rem;
+  }
+  
+  .dashboard-title {
+    font-size: 1.75rem;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1rem;
+  }
+}
