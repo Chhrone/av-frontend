@@ -1,7 +1,8 @@
 class ResultView {
-  constructor(resultData = null) {
+  constructor(resultData = null, model = null) {
     this.container = null;
     this.resultData = resultData || { us_confidence: 0 };
+    this.model = model;
   }
 
   render() {
@@ -9,15 +10,21 @@ class ResultView {
     this.container.className = 'container';
 
     const confidenceText = document.createElement('h1');
-    confidenceText.textContent = `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
+    confidenceText.textContent = this.model ?
+      this.model.formatConfidenceText(this.resultData.us_confidence) :
+      `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
     confidenceText.className = 'result-text';
 
     const descriptionText = document.createElement('p');
-    descriptionText.textContent = this.getConfidenceDescription(this.resultData.us_confidence);
+    descriptionText.textContent = this.model ?
+      this.model.getConfidenceDescription(this.resultData.us_confidence) :
+      this.getConfidenceDescription(this.resultData.us_confidence);
     descriptionText.className = 'result-description';
 
     const tryAgainButton = document.createElement('button');
-    tryAgainButton.textContent = 'Try Again';
+    tryAgainButton.textContent = this.model ?
+      this.model.getTryAgainButtonText() :
+      'Try Again';
     tryAgainButton.className = 'try-again-button';
 
     tryAgainButton.addEventListener('click', () => {
@@ -59,11 +66,15 @@ class ResultView {
       const descriptionText = this.container.querySelector('.result-description');
 
       if (confidenceText) {
-        confidenceText.textContent = `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
+        confidenceText.textContent = this.model ?
+          this.model.formatConfidenceText(this.resultData.us_confidence) :
+          `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
       }
 
       if (descriptionText) {
-        descriptionText.textContent = this.getConfidenceDescription(this.resultData.us_confidence);
+        descriptionText.textContent = this.model ?
+          this.model.getConfidenceDescription(this.resultData.us_confidence) :
+          this.getConfidenceDescription(this.resultData.us_confidence);
       }
     }
   }

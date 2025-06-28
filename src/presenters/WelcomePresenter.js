@@ -1,12 +1,14 @@
 import WelcomeView from '../views/WelcomeView.js';
 
 class WelcomePresenter {
-  constructor() {
+  constructor(model) {
     this.view = null;
+    this.model = model;
   }
 
   init() {
-    this.view = new WelcomeView();
+    const welcomeText = this.model.getWelcomeText();
+    this.view = new WelcomeView(welcomeText);
     this.render();
   }
 

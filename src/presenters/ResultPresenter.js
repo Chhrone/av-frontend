@@ -1,13 +1,14 @@
 import ResultView from '../views/ResultView.js';
 
 class ResultPresenter {
-  constructor(resultData = null) {
+  constructor(resultData = null, model = null) {
     this.view = null;
     this.resultData = resultData;
+    this.model = model;
   }
 
   init() {
-    this.view = new ResultView(this.resultData);
+    this.view = new ResultView(this.resultData, this.model);
     this.render();
   }
 
@@ -23,6 +24,9 @@ class ResultPresenter {
     this.resultData = newResultData;
     if (this.view) {
       this.view.updateResult(newResultData);
+    }
+    if (this.model) {
+      this.model.setLastResult(newResultData);
     }
   }
 

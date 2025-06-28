@@ -3,12 +3,13 @@ import AccentDetectionService from '../utils/AccentDetectionService.js';
 import MicrophoneIcon from '../assets/MicrophoneIcon.js';
 
 class TestView {
-  constructor() {
+  constructor(testText = '') {
     this.container = null;
     this.floatingMic = null;
     this.isRecording = false;
     this.recordingTimer = null;
     this.durationDisplay = null;
+    this.testText = testText;
   }
 
   render() {
@@ -16,13 +17,15 @@ class TestView {
     this.container.className = 'container';
 
     const testText = document.createElement('p');
-    testText.textContent = 'I went to the store to buy some groceries. The store was busy, and there was a long line at the checkout. I still managed to get everything I needed before going home.';
+    testText.textContent = this.testText;
     testText.className = 'test-text';
 
     this.floatingMic = document.createElement('button');
     MicrophoneIcon.setInnerHTML(this.floatingMic, { className: 'microphone-icon' });
     this.floatingMic.className = 'floating-microphone';
-    this.floatingMic.style.viewTransitionName = 'microphone-button';
+
+    // Add data attribute for view transition
+    this.floatingMic.setAttribute('data-transition-trigger', 'true');
 
     this.durationDisplay = document.createElement('div');
     this.durationDisplay.className = 'recording-duration';

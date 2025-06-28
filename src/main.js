@@ -4,6 +4,7 @@ import TestPresenter from './presenters/TestPresenter.js';
 import ResultPresenter from './presenters/ResultPresenter.js';
 import AppModel from './models/AppModel.js';
 import RecordingManager from './utils/RecordingManager.js';
+import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
 
 class App {
   constructor() {
@@ -23,21 +24,21 @@ class App {
 
   showWelcome() {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new WelcomePresenter();
+    this.currentPresenter = new WelcomePresenter(this.model);
     this.currentPresenter.init();
     this.model.setCurrentPage('welcome');
   }
 
   showTest() {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new TestPresenter();
+    this.currentPresenter = new TestPresenter(this.model);
     this.currentPresenter.init();
     this.model.setCurrentPage('test');
   }
 
   showResult(resultData = null) {
     this.destroyCurrentPresenter();
-    this.currentPresenter = new ResultPresenter(resultData);
+    this.currentPresenter = new ResultPresenter(resultData, this.model);
     this.currentPresenter.init();
     this.model.setCurrentPage('result');
   }

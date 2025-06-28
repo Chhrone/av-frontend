@@ -2,8 +2,9 @@ import RecordingManager from '../utils/RecordingManager.js';
 import MicrophoneIcon from '../assets/MicrophoneIcon.js';
 
 class WelcomeView {
-  constructor() {
+  constructor(welcomeText = '') {
     this.container = null;
+    this.welcomeText = welcomeText;
   }
 
   render() {
@@ -11,14 +12,21 @@ class WelcomeView {
     this.container.className = 'container';
 
     const welcomeText = document.createElement('h1');
-    welcomeText.textContent = 'Wanna test how good your speaking skill is?';
+    welcomeText.textContent = this.welcomeText;
     welcomeText.className = 'welcome-text';
 
     const micButton = document.createElement('button');
     MicrophoneIcon.setInnerHTML(micButton, { className: 'microphone-icon' });
     micButton.className = 'microphone-button';
 
+    // Add data attribute for view transition
+    micButton.setAttribute('data-transition-trigger', 'true');
+
     micButton.addEventListener('click', () => {
+      // Add transitioning class for enhanced animation
+      micButton.classList.add('transitioning');
+
+      // Navigate to test page
       window.location.hash = '#/test';
 
       RecordingManager.startRecordingFromWelcome().catch(error => {

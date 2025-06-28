@@ -3,7 +3,7 @@
  */
 class AppConfig {
   static get MOCK_MODE() {
-    return true; // Set to false to use real API
+    return false; // Set to false to use real API
   }
 
   static get API_ENDPOINT() {

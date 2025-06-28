@@ -1,12 +1,14 @@
 import TestView from '../views/TestView.js';
 
 class TestPresenter {
-  constructor() {
+  constructor(model) {
     this.view = null;
+    this.model = model;
   }
 
   init() {
-    this.view = new TestView();
+    const testText = this.model.getTestText();
+    this.view = new TestView(testText);
     this.render();
   }
 
