@@ -1,4 +1,3 @@
-import TransitionController from '../utils/TransitionController.js';
 import RecordingManager from '../utils/RecordingManager.js';
 import MicrophoneIcon from '../assets/MicrophoneIcon.js';
 
@@ -30,18 +29,9 @@ class WelcomeView {
     this.container.appendChild(welcomeText);
     this.container.appendChild(micButton);
 
-    const currentTransition = TransitionController.getCurrentTransition();
-    const isFromTestPage = currentTransition === 'test-to-welcome';
-
-    if (isFromTestPage) {
-      welcomeText.classList.add('visible');
-      micButton.classList.add('visible');
-    } else {
-      setTimeout(() => {
-        welcomeText.classList.add('visible');
-        micButton.classList.add('visible');
-      }, 100);
-    }
+    // Show elements immediately without transitions
+    welcomeText.classList.add('visible');
+    micButton.classList.add('visible');
 
     return this.container;
   }

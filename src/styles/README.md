@@ -11,8 +11,7 @@ src/
     ├── base.css           # Core reset and typography
     ├── layout.css         # Container and positioning styles
     ├── components.css     # Buttons, microphone, and UI elements
-    ├── animations.css     # Keyframes and animation utilities
-    ├── transitions.css    # Page transitions and view transitions
+    ├── animations.css     # Functional animations for recording states
     ├── responsive.css     # Media queries for different screen sizes
     └── README.md          # This documentation file
 ```
@@ -24,9 +23,8 @@ The CSS files are imported in a specific order to ensure proper cascading:
 1. **base.css** - Reset and core styles (must be first)
 2. **layout.css** - Container and positioning
 3. **components.css** - Buttons and UI elements
-4. **animations.css** - General purpose animations
-5. **transitions.css** - Page transitions and view transitions
-6. **responsive.css** - Media queries (should be last)
+4. **animations.css** - Functional animations for recording states
+5. **responsive.css** - Media queries (should be last)
 
 ## File Contents
 
@@ -46,15 +44,8 @@ The CSS files are imported in a specific order to ensure proper cascading:
 - Microphone icon styles
 
 ### animations.css
-- Recording pulse animation
-- Loading spin animation
-- Basic fade and slide keyframes
-
-### transitions.css
-- View Transition API configuration
-- Page transition animations
-- Microphone morphing transitions
-- Specific transition keyframes for welcome/test pages
+- Recording pulse animation for microphone recording state
+- Loading spin animation for processing state
 
 ### responsive.css
 - Media queries for tablet (768px and below)
@@ -85,6 +76,5 @@ The style.css file will automatically import all other CSS files in the correct 
 - Keep base.css minimal - only reset and core typography
 - Put layout-related styles in layout.css
 - Component-specific styles go in components.css
-- All keyframe animations belong in animations.css
-- Page transitions stay in transitions.css
+- Functional animations (recording, loading) belong in animations.css
 - Media queries should be in responsive.css and loaded last

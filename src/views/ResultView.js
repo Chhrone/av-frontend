@@ -1,5 +1,3 @@
-import TransitionController from '../utils/TransitionController.js';
-
 class ResultView {
   constructor(resultData = null) {
     this.container = null;
@@ -30,20 +28,10 @@ class ResultView {
     this.container.appendChild(descriptionText);
     this.container.appendChild(tryAgainButton);
 
-    const currentTransition = TransitionController.getCurrentTransition();
-    const isFromTestPage = currentTransition === 'test-to-result';
-
-    if (isFromTestPage) {
-      confidenceText.classList.add('visible');
-      descriptionText.classList.add('visible');
-      tryAgainButton.classList.add('visible');
-    } else {
-      setTimeout(() => {
-        confidenceText.classList.add('visible');
-        descriptionText.classList.add('visible');
-        tryAgainButton.classList.add('visible');
-      }, 100);
-    }
+    // Show elements immediately without transitions
+    confidenceText.classList.add('visible');
+    descriptionText.classList.add('visible');
+    tryAgainButton.classList.add('visible');
 
     return this.container;
   }

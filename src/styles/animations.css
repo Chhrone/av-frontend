@@ -1,4 +1,5 @@
 
+/* Functional animations for recording and loading states */
 @keyframes recording-pulse {
   0%, 100% {
     transform: translateX(-50%) scale(1);
@@ -10,66 +11,11 @@
   }
 }
 
-
 @keyframes loading-spin {
   0% {
     transform: translateX(-50%) rotate(0deg);
   }
   100% {
     transform: translateX(-50%) rotate(360deg);
-  }
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* Slide animations */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Fade in up animation for completion message */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
   }
 }

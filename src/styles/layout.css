@@ -18,14 +18,7 @@
   margin-bottom: 3rem;
   max-width: 800px;
   line-height: 1.3;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.welcome-text.visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
 }
 
 
@@ -49,14 +42,7 @@
   margin-bottom: 1.5rem;
   max-width: 800px;
   line-height: 1.3;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.result-text.visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
 }
 
 .result-description {
@@ -67,15 +53,7 @@
   margin-bottom: 3rem;
   max-width: 600px;
   line-height: 1.5;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.result-description.visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
-  transition-delay: 0.1s;
 }
 
 

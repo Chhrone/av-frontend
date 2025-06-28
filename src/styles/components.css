@@ -13,16 +13,7 @@
   font-size: 2rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-  opacity: 0;
-  transform: translateY(20px);
-  view-transition-name: microphone-button;
-}
-
-.microphone-button.visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
-  transition-delay: 0.2s;
 }
 
 .microphone-button:hover {
@@ -50,7 +41,6 @@
   font-size: 2rem;
   box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
   opacity: 1;
-  view-transition-name: microphone-button;
   transition: all 0.3s ease;
 }
 
@@ -99,15 +89,7 @@
   font-weight: 500;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.try-again-button.visible {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s ease-out;
-  transition-delay: 0.2s;
 }
 
 .try-again-button:hover {
