@@ -1,10 +1,6 @@
 import AudioRecorder from './AudioRecorder.js';
 import RecordingStorage from './RecordingStorage.js';
 
-/**
- * RecordingManager - Manages recording state across views
- * Coordinates AudioRecorder and RecordingStorage
- */
 class RecordingManager {
   constructor() {
     this.audioRecorder = null;
@@ -12,8 +8,7 @@ class RecordingManager {
     this.isRecording = false;
     this.recordingStartedFromWelcome = false;
     this.currentRecording = null;
-    
-    // Event listeners for state changes
+
     this.listeners = {
       recordingStart: [],
       recordingStop: [],
@@ -22,16 +17,10 @@ class RecordingManager {
     };
   }
 
-  /**
-   * Initialize recording system
-   */
   async initialize() {
     try {
-      // Initialize storage only (lightweight)
       await RecordingStorage.initialize();
-
       this.isInitialized = true;
-
       this.notifyListeners('stateChange', { initialized: true });
       return true;
     } catch (error) {
@@ -41,22 +30,14 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Start recording from welcome page
-   */
   async startRecordingFromWelcome() {
     try {
       if (!this.isInitialized) {
         await this.initialize();
       }
 
-      // Create audio recorder instance
       this.audioRecorder = new AudioRecorder();
-
-      // Initialize audio recorder (this requests microphone permission)
       await this.audioRecorder.initialize();
-
-      // Start recording
       await this.audioRecorder.startRecording();
 
       this.isRecording = true;
@@ -87,23 +68,18 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Stop recording and save to IndexedDB
-   */
   async stopRecording(metadata = {}) {
     try {
       if (!this.isRecording || !this.audioRecorder) {
         return null;
       }
-      
-      // Stop recording and get audio data
+
       const recordingData = await this.audioRecorder.stopRecording();
-      
+
       if (!recordingData) {
         throw new Error('No recording data received');
       }
 
-      // Prepare metadata
       const recordingMetadata = {
         name: metadata.name || 'Speech Test Recording',
         category: metadata.category || 'speech-test',
@@ -114,7 +90,6 @@ class RecordingManager {
         ...metadata
       };
 
-      // Save to IndexedDB
       const savedRecording = await RecordingStorage.saveRecording(
         recordingData.blob,
         recordingMetadata
@@ -123,20 +98,18 @@ class RecordingManager {
       this.currentRecording = savedRecording;
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
-      
+
       this.notifyListeners('recordingStop', {
         recording: savedRecording,
         duration: recordingData.duration
       });
-      
-      this.notifyListeners('stateChange', { 
+
+      this.notifyListeners('stateChange', {
         isRecording: false,
         lastRecording: savedRecording
       });
 
-      // Clean up audio recorder resources immediately
       await this.cleanup();
-
       return savedRecording;
     } catch (error) {
       console.error('Failed to stop recording:', error);
@@ -145,9 +118,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Get current recording state
-   */
   getRecordingState() {
     return {
       isInitialized: this.isInitialized,
@@ -158,23 +128,14 @@ class RecordingManager {
     };
   }
 
-  /**
-   * Check if recording is active
-   */
   isRecordingActive() {
     return this.isRecording;
   }
 
-  /**
-   * Check if recording was started from welcome page
-   */
   wasStartedFromWelcome() {
     return this.recordingStartedFromWelcome;
   }
 
-  /**
-   * Get recording duration in real-time
-   */
   getCurrentDuration() {
     if (this.audioRecorder && this.isRecording) {
       return this.audioRecorder.getRecordingDuration();
@@ -182,18 +143,12 @@ class RecordingManager {
     return 0;
   }
 
-  /**
-   * Add event listener
-   */
   addEventListener(event, callback) {
     if (this.listeners[event]) {
       this.listeners[event].push(callback);
     }
   }
 
-  /**
-   * Remove event listener
-   */
   removeEventListener(event, callback) {
     if (this.listeners[event]) {
       const index = this.listeners[event].indexOf(callback);
@@ -203,9 +158,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Notify all listeners of an event
-   */
   notifyListeners(event, data) {
     if (this.listeners[event]) {
       this.listeners[event].forEach(callback => {
@@ -218,9 +170,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Clean up audio recorder resources
-   */
   async cleanup() {
     try {
       if (this.audioRecorder) {
@@ -228,7 +177,6 @@ class RecordingManager {
         this.audioRecorder = null;
       }
 
-      // Force garbage collection hint
       if (window.gc) {
         window.gc();
       }
@@ -237,9 +185,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Get all recordings from storage
-   */
   async getAllRecordings() {
     try {
       return await RecordingStorage.getAllRecordings();
@@ -249,9 +194,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Get recording by ID
-   */
   async getRecording(id) {
     try {
       return await RecordingStorage.getRecording(id);
@@ -261,9 +203,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Delete recording
-   */
   async deleteRecording(id) {
     try {
       return await RecordingStorage.deleteRecording(id);
@@ -273,9 +212,6 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Get storage statistics
-   */
   async getStorageStats() {
     try {
       return await RecordingStorage.getStats();
@@ -285,26 +221,21 @@ class RecordingManager {
     }
   }
 
-  /**
-   * Force stop recording and cleanup (emergency cleanup)
-   */
   async forceStop() {
     try {
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
 
       if (this.audioRecorder) {
-        // Force cleanup microphone resources immediately
         await this.audioRecorder.cleanupMicrophoneResources();
         await this.audioRecorder.destroy();
         this.audioRecorder = null;
       }
 
-      // Additional cleanup - try to stop any remaining media streams
       try {
         await navigator.mediaDevices.enumerateDevices();
       } catch (e) {
-        // Ignore errors in device enumeration
+        // Ignore errors
       }
 
       this.notifyListeners('stateChange', {
@@ -312,12 +243,10 @@ class RecordingManager {
         forceStopped: true
       });
 
-      console.log('🎙️ Recording force stopped and all resources cleaned up');
     } catch (error) {
       console.error('Error during force stop:', error);
     }
   }
 }
 
-// Export singleton instance
 export default new RecordingManager();

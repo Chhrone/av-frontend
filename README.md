@@ -60,6 +60,20 @@ src/
 - Includes "Try Again" button to return to welcome page
 - Receives data from accent detection API
 
+## Configuration
+
+### Mock Mode
+The application supports mock mode for development without requiring the actual accent detection API:
+
+- **Enable Mock Mode**: Set `MOCK_MODE: true` in `src/config/AppConfig.js`
+- **Disable Mock Mode**: Set `MOCK_MODE: false` to use real API
+- **Mock Settings**: Customize delay and confidence ranges in AppConfig
+
+### API Configuration
+- **Endpoint**: Configure API endpoint in AppConfig
+- **Format**: API expects POST requests with .wav files
+- **Response**: Should return `{ us_confidence: number }`
+
 ## Getting Started
 
 1. Install dependencies:

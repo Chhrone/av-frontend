@@ -10,23 +10,19 @@ class ResultView {
     this.container = document.createElement('div');
     this.container.className = 'container';
 
-    // Main confidence text
     const confidenceText = document.createElement('h1');
     confidenceText.textContent = `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
     confidenceText.className = 'result-text';
 
-    // Secondary descriptive text based on confidence level
     const descriptionText = document.createElement('p');
     descriptionText.textContent = this.getConfidenceDescription(this.resultData.us_confidence);
     descriptionText.className = 'result-description';
 
-    // Try again button
     const tryAgainButton = document.createElement('button');
     tryAgainButton.textContent = 'Try Again';
     tryAgainButton.className = 'try-again-button';
 
     tryAgainButton.addEventListener('click', () => {
-      // Navigate back to welcome page
       window.location.hash = '#/';
     });
 
@@ -34,17 +30,14 @@ class ResultView {
     this.container.appendChild(descriptionText);
     this.container.appendChild(tryAgainButton);
 
-    // Skip entrance animation only for specific transitions, not initial load
     const currentTransition = TransitionController.getCurrentTransition();
     const isFromTestPage = currentTransition === 'test-to-result';
 
     if (isFromTestPage) {
-      // Coming from test page - let View Transition API handle animation
       confidenceText.classList.add('visible');
       descriptionText.classList.add('visible');
       tryAgainButton.classList.add('visible');
     } else {
-      // Initial load or other cases - use entrance animation
       setTimeout(() => {
         confidenceText.classList.add('visible');
         descriptionText.classList.add('visible');
@@ -55,9 +48,6 @@ class ResultView {
     return this.container;
   }
 
-  /**
-   * Get descriptive text based on confidence level
-   */
   getConfidenceDescription(confidence) {
     if (confidence >= 90) {
       return "Excellent! Your American accent is very strong and clear.";
@@ -74,20 +64,16 @@ class ResultView {
     }
   }
 
-  /**
-   * Update result data and re-render
-   */
   updateResult(newResultData) {
     this.resultData = newResultData;
     if (this.container) {
-      // Update the text content
       const confidenceText = this.container.querySelector('.result-text');
       const descriptionText = this.container.querySelector('.result-description');
-      
+
       if (confidenceText) {
         confidenceText.textContent = `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
       }
-      
+
       if (descriptionText) {
         descriptionText.textContent = this.getConfidenceDescription(this.resultData.us_confidence);
       }

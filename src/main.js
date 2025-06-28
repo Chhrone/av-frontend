@@ -42,23 +42,15 @@ class App {
     this.model.setCurrentPage('result');
   }
 
-
-
-  /**
-   * Setup global cleanup listeners
-   */
   setupGlobalCleanup() {
-    // Global cleanup on page unload/reload
     window.addEventListener('beforeunload', () => {
       RecordingManager.forceStop();
     });
 
-    // Global cleanup on page hide (mobile/tab switch)
     window.addEventListener('pagehide', () => {
       RecordingManager.forceStop();
     });
 
-    // Global cleanup on visibility change
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         RecordingManager.forceStop();

@@ -28,21 +28,18 @@ class Router {
       this.previousRoute = this.currentRoute;
       this.currentRoute = hash;
 
-      // Determine transition type based on navigation context
       const transitionType = TransitionController.getTransitionType(
         fromRoute,
         toRoute,
         this.isInitialLoad
       );
 
-      // Execute navigation with appropriate transition
       TransitionController.navigate(toRoute, transitionType, () => {
-        // Check if this is the result route and we have stored data
         if (hash === '/result') {
           const storedResult = sessionStorage.getItem('accentResult');
           if (storedResult) {
             const resultData = JSON.parse(storedResult);
-            sessionStorage.removeItem('accentResult'); // Clean up
+            sessionStorage.removeItem('accentResult');
             route(resultData);
           } else {
             route();
@@ -52,10 +49,8 @@ class Router {
         }
       });
 
-      // Mark that initial load is complete
       this.isInitialLoad = false;
     } else {
-      // Default to home route
       window.location.hash = '#/';
     }
   }

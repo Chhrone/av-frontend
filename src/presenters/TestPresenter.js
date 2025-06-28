@@ -11,11 +11,9 @@ class TestPresenter {
   }
 
   render() {
-    // Clear existing content
     const appElement = document.getElementById('app');
     appElement.innerHTML = '';
-    
-    // Render the view
+
     const viewElement = this.view.render();
     appElement.appendChild(viewElement);
   }

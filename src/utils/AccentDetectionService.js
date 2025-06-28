@@ -1,9 +1,12 @@
+import AppConfig from '../config/AppConfig.js';
+
 /**
- * AccentDetectionService - Handles US accent detection API calls
+ * AccentDetectionService - Mock service for US accent detection
  */
 class AccentDetectionService {
   constructor() {
-    this.apiEndpoint = 'http://localhost:8000/identify';
+    this.useMockData = AppConfig.MOCK_MODE;
+    this.apiEndpoint = AppConfig.API_ENDPOINT;
   }
 
   /**
@@ -12,24 +15,22 @@ class AccentDetectionService {
    * @returns {Promise<Object>} - Promise resolving to { us_confidence: number }
    */
   async analyzeAccent(audioBlob) {
+    if (this.useMockData) {
+      return this.getMockResult();
+    }
+
     try {
-      // Ensure the audio blob is in WAV format
       if (!audioBlob.type.includes('wav')) {
         throw new Error('Audio file must be in WAV format');
       }
 
-      // Create FormData to send the audio file
       const formData = new FormData();
       formData.append('file', audioBlob, 'recording.wav');
 
-      // Make API call
       const response = await fetch(this.apiEndpoint, {
         method: 'POST',
         body: formData,
-        mode: 'cors',
-        headers: {
-          // Don't set Content-Type header - let browser set it with boundary for FormData
-        }
+        mode: 'cors'
       });
 
       if (!response.ok) {
@@ -37,8 +38,6 @@ class AccentDetectionService {
       }
 
       const result = await response.json();
-
-      // Validate response format - check for various possible response formats
       let us_confidence;
 
       if (typeof result.us_confidence === 'number') {
@@ -59,7 +58,20 @@ class AccentDetectionService {
     }
   }
 
+  /**
+   * Generate mock result for development
+   * @returns {Promise<Object>} - Mock confidence data
+   */
+  async getMockResult() {
+    const delay = AppConfig.MOCK_DELAY_MIN +
+                  Math.random() * (AppConfig.MOCK_DELAY_MAX - AppConfig.MOCK_DELAY_MIN);
+    await new Promise(resolve => setTimeout(resolve, delay));
 
+    const range = AppConfig.MOCK_CONFIDENCE_MAX - AppConfig.MOCK_CONFIDENCE_MIN;
+    const us_confidence = Math.round((AppConfig.MOCK_CONFIDENCE_MIN + Math.random() * range) * 10) / 10;
+
+    return { us_confidence };
+  }
 
   /**
    * Process recording and navigate to result page
@@ -67,18 +79,14 @@ class AccentDetectionService {
    */
   async processRecordingAndShowResult(recording) {
     try {
-      // Get the audio blob from the recording
       const audioBlob = recording.audioBlob;
 
       if (!audioBlob) {
         throw new Error('No audio data found in recording');
       }
 
-      // Analyze the accent
       const result = await this.analyzeAccent(audioBlob);
 
-      // Navigate to result page with the confidence data
-      // Store result data temporarily in sessionStorage for the route handler
       if (result) {
         sessionStorage.setItem('accentResult', JSON.stringify(result));
       }
@@ -86,8 +94,6 @@ class AccentDetectionService {
 
     } catch (error) {
       console.error('Failed to process recording:', error);
-
-      // Show error to user
       alert('Sorry, there was an error analyzing your recording. Please try again.');
     }
   }
