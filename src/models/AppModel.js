@@ -15,18 +15,18 @@ class AppModel {
       'She said she would call, but I haven’t heard from her yet.'
     ];
 
-    // UI Text Content
-    this.welcomeText = 'Wanna test how good your speaking skill is?';
-    this.tryAgainButtonText = 'Try Again';
+    // UI Text Content (Indonesian)
+    this.welcomeText = 'Mau tes seberapa bagus kemampuan berbicara bahasa Inggris kamu?';
+    this.tryAgainButtonText = 'Coba Lagi';
 
-    // Confidence descriptions
+    // Confidence descriptions (Indonesian)
     this.confidenceDescriptions = {
-      excellent: "Excellent! Your American accent is very strong and clear.",
-      great: "Great job! You have a good American accent with room for minor improvements.",
-      good: "Good work! Your American accent is developing well. Keep practicing!",
-      notBad: "Not bad! You're on the right track. More practice will help improve your accent.",
-      progress: "You're making progress! Focus on pronunciation and intonation patterns.",
-      keepPracticing: "Keep practicing! Every expert was once a beginner. You'll improve with time."
+      excellent: "Luar biasa! Aksen Amerika kamu sangat kuat dan jelas.",
+      great: "Kerja bagus! Kamu punya aksen Amerika yang baik dengan sedikit ruang untuk perbaikan.",
+      good: "Bagus! Aksen Amerika kamu berkembang dengan baik. Terus berlatih!",
+      notBad: "Tidak buruk! Kamu di jalur yang benar. Latihan lebih banyak akan membantu meningkatkan aksen kamu.",
+      progress: "Kamu membuat kemajuan! Fokus pada pola pengucapan dan intonasi.",
+      keepPracticing: "Terus berlatih! Setiap ahli pernah menjadi pemula. Kamu akan membaik seiring waktu."
     };
   }
 
@@ -85,7 +85,7 @@ class AppModel {
   }
 
   formatConfidenceText(confidence) {
-    return `Your US accent confidence: ${confidence.toFixed(1)}%`;
+    return `Tingkat kepercayaan aksen Amerika kamu: ${confidence.toFixed(1)}%`;
   }
 }
 

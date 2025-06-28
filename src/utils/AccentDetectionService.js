@@ -1,11 +1,11 @@
 import AppConfig from '../config/AppConfig.js';
 
 /**
- * AccentDetectionService - Mock service for US accent detection
+ * AccentDetectionService - AI accent detection service with demo mode
  */
 class AccentDetectionService {
   constructor() {
-    this.useMockData = AppConfig.MOCK_MODE;
+    this.useRealModel = AppConfig.USE_REAL_MODEL;
     this.apiEndpoint = AppConfig.API_ENDPOINT;
   }
 
@@ -15,8 +15,8 @@ class AccentDetectionService {
    * @returns {Promise<Object>} - Promise resolving to { us_confidence: number }
    */
   async analyzeAccent(audioBlob) {
-    if (this.useMockData) {
-      return this.getMockResult();
+    if (!this.useRealModel) {
+      return this.getDemoResult();
     }
 
     try {
@@ -59,10 +59,10 @@ class AccentDetectionService {
   }
 
   /**
-   * Generate mock result for development
-   * @returns {Promise<Object>} - Mock confidence data
+   * Generate demo result for development/testing
+   * @returns {Promise<Object>} - Demo confidence data
    */
-  async getMockResult() {
+  async getDemoResult() {
     const delay = AppConfig.MOCK_DELAY_MIN +
                   Math.random() * (AppConfig.MOCK_DELAY_MAX - AppConfig.MOCK_DELAY_MIN);
     await new Promise(resolve => setTimeout(resolve, delay));

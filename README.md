@@ -62,12 +62,12 @@ src/
 
 ## Configuration
 
-### Mock Mode
-The application supports mock mode for development without requiring the actual accent detection API:
+### AI Model Configuration
+The application supports both real AI model and demo mode:
 
-- **Enable Mock Mode**: Set `MOCK_MODE: true` in `src/config/AppConfig.js`
-- **Disable Mock Mode**: Set `MOCK_MODE: false` to use real API
-- **Mock Settings**: Customize delay and confidence ranges in AppConfig
+- **Use Real AI Model**: Set `USE_REAL_MODEL: true` in `src/config/AppConfig.js`
+- **Use Demo Mode**: Set `USE_REAL_MODEL: false` for development/testing
+- **Demo Settings**: Customize delay and confidence ranges in AppConfig
 
 ### API Configuration
 - **Endpoint**: Configure API endpoint in AppConfig
