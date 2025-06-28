@@ -1,8 +1,4 @@
-/* Animation Styles - Keyframes and animation utilities */
 
-
-
-/* Recording pulse animation */
 @keyframes recording-pulse {
   0%, 100% {
     transform: translateX(-50%) scale(1);
@@ -14,7 +10,7 @@
   }
 }
 
-/* Loading spin animation */
+
 @keyframes loading-spin {
   0% {
     transform: translateX(-50%) rotate(0deg);
@@ -24,7 +20,7 @@
   }
 }
 
-/* Fade animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;

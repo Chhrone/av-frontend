@@ -1,7 +1,3 @@
-/**
- * RecordingStorage - IndexedDB controller for managing audio recordings
- * Stores recordings with metadata: date, name, category, duration, size, filename
- */
 class RecordingStorage {
   constructor() {
     this.dbName = 'AureaVoiceDB';
@@ -10,9 +6,6 @@ class RecordingStorage {
     this.db = null;
   }
 
-  /**
-   * Initialize IndexedDB database
-   */
   async initialize() {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open(this.dbName, this.dbVersion);
@@ -29,29 +22,22 @@ class RecordingStorage {
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
-        
-        // Create recordings object store
+
         if (!db.objectStoreNames.contains(this.storeName)) {
-          const store = db.createObjectStore(this.storeName, { 
+          const store = db.createObjectStore(this.storeName, {
             keyPath: 'id',
-            autoIncrement: true 
+            autoIncrement: true
           });
 
-          // Create indexes for efficient querying
           store.createIndex('filename', 'filename', { unique: true });
           store.createIndex('date', 'date', { unique: false });
           store.createIndex('category', 'category', { unique: false });
           store.createIndex('duration', 'duration', { unique: false });
-
-          console.log('📦 IndexedDB object store created');
         }
       };
     });
   }
 
-  /**
-   * Generate UUID for recording filename
-   */
   generateUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.random() * 16 | 0;
@@ -60,19 +46,10 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Generate recording filename with format "rec-8 uuid"
-   */
   generateFilename() {
     const uuid = this.generateUUID();
     return `rec-8 ${uuid}`;
   }
-
-  /**
-   * Save recording to IndexedDB
-   * @param {Blob} audioBlob - The audio file blob
-   * @param {Object} metadata - Additional metadata
-   */
   async saveRecording(audioBlob, metadata = {}) {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -126,9 +103,6 @@ class RecordingStorage {
     }
   }
 
-  /**
-   * Get all recordings from IndexedDB
-   */
   async getAllRecordings() {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -142,7 +116,6 @@ class RecordingStorage {
       request.onsuccess = () => {
         const recordings = request.result.map(recording => ({
           ...recording,
-          // Don't include the blob in the list for performance
           audioBlob: undefined,
           hasAudio: !!recording.audioBlob
         }));
@@ -156,9 +129,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Get recording by ID
-   */
   async getRecording(id) {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -180,9 +150,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Get recording by filename
-   */
   async getRecordingByFilename(filename) {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -205,9 +172,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Delete recording by ID
-   */
   async deleteRecording(id) {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -229,9 +193,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Get recordings by category
-   */
   async getRecordingsByCategory(category) {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -259,9 +220,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Get database statistics
-   */
   async getStats() {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -285,9 +243,6 @@ class RecordingStorage {
     }
   }
 
-  /**
-   * Clear all recordings
-   */
   async clearAllRecordings() {
     if (!this.db) {
       throw new Error('Database not initialized');
@@ -309,9 +264,6 @@ class RecordingStorage {
     });
   }
 
-  /**
-   * Close database connection
-   */
   close() {
     if (this.db) {
       this.db.close();
@@ -320,5 +272,4 @@ class RecordingStorage {
   }
 }
 
-// Export singleton instance
 export default new RecordingStorage();

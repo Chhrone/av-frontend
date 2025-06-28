@@ -19,9 +19,6 @@ class ResultPresenter {
     appElement.appendChild(viewElement);
   }
 
-  /**
-   * Update the result data and refresh the view
-   */
   updateResult(newResultData) {
     this.resultData = newResultData;
     if (this.view) {

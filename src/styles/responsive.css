@@ -1,6 +1,4 @@
-/* Responsive Styles - Media queries for different screen sizes */
 
-/* Tablet and smaller screens */
 @media (max-width: 768px) {
   .welcome-text {
     font-size: 2rem;
@@ -25,7 +23,7 @@
   }
 }
 
-/* Mobile screens */
+
 @media (max-width: 480px) {
   .welcome-text {
     font-size: 1.5rem;

@@ -1,6 +1,4 @@
-/* Layout Styles - Containers and positioning */
 
-/* Container styles */
 .container {
   display: flex;
   flex-direction: column;
@@ -11,7 +9,7 @@
   position: relative;
 }
 
-/* Welcome page styles */
+
 .welcome-text {
   font-size: 2.5rem;
   font-weight: 600;
@@ -30,7 +28,7 @@
   transition: all 0.5s ease-out;
 }
 
-/* Test page styles */
+
 .test-text {
   font-size: 1.8rem;
   font-weight: 500;

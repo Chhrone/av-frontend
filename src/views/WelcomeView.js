@@ -20,10 +20,8 @@ class WelcomeView {
     micButton.className = 'microphone-button';
 
     micButton.addEventListener('click', () => {
-      // Navigate immediately for smooth transition
       window.location.hash = '#/test';
 
-      // Start recording initialization in background (non-blocking)
       RecordingManager.startRecordingFromWelcome().catch(error => {
         console.error('Failed to start recording:', error);
       });
@@ -32,16 +30,13 @@ class WelcomeView {
     this.container.appendChild(welcomeText);
     this.container.appendChild(micButton);
 
-    // Skip entrance animation only for specific transitions, not initial load
     const currentTransition = TransitionController.getCurrentTransition();
     const isFromTestPage = currentTransition === 'test-to-welcome';
 
     if (isFromTestPage) {
-      // Coming from test page - let View Transition API handle animation
       welcomeText.classList.add('visible');
       micButton.classList.add('visible');
     } else {
-      // Initial load or other cases - use entrance animation
       setTimeout(() => {
         welcomeText.classList.add('visible');
         micButton.classList.add('visible');

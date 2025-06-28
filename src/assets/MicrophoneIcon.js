@@ -1,16 +1,4 @@
-/**
- * MicrophoneIcon - Reusable SVG microphone icon component
- * Returns the SVG string for the microphone icon used throughout the app
- */
 class MicrophoneIcon {
-  /**
-   * Get the SVG string for the microphone icon
-   * @param {Object} options - Configuration options for the icon
-   * @param {string} options.className - CSS class to apply to the SVG
-   * @param {string} options.fill - Fill color for the SVG (default: 'currentColor')
-   * @param {string} options.viewBox - ViewBox attribute (default: '0 0 24 24')
-   * @returns {string} SVG string
-   */
   static getSVG(options = {}) {
     const {
       className = 'microphone-icon',
@@ -25,34 +13,18 @@ class MicrophoneIcon {
 </svg>`;
   }
 
-  /**
-   * Create a DOM element with the microphone icon
-   * @param {Object} options - Configuration options for the icon
-   * @returns {HTMLElement} SVG DOM element
-   */
   static createElement(options = {}) {
     const div = document.createElement('div');
     div.innerHTML = this.getSVG(options);
     return div.firstElementChild;
   }
 
-  /**
-   * Insert the microphone icon into a container element
-   * @param {HTMLElement} container - Container element to insert the icon into
-   * @param {Object} options - Configuration options for the icon
-   * @returns {HTMLElement} The inserted SVG element
-   */
   static insertInto(container, options = {}) {
     const svgElement = this.createElement(options);
     container.appendChild(svgElement);
     return svgElement;
   }
 
-  /**
-   * Set the innerHTML of a container with the microphone icon
-   * @param {HTMLElement} container - Container element to set innerHTML
-   * @param {Object} options - Configuration options for the icon
-   */
   static setInnerHTML(container, options = {}) {
     container.innerHTML = this.getSVG(options);
   }

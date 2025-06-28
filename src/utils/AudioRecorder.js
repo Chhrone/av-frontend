@@ -1,7 +1,3 @@
-/**
- * AudioRecorder - Web Audio API based recorder with noise suppression and echo cancellation
- * Records audio at 16kHz and exports as WAV format
- */
 class AudioRecorder {
   constructor() {
     this.mediaStream = null;
@@ -11,19 +7,14 @@ class AudioRecorder {
     this.isRecording = false;
     this.startTime = null;
     this.duration = 0;
-    
-    // Audio processing nodes
+
     this.sourceNode = null;
     this.gainNode = null;
     this.destinationNode = null;
   }
 
-  /**
-   * Initialize audio recording with constraints
-   */
   async initialize() {
     try {
-      // Request microphone access with audio constraints
       const constraints = {
         audio: {
           echoCancellation: true,
@@ -35,23 +26,18 @@ class AudioRecorder {
       };
 
       this.mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-      
-      // Create audio context with 16kHz sample rate
+
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
         sampleRate: 16000
       });
 
-      // Create audio processing chain
       this.sourceNode = this.audioContext.createMediaStreamSource(this.mediaStream);
       this.gainNode = this.audioContext.createGain();
       this.destinationNode = this.audioContext.createMediaStreamDestination();
 
-      // Connect audio nodes
       this.sourceNode.connect(this.gainNode);
       this.gainNode.connect(this.destinationNode);
 
-      // Create MediaRecorder with processed stream
-      // Try WAV format first, fallback to webm if not supported
       let mimeType = 'audio/webm;codecs=opus';
       if (MediaRecorder.isTypeSupported('audio/wav')) {
         mimeType = 'audio/wav';
@@ -71,9 +57,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Setup MediaRecorder event handlers
-   */
   setupMediaRecorderEvents() {
     this.mediaRecorder.ondataavailable = (event) => {
       if (event.data.size > 0) {
@@ -90,9 +73,6 @@ class AudioRecorder {
     };
   }
 
-  /**
-   * Start recording audio
-   */
   async startRecording() {
     if (!this.mediaRecorder) {
       throw new Error('AudioRecorder not initialized');
@@ -105,7 +85,7 @@ class AudioRecorder {
     try {
       this.audioChunks = [];
       this.startTime = Date.now();
-      this.mediaRecorder.start(100); // Collect data every 100ms
+      this.mediaRecorder.start(100);
       this.isRecording = true;
 
       return true;
@@ -115,9 +95,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Stop recording audio
-   */
   async stopRecording() {
     if (!this.isRecording) {
       return null;
@@ -128,15 +105,11 @@ class AudioRecorder {
       this.isRecording = false;
       this.duration = Date.now() - this.startTime;
 
-      // Return a promise that resolves when processing is complete
       return new Promise((resolve) => {
         const originalOnStop = this.mediaRecorder.onstop;
         this.mediaRecorder.onstop = async (event) => {
           await originalOnStop(event);
-
-          // Immediately cleanup microphone resources after processing
           await this.cleanupMicrophoneResources();
-
           resolve(this.getLastRecording());
         };
       });
@@ -146,24 +119,17 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Process recorded audio and convert to WAV
-   */
   async processRecording() {
     if (this.audioChunks.length === 0) {
       return;
     }
 
     try {
-      // Get the MIME type that was actually used
       const recordedMimeType = this.mediaRecorder.mimeType;
-
-      // Create blob from recorded chunks with correct type
       const audioBlob = new Blob(this.audioChunks, { type: recordedMimeType });
 
       let finalBlob;
 
-      // If already WAV, use as-is, otherwise convert
       if (recordedMimeType.includes('wav')) {
         finalBlob = audioBlob;
       } else {
@@ -185,9 +151,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Convert audio blob to WAV format at 16kHz
-   */
   async convertToWav(audioBlob) {
     try {
       // Create audio buffer from blob
@@ -214,9 +177,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Create fallback WAV conversion by creating a proper WAV blob
-   */
   async createFallbackWav(originalBlob) {
     try {
       // Create a simple WAV header for the blob
@@ -233,9 +193,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Create a basic WAV header
-   */
   createWavHeader(dataSize, sampleRate, channels) {
     const buffer = new ArrayBuffer(44);
     const view = new DataView(buffer);
@@ -264,9 +221,6 @@ class AudioRecorder {
     return buffer;
   }
 
-  /**
-   * Convert AudioBuffer to WAV format
-   */
   audioBufferToWav(audioBuffer) {
     const length = audioBuffer.length;
     const sampleRate = audioBuffer.sampleRate;
@@ -310,23 +264,14 @@ class AudioRecorder {
     return buffer;
   }
 
-  /**
-   * Get the last recorded audio
-   */
   getLastRecording() {
     return this.lastRecording || null;
   }
 
-  /**
-   * Check if currently recording
-   */
   getIsRecording() {
     return this.isRecording;
   }
 
-  /**
-   * Get recording duration in milliseconds
-   */
   getRecordingDuration() {
     if (this.isRecording && this.startTime) {
       return Date.now() - this.startTime;
@@ -334,9 +279,6 @@ class AudioRecorder {
     return this.duration || 0;
   }
 
-  /**
-   * Cleanup microphone resources immediately after recording
-   */
   async cleanupMicrophoneResources() {
     try {
       // Stop all media stream tracks immediately
@@ -375,9 +317,6 @@ class AudioRecorder {
     }
   }
 
-  /**
-   * Destroy recorder and release resources
-   */
   async destroy() {
     try {
       // Stop recording if active

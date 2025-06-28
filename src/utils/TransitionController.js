@@ -1,27 +1,12 @@
-/**
- * TransitionController - Manages different transition types based on navigation context
- * Prevents transition conflicts by controlling which transition is used for each navigation
- */
 class TransitionController {
   constructor() {
     this.currentTransition = null;
     this.transitionTypes = {
-      // Initial page load - no transition
       INITIAL_LOAD: 'initial-load',
-
-      // Welcome to Test transitions
       WELCOME_TO_TEST: 'welcome-to-test',
-
-      // Test to Welcome transitions
       TEST_TO_WELCOME: 'test-to-welcome',
-
-      // Test to Result transitions
       TEST_TO_RESULT: 'test-to-result',
-
-      // Result to Welcome transitions
       RESULT_TO_WELCOME: 'result-to-welcome',
-
-      // Direct navigation (fallback)
       DIRECT: 'direct'
     };
     
@@ -68,12 +53,6 @@ class TransitionController {
     };
   }
 
-  /**
-   * Navigate with a specific transition type
-   * @param {string} targetRoute - The route to navigate to
-   * @param {string} transitionType - Type of transition to use
-   * @param {Function} navigationCallback - Function to execute the navigation
-   */
   async navigate(targetRoute, transitionType, navigationCallback) {
     const config = this.transitionConfigs[transitionType];
 
@@ -119,12 +98,6 @@ class TransitionController {
     }
   }
 
-  /**
-   * Get the appropriate transition type based on current and target routes
-   * @param {string} fromRoute - Current route
-   * @param {string} toRoute - Target route
-   * @param {boolean} isInitialLoad - Whether this is the initial page load
-   */
   getTransitionType(fromRoute, toRoute, isInitialLoad = false) {
     if (isInitialLoad) {
       return this.transitionTypes.INITIAL_LOAD;
@@ -141,37 +114,22 @@ class TransitionController {
     return transitionMap[transitionKey] || this.transitionTypes.DIRECT;
   }
 
-  /**
-   * Navigate from welcome to test with microphone button transition
-   */
   navigateWelcomeToTest(navigationCallback) {
     return this.navigate('/test', this.transitionTypes.WELCOME_TO_TEST, navigationCallback);
   }
 
-  /**
-   * Navigate from test to welcome with reverse microphone transition
-   */
   navigateTestToWelcome(navigationCallback) {
     return this.navigate('/', this.transitionTypes.TEST_TO_WELCOME, navigationCallback);
   }
 
-  /**
-   * Get current transition type
-   */
   getCurrentTransition() {
     return this.currentTransition;
   }
 
-  /**
-   * Check if a specific transition is currently active
-   */
   isTransitionActive(transitionType) {
     return this.currentTransition === transitionType;
   }
 
-  /**
-   * Initialize microphone for test page
-   */
   async initializeMicrophone(testPresenter) {
     if (testPresenter && typeof testPresenter.initializeAudio === 'function') {
       try {
@@ -186,14 +144,10 @@ class TransitionController {
     return false;
   }
 
-  /**
-   * Start recording on test page
-   */
   async startRecording(testPresenter) {
     if (testPresenter && typeof testPresenter.initializeAndStartRecording === 'function') {
       try {
         await testPresenter.initializeAndStartRecording();
-        console.log('🔴 Recording started via TransitionController');
         return true;
       } catch (error) {
         console.error('❌ Failed to start recording via TransitionController:', error);
@@ -204,5 +158,4 @@ class TransitionController {
   }
 }
 
-// Export singleton instance
 export default new TransitionController();
