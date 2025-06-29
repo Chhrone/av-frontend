@@ -37,66 +37,24 @@ The application follows a clean, organized folder structure:
 ```
 src/
 ├── assets/          # Reusable assets
-│   └── MicrophoneIcon.js
+│
 ├── config/          # Application configuration
-│   └── AppConfig.js
+│
 ├── features/        # Feature-based organization
 │   ├── intro/       # Introduction flow (welcome, test, result)
-│   │   ├── models/
-│   │   │   └── IntroModel.js
-│   │   ├── presenters/
-│   │   │   ├── WelcomePresenter.js
-│   │   │   ├── TestPresenter.js
-│   │   │   └── ResultPresenter.js
-│   │   ├── views/
-│   │   │   ├── WelcomeView.js
-│   │   │   ├── TestView.js
-│   │   │   └── ResultView.js
-│   │   ├── styles/  # Feature-specific styles (if needed)
-│   │   └── index.js # Feature exports
 │   ├── dashboard/   # Dashboard feature
-│   │   ├── models/
-│   │   │   └── DashboardModel.js
-│   │   ├── presenters/
-│   │   │   └── DashboardPresenter.js
-│   │   ├── views/
-│   │   │   └── DashboardView.js
-│   │   ├── styles/
-│   │   │   ├── dashboard-base.css
-│   │   │   ├── dashboard-navigation.css
-│   │   │   ├── dashboard-cards.css
-│   │   │   ├── dashboard-chart.css
-│   │   │   ├── dashboard-categories.css
-│   │   │   └── index.css
-│   │   └── index.js # Feature exports
 │   └── index.js     # Main feature exports
+│
 ├── shared/          # Components shared across features
 │   ├── models/
-│   │   └── FooterModel.js
 │   ├── presenters/
-│   │   └── FooterPresenter.js
 │   ├── views/
-│   │   └── FooterView.js
 │   └── index.js     # Shared exports
+│
 ├── styles/          # Global CSS modules
-│   ├── base.css
-│   ├── layout.css
-│   ├── components.css
-│   ├── animations.css
-│   ├── transitions.css
-│   ├── responsive.css
-│   └── footer/
-│       ├── footer-base.css
-│       ├── footer-content.css
-│       ├── footer-bottom.css
-│       └── index.css
+│   
 ├── utils/           # Utility functions and helpers
-│   ├── router.js
-│   ├── AudioRecorder.js
-│   ├── RecordingManager.js
-│   ├── RecordingStorage.js
-│   ├── ViewTransitionHelper.js
-│   └── AccentDetectionService.js
+│   
 └── main.js          # Application entry point
 ```
 
