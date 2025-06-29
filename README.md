@@ -5,39 +5,94 @@ A single-page application (SPA) built with Vite and vanilla JavaScript using the
 ## Features
 
 - **MVP Architecture**: Clean separation of concerns with Models, Views, and Presenters
+- **Feature-Based Organization**: Code organized by features (intro, dashboard) with global components
 - **Hash Routing**: Client-side routing using URL hash fragments
 - **Style Components**: CSS-in-JS approach for consistent styling
 - **Responsive Design**: Neutral, eye-friendly color scheme
 - **Smooth Animations**: Entrance animations for better user experience
 
+## Architecture
+
+### Feature-Based Structure
+The application follows a feature-based folder structure where:
+
+- **Features** (`src/features/`): Each major feature has its own folder containing all related MVP components
+  - `intro/`: Welcome, test, and result pages
+  - `dashboard/`: Dashboard functionality
+- **Global Components** (`src/`): Shared utilities, assets, and components used across features
+  - `utils/`: Shared utility functions
+  - `assets/`: Reusable assets like icons
+  - `styles/`: Global CSS styles
+  - `models/`, `presenters/`, `views/`: Global components like footer
+
+### Import Strategy
+- Features export their components through `index.js` files for clean imports
+- Global utilities are imported directly from their respective folders
+- Feature-specific styles are co-located with their features
+
 ## Project Structure
 
 ```
 src/
-├── models/          # Data models and business logic
-│   └── AppModel.js
-├── views/           # UI components and rendering
-│   ├── WelcomeView.js
-│   ├── TestView.js
-│   └── ResultView.js
-├── presenters/      # Controllers that connect models and views
-│   ├── WelcomePresenter.js
-│   ├── TestPresenter.js
-│   └── ResultPresenter.js
+├── features/        # Feature-based organization
+│   ├── intro/       # Introduction flow (welcome, test, result)
+│   │   ├── presenters/
+│   │   │   ├── WelcomePresenter.js
+│   │   │   ├── TestPresenter.js
+│   │   │   └── ResultPresenter.js
+│   │   ├── views/
+│   │   │   ├── WelcomeView.js
+│   │   │   ├── TestView.js
+│   │   │   └── ResultView.js
+│   │   ├── models/
+│   │   │   └── IntroModel.js
+│   │   ├── styles/  # Feature-specific styles (if needed)
+│   │   └── index.js # Feature exports
+│   ├── dashboard/   # Dashboard feature
+│   │   ├── presenters/
+│   │   │   └── DashboardPresenter.js
+│   │   ├── views/
+│   │   │   └── DashboardView.js
+│   │   ├── models/
+│   │   │   └── DashboardModel.js
+│   │   ├── styles/
+│   │   │   ├── dashboard-base.css
+│   │   │   ├── dashboard-navigation.css
+│   │   │   ├── dashboard-cards.css
+│   │   │   ├── dashboard-chart.css
+│   │   │   ├── dashboard-categories.css
+│   │   │   └── index.css
+│   │   └── index.js # Feature exports
+│   └── index.js     # Main feature exports
+├── models/          # Global models
+│   └── FooterModel.js
+├── presenters/      # Global presenters
+│   └── FooterPresenter.js
+├── views/           # Global views
+│   └── FooterView.js
 ├── utils/           # Utility functions and helpers
 │   ├── router.js
 │   ├── AudioRecorder.js
 │   ├── RecordingManager.js
 │   ├── RecordingStorage.js
-│   ├── TransitionController.js
+│   ├── ViewTransitionHelper.js
 │   └── AccentDetectionService.js
-├── styles/          # CSS modules for styling
+├── styles/          # Global CSS modules
 │   ├── base.css
 │   ├── layout.css
 │   ├── components.css
 │   ├── animations.css
 │   ├── transitions.css
-│   └── responsive.css
+│   ├── responsive.css
+│   └── footer/
+│       ├── footer-base.css
+│       ├── footer-content.css
+│       ├── footer-bottom.css
+│       └── index.css
+├── assets/          # Reusable assets
+│   └── MicrophoneIcon.js
+├── config/          # Application configuration
+│   └── AppConfig.js
 └── main.js          # Application entry point
 ```
 
