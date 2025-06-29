@@ -85,7 +85,7 @@ class IntroModel {
   }
 
   formatConfidenceText(confidence) {
-    return `Tingkat kepercayaan aksen Amerika kamu: ${confidence.toFixed(1)}%`;
+    return `Skor aksen Amerika kamu: ${confidence.toFixed(1)}%`;
   }
 }
 

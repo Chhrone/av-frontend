@@ -1,6 +1,6 @@
-import RecordingManager from '../utils/RecordingManager.js';
-import AccentDetectionService from '../utils/AccentDetectionService.js';
-import MicrophoneIcon from '../assets/MicrophoneIcon.js';
+import RecordingManager from '../../../utils/RecordingManager.js';
+import AccentDetectionService from '../../../utils/AccentDetectionService.js';
+import MicrophoneIcon from '../../../assets/MicrophoneIcon.js';
 
 class TestView {
   constructor(testText = '') {

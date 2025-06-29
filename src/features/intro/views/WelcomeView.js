@@ -1,5 +1,5 @@
-import RecordingManager from '../utils/RecordingManager.js';
-import MicrophoneIcon from '../assets/MicrophoneIcon.js';
+import RecordingManager from '../../../utils/RecordingManager.js';
+import MicrophoneIcon from '../../../assets/MicrophoneIcon.js';
 
 class WelcomeView {
   constructor(welcomeText = '') {

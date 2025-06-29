@@ -1,10 +1,12 @@
 import Router from './utils/router.js';
-import WelcomePresenter from './presenters/WelcomePresenter.js';
-import TestPresenter from './presenters/TestPresenter.js';
-import ResultPresenter from './presenters/ResultPresenter.js';
-import DashboardPresenter from './presenters/DashboardPresenter.js';
-import IntroModel from './models/IntroModel.js';
-import DashboardModel from './models/DashboardModel.js';
+import {
+  WelcomePresenter,
+  TestPresenter,
+  ResultPresenter,
+  IntroModel,
+  DashboardPresenter,
+  DashboardModel
+} from './features/index.js';
 import RecordingManager from './utils/RecordingManager.js';
 import FooterPresenter from './presenters/FooterPresenter.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support

@@ -176,6 +176,30 @@ class DashboardView {
         presenter.handleCategorySelect(categoryTitle);
       });
     });
+
+    // Bind scroll event for navigation transition
+    this.bindScrollEvent();
+  }
+
+  bindScrollEvent() {
+    const navContainer = this.container.querySelector('.nav-container');
+    if (!navContainer) return;
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > 50) {
+        navContainer.classList.add('scrolled');
+      } else {
+        navContainer.classList.remove('scrolled');
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Store reference for cleanup
+    this.scrollHandler = handleScroll;
   }
 
   updateStats(stats) {
@@ -205,6 +229,12 @@ class DashboardView {
   }
 
   destroy() {
+    // Remove scroll event listener
+    if (this.scrollHandler) {
+      window.removeEventListener('scroll', this.scrollHandler);
+      this.scrollHandler = null;
+    }
+
     // Clear the app container when destroying dashboard
     const appContainer = document.getElementById('app');
     if (appContainer) {
