@@ -13,17 +13,19 @@ A single-page application (SPA) built with Vite and vanilla JavaScript using the
 
 ## Architecture
 
-### Feature-Based Structure
-The application follows a feature-based folder structure where:
+### Clean Feature-Based Structure
+The application follows a clean, organized folder structure:
 
 - **Features** (`src/features/`): Each major feature has its own folder containing all related MVP components
   - `intro/`: Welcome, test, and result pages
   - `dashboard/`: Dashboard functionality
-- **Global Components** (`src/`): Shared utilities, assets, and components used across features
-  - `utils/`: Shared utility functions
+- **Shared** (`src/shared/`): Components and utilities shared across multiple features
+  - Global components like footer that appear on all pages
+- **Global Resources** (`src/`): Core application resources
+  - `utils/`: Utility functions and helpers
   - `assets/`: Reusable assets like icons
   - `styles/`: Global CSS styles
-  - `models/`, `presenters/`, `views/`: Global components like footer
+  - `config/`: Application configuration
 
 ### Import Strategy
 - Features export their components through `index.js` files for clean imports
@@ -34,8 +36,14 @@ The application follows a feature-based folder structure where:
 
 ```
 src/
+├── assets/          # Reusable assets
+│   └── MicrophoneIcon.js
+├── config/          # Application configuration
+│   └── AppConfig.js
 ├── features/        # Feature-based organization
 │   ├── intro/       # Introduction flow (welcome, test, result)
+│   │   ├── models/
+│   │   │   └── IntroModel.js
 │   │   ├── presenters/
 │   │   │   ├── WelcomePresenter.js
 │   │   │   ├── TestPresenter.js
@@ -44,17 +52,15 @@ src/
 │   │   │   ├── WelcomeView.js
 │   │   │   ├── TestView.js
 │   │   │   └── ResultView.js
-│   │   ├── models/
-│   │   │   └── IntroModel.js
 │   │   ├── styles/  # Feature-specific styles (if needed)
 │   │   └── index.js # Feature exports
 │   ├── dashboard/   # Dashboard feature
+│   │   ├── models/
+│   │   │   └── DashboardModel.js
 │   │   ├── presenters/
 │   │   │   └── DashboardPresenter.js
 │   │   ├── views/
 │   │   │   └── DashboardView.js
-│   │   ├── models/
-│   │   │   └── DashboardModel.js
 │   │   ├── styles/
 │   │   │   ├── dashboard-base.css
 │   │   │   ├── dashboard-navigation.css
@@ -64,19 +70,14 @@ src/
 │   │   │   └── index.css
 │   │   └── index.js # Feature exports
 │   └── index.js     # Main feature exports
-├── models/          # Global models
-│   └── FooterModel.js
-├── presenters/      # Global presenters
-│   └── FooterPresenter.js
-├── views/           # Global views
-│   └── FooterView.js
-├── utils/           # Utility functions and helpers
-│   ├── router.js
-│   ├── AudioRecorder.js
-│   ├── RecordingManager.js
-│   ├── RecordingStorage.js
-│   ├── ViewTransitionHelper.js
-│   └── AccentDetectionService.js
+├── shared/          # Components shared across features
+│   ├── models/
+│   │   └── FooterModel.js
+│   ├── presenters/
+│   │   └── FooterPresenter.js
+│   ├── views/
+│   │   └── FooterView.js
+│   └── index.js     # Shared exports
 ├── styles/          # Global CSS modules
 │   ├── base.css
 │   ├── layout.css
@@ -89,10 +90,13 @@ src/
 │       ├── footer-content.css
 │       ├── footer-bottom.css
 │       └── index.css
-├── assets/          # Reusable assets
-│   └── MicrophoneIcon.js
-├── config/          # Application configuration
-│   └── AppConfig.js
+├── utils/           # Utility functions and helpers
+│   ├── router.js
+│   ├── AudioRecorder.js
+│   ├── RecordingManager.js
+│   ├── RecordingStorage.js
+│   ├── ViewTransitionHelper.js
+│   └── AccentDetectionService.js
 └── main.js          # Application entry point
 ```
 

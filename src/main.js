@@ -8,7 +8,7 @@ import {
   DashboardModel
 } from './features/index.js';
 import RecordingManager from './utils/RecordingManager.js';
-import FooterPresenter from './presenters/FooterPresenter.js';
+import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
 
 class App {
