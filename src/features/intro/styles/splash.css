@@ -30,19 +30,19 @@
   color: white;
   z-index: 2;
   position: relative;
-  max-width: 800px;
-  padding: 2rem;
+  max-width: 600px;
+  padding: 1.5rem;
 }
 
 .brand-container {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .brand-text {
-  font-size: 4.5rem;
+  font-size: 3.2rem;
   font-weight: 300;
-  margin: 0 0 1rem 0;
-  letter-spacing: 0.15em;
+  margin: 0 0 0.8rem 0;
+  letter-spacing: 0.12em;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 1.2s ease-out 0.3s both;
   line-height: 1.1;
@@ -62,9 +62,9 @@
 }
 
 .tagline {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 300;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.5rem 0;
   opacity: 0.85;
   letter-spacing: 0.05em;
   animation: fadeInUp 1s ease-out 0.8s both;
@@ -91,31 +91,31 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .splash-content {
-    padding: 1.5rem;
+    padding: 1rem;
     max-width: 90%;
   }
 
   .brand-text {
-    font-size: 3.2rem;
-    letter-spacing: 0.12em;
+    font-size: 2.4rem;
+    letter-spacing: 0.1em;
   }
 
   .tagline {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .brand-text {
-    font-size: 2.5rem;
-    letter-spacing: 0.1em;
+    font-size: 2rem;
+    letter-spacing: 0.08em;
   }
 
   .tagline {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
 
   .splash-content {
-    padding: 1rem;
+    padding: 0.8rem;
   }
 }

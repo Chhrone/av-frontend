@@ -19,15 +19,15 @@
 }
 
 .footer-background-text {
-  font-size: 10rem;
+  font-size: 6rem;
   font-weight: 900;
   color: rgba(0, 0, 0, 0.03);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   text-align: center;
-  margin: 2rem 0 5rem 0;
+  margin: 1.5rem 0 3rem 0;
   line-height: 1;
 }
 
@@ -65,24 +65,24 @@
 }
 
 .footer-brand-title {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .footer-description {
   color: #64748b;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 0;
 }
 
 .footer-title {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #1e293b;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .footer-links {
@@ -92,13 +92,13 @@
 }
 
 .footer-links li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .footer-links a {
   color: #64748b;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: color 0.3s ease;
 }
 

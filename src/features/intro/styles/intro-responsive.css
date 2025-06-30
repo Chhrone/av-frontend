@@ -3,27 +3,27 @@
 /* Tablet and below (768px) */
 @media (max-width: 768px) {
   .welcome-text {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .test-text {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
   }
 
   .result-text {
-    font-size: 2.4rem;
+    font-size: 1.8rem;
   }
 
   .result-description {
-    font-size: 1.4rem;
-    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    margin-bottom: 1.8rem;
   }
 
   .try-again-button {
-    padding: 16px 36px;
-    font-size: 1.4rem;
-    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    border-radius: 8px;
   }
 
   .container {
@@ -31,15 +31,16 @@
   }
 
   .floating-microphone {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    bottom: 200px;
   }
 
   .microphone-button {
-    width: 70px;
-    height: 70px;
-    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
   }
 }
 
