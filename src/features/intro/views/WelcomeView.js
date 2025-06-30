@@ -34,34 +34,7 @@ class WelcomeView {
       });
     });
 
-    // Add dashboard link
-    const dashboardLink = document.createElement('a');
-    dashboardLink.href = '#/dashboard';
-    dashboardLink.textContent = 'Dashboard';
-    dashboardLink.className = 'dashboard-link';
-    dashboardLink.style.cssText = `
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: #2563eb;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: background-color 0.2s;
-    `;
 
-    dashboardLink.addEventListener('mouseenter', () => {
-      dashboardLink.style.backgroundColor = '#1d4ed8';
-    });
-
-    dashboardLink.addEventListener('mouseleave', () => {
-      dashboardLink.style.backgroundColor = '#2563eb';
-    });
-
-    this.container.appendChild(dashboardLink);
     this.container.appendChild(welcomeText);
     this.container.appendChild(micButton);
 

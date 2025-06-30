@@ -1,9 +1,57 @@
+import UserProgressStorage from '../../../utils/UserProgressStorage.js';
+import ExerciseModel from '../../../shared/models/ExerciseModel.js';
+import UserProgressModel from '../../../shared/models/UserProgressModel.js';
+import DashboardAnalyticsModel from '../../../shared/models/DashboardAnalyticsModel.js';
+
 class DashboardModel {
   constructor() {
     this.currentPage = 'dashboard';
     // Initialize dashboard-specific data
     this.userStats = null;
     this.progressData = null;
+
+    // Initialize storage and models
+    this.userProgressStorage = new UserProgressStorage();
+    this.exerciseModel = new ExerciseModel();
+    this.userProgressModel = new UserProgressModel();
+    this.analyticsModel = new DashboardAnalyticsModel(this.userProgressModel, this.exerciseModel);
+
+    this.isInitialized = false;
+  }
+
+  async init() {
+    if (!this.isInitialized) {
+      try {
+        await this.userProgressStorage.init();
+        await this.loadUserProgress();
+        this.isInitialized = true;
+        console.log('DashboardModel initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize DashboardModel:', error);
+        // Fallback to mock data if initialization fails
+        this.loadMockData();
+      }
+    }
+  }
+
+  async loadUserProgress() {
+    try {
+      const allProgress = await this.userProgressStorage.getAllProgress();
+
+      // Load progress data into UserProgressModel
+      this.userProgressModel.progressData = allProgress;
+
+      console.log('Loaded user progress:', allProgress.length, 'entries');
+    } catch (error) {
+      console.error('Failed to load user progress:', error);
+      this.userProgressModel.progressData = [];
+    }
+  }
+
+  loadMockData() {
+    // Fallback mock data if storage fails
+    this.userProgressModel.progressData = [];
+    console.log('Using mock data for dashboard');
   }
 
   setCurrentPage(page) {
@@ -14,27 +62,45 @@ class DashboardModel {
     return this.currentPage;
   }
 
-  getUserStats() {
-    // In a real app, this would fetch from a database or local storage
-    // For now, return mock data
-    if (!this.userStats) {
-      this.userStats = {
-        accentScore: 82,
-        completedExercises: 128,
-        trainingTime: '14 Jam',
-        categoriesTried: '5/7',
-        categoriesMastered: 2
+  async getUserStats() {
+    if (!this.isInitialized) {
+      await this.init();
+    }
+
+    try {
+      const stats = this.analyticsModel.getDashboardStats();
+      this.userStats = stats;
+      return stats;
+    } catch (error) {
+      console.error('Failed to get user stats:', error);
+      // Return fallback mock data
+      return {
+        accentScore: 0,
+        completedExercises: 0,
+        trainingTime: '0 Menit',
+        categoriesTried: '0/7',
+        categoriesMastered: 0
       };
     }
-    return this.userStats;
   }
 
-  getProgressData() {
-    // Mock progress data for the chart
-    if (!this.progressData) {
-      this.progressData = [75, 78, 77, 80, 82];
+  async getProgressData() {
+    if (!this.isInitialized) {
+      await this.init();
     }
-    return this.progressData;
+
+    try {
+      const chartData = this.analyticsModel.getWeeklyProgressChartData();
+      this.progressData = chartData.data;
+      return chartData;
+    } catch (error) {
+      console.error('Failed to get progress data:', error);
+      // Return fallback mock data
+      return {
+        data: [0, 0, 0, 0, 0],
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
+      };
+    }
   }
 
   updateUserStats(newStats) {
@@ -54,28 +120,66 @@ class DashboardModel {
     this.progressData = null;
   }
 
-  getRecommendations() {
-    // Mock recommendations based on user stats
-    const stats = this.getUserStats();
-    const recommendations = [];
-
-    if (stats.accentScore < 80) {
-      recommendations.push({
-        title: 'Improve Pronunciation',
-        description: 'Focus on vowel sounds and consonant clusters',
-        priority: 'high'
-      });
+  async getTrainingRecommendation() {
+    if (!this.isInitialized) {
+      await this.init();
     }
 
-    if (stats.categoriesMastered < 3) {
-      recommendations.push({
-        title: 'Practice More Categories',
-        description: 'Try different accent training categories',
-        priority: 'medium'
-      });
+    try {
+      return this.analyticsModel.getTrainingRecommendation();
+    } catch (error) {
+      console.error('Failed to get training recommendation:', error);
+      return {
+        title: 'Mulai Latihan Pertama',
+        description: 'Mulai dengan latihan dasar untuk membangun fondasi yang kuat.',
+        exerciseId: null
+      };
+    }
+  }
+
+  async getMostMasteredCategory() {
+    if (!this.isInitialized) {
+      await this.init();
     }
 
-    return recommendations;
+    try {
+      return this.analyticsModel.getMostMasteredCategory();
+    } catch (error) {
+      console.error('Failed to get most mastered category:', error);
+      return null;
+    }
+  }
+
+  async saveProgress(progressData) {
+    if (!this.isInitialized) {
+      await this.init();
+    }
+
+    try {
+      // Save to storage
+      const savedProgress = await this.userProgressStorage.saveProgress(progressData);
+
+      // Update local model
+      this.userProgressModel.createProgress(savedProgress);
+
+      console.log('Progress saved successfully:', savedProgress.uuid);
+      return savedProgress;
+    } catch (error) {
+      console.error('Failed to save progress:', error);
+      throw error;
+    }
+  }
+
+  getExerciseModel() {
+    return this.exerciseModel;
+  }
+
+  getUserProgressModel() {
+    return this.userProgressModel;
+  }
+
+  getAnalyticsModel() {
+    return this.analyticsModel;
   }
 }
 

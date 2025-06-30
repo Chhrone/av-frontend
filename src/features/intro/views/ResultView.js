@@ -28,7 +28,7 @@ class ResultView {
     tryAgainButton.className = 'try-again-button';
 
     tryAgainButton.addEventListener('click', () => {
-      window.location.hash = '#/';
+      window.location.hash = '#/dashboard';
     });
 
     this.container.appendChild(confidenceText);

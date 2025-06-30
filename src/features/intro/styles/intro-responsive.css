@@ -1,0 +1,88 @@
+/* Intro Pages Responsive Styles */
+
+/* Tablet and below (768px) */
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .test-text {
+    font-size: 1.5rem;
+  }
+
+  .result-text {
+    font-size: 2.4rem;
+  }
+
+  .result-description {
+    font-size: 1.4rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .try-again-button {
+    padding: 16px 36px;
+    font-size: 1.4rem;
+    border-radius: 10px;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .floating-microphone {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .microphone-button {
+    width: 70px;
+    height: 70px;
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile and below (480px) */
+@media (max-width: 480px) {
+  .welcome-text {
+    font-size: 1.5rem;
+  }
+
+  .test-text {
+    font-size: 1.2rem;
+  }
+
+  .result-text {
+    font-size: 2rem;
+  }
+
+  .result-description {
+    font-size: 1.2rem;
+  }
+
+  .try-again-button {
+    padding: 14px 28px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+  }
+
+  .floating-microphone {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
+    bottom: 1.5rem;
+  }
+
+  .microphone-button {
+    width: 65px;
+    height: 65px;
+    font-size: 1.6rem;
+  }
+
+  .recording-duration {
+    bottom: 350px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

@@ -3,9 +3,10 @@
 /* Dashboard Container */
 .dashboard-container {
   min-height: 100vh;
-  background-color: #f8fafc; /* slate-50 */
-  color: #1f2937; /* gray-800 */
-  font-family: 'Inter', sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
 }
 
 /* Main Content */
@@ -23,14 +24,16 @@
 .dashboard-title {
   font-size: 3rem;
   font-weight: 700;
-  color: #1e293b; /* slate-800 */
+  color: #1e293b;
   margin-bottom: 0.5rem;
+  text-shadow: none;
 }
 
 .dashboard-subtitle {
   font-size: 1.5rem;
-  color: #64748b; /* slate-600 */
+  color: #64748b;
   margin: 0;
+  opacity: 0.9;
 }
 
 /* Grid Layouts */

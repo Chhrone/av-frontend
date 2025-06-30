@@ -3,21 +3,27 @@ import {
   WelcomePresenter,
   TestPresenter,
   ResultPresenter,
+  SplashPresenter,
   IntroModel,
+  SplashModel,
   DashboardPresenter,
   DashboardModel
 } from './features/index.js';
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
+import ProgressTrackingService from './utils/ProgressTrackingService.js';
+import SampleDataGenerator from './utils/SampleDataGenerator.js';
 
 class App {
   constructor() {
     this.router = new Router();
     this.introModel = new IntroModel();
+    this.splashModel = new SplashModel();
     this.dashboardModel = new DashboardModel();
     this.currentPresenter = null;
     this.footer = new FooterPresenter();
+    this.isFromIntroFlow = false; // Track if coming from intro flow
 
     this.setupRoutes();
     this.setupGlobalCleanup();
@@ -29,6 +35,7 @@ class App {
     this.router.addRoute('/test', () => this.showTest());
     this.router.addRoute('/result', (resultData) => this.showResult(resultData));
     this.router.addRoute('/dashboard', () => this.showDashboard());
+    this.router.addRoute('/splash', () => this.showSplash());
   }
 
   showWelcome() {
@@ -36,6 +43,7 @@ class App {
     this.currentPresenter = new WelcomePresenter(this.introModel);
     this.currentPresenter.init();
     this.introModel.setCurrentPage('welcome');
+    this.isFromIntroFlow = false; // Reset intro flow flag
   }
 
   showTest() {
@@ -43,19 +51,39 @@ class App {
     this.currentPresenter = new TestPresenter(this.introModel);
     this.currentPresenter.init();
     this.introModel.setCurrentPage('test');
+    this.isFromIntroFlow = false; // Reset intro flow flag (in case user navigates directly)
   }
 
-  showResult(resultData = null) {
+  async showResult(resultData = null) {
     this.destroyCurrentPresenter();
     this.currentPresenter = new ResultPresenter(resultData, this.introModel);
-    this.currentPresenter.init();
+    await this.currentPresenter.init();
     this.introModel.setCurrentPage('result');
+    this.isFromIntroFlow = true; // Mark that we're in intro flow
   }
 
   showDashboard() {
+    // Show splash screen only if coming from intro flow
+    if (this.isFromIntroFlow) {
+      this.isFromIntroFlow = false; // Reset flag
+      this.showSplash();
+    } else {
+      this.showDashboardDirect();
+    }
+  }
+
+  showSplash() {
+    this.destroyCurrentPresenter();
+    this.currentPresenter = new SplashPresenter(this.splashModel, () => {
+      this.showDashboardDirect();
+    });
+    this.currentPresenter.init();
+  }
+
+  async showDashboardDirect() {
     this.destroyCurrentPresenter();
     this.currentPresenter = new DashboardPresenter(this.dashboardModel);
-    this.currentPresenter.init();
+    await this.currentPresenter.init();
     this.dashboardModel.setCurrentPage('dashboard');
   }
 
@@ -86,8 +114,55 @@ class App {
     // Mount footer to body, it will be persistent across all pages
     this.footer.mount(document.body);
   }
+
+  // Method to force show splash (for testing)
+  forceShowSplash() {
+    this.showSplash();
+  }
+
+  // Method to simulate intro flow (for testing)
+  simulateIntroFlow() {
+    this.isFromIntroFlow = true;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  new App();
+  const app = new App();
+
+  // Make app available globally for testing/debugging
+  window.aureaVoiceApp = app;
+
+  // Add global helpers for testing
+  window.simulateIntroFlow = () => {
+    app.simulateIntroFlow();
+    console.log('🎬 Intro flow simulated - next dashboard navigation will show splash');
+  };
+
+  window.forceShowSplash = () => {
+    app.forceShowSplash();
+    console.log('🎬 Splash screen forced');
+  };
+
+  // Expose utilities for testing and debugging
+  window.aureaVoiceUtils = {
+    progressTracking: ProgressTrackingService,
+    sampleDataGenerator: SampleDataGenerator,
+
+    // Helper methods for testing
+    async generateSampleData() {
+      return await SampleDataGenerator.generateRealisticProgressData();
+    },
+
+    async clearSampleData() {
+      return await SampleDataGenerator.clearSampleData();
+    },
+
+    async getProgressStats() {
+      return await ProgressTrackingService.getProgressStatistics();
+    },
+
+    async getAllProgress() {
+      return await ProgressTrackingService.getAllProgress();
+    }
+  };
 });

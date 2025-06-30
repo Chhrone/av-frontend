@@ -1,43 +1,4 @@
 
-@media (max-width: 768px) {
-  .welcome-text {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
+/* Global Responsive Styles - Non-feature specific */
 
-  .test-text {
-    font-size: 1.5rem;
-  }
-
-  .result-text {
-    font-size: 1.8rem;
-  }
-
-  .result-description {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-  }
-
-  .container {
-    padding: 1rem;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .welcome-text {
-    font-size: 1.5rem;
-  }
-
-  .test-text {
-    font-size: 1.2rem;
-  }
-
-  .result-text {
-    font-size: 1.4rem;
-  }
-
-  .result-description {
-    font-size: 1rem;
-  }
-}
+/* This file now contains only global responsive styles that are not specific to any feature */

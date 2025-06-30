@@ -8,9 +8,10 @@
 .categories-title {
   font-size: 3rem;
   font-weight: 700;
-  color: #1e293b; /* slate-800 */
+  color: #1e293b;
   margin-bottom: 2rem;
   text-align: center;
+  text-shadow: none;
 }
 
 .categories-grid {
@@ -23,26 +24,28 @@
 }
 
 .category-card {
-  background-color: #ffffff;
+  background: #ffffff;
   border-radius: 0.75rem;
   padding: 2rem 1.5rem;
   text-decoration: none;
-  color: inherit;
-  border: 1px solid #e2e8f0; /* slate-200 */
+  color: #1e293b;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   transition: all 0.2s;
   display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .category-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+  box-shadow: 0 10px 25px rgba(0, 121, 255, 0.2);
   border-color: #0079FF;
+  background: #ffffff;
 }
 
 .category-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
-  display: block;
+  display: none;
 }
 
 .category-title {

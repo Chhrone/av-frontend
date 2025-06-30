@@ -1,4 +1,5 @@
 import ResultView from '../views/ResultView.js';
+import ProgressTrackingService from '../../../utils/ProgressTrackingService.js';
 
 class ResultPresenter {
   constructor(resultData = null, model = null) {
@@ -7,9 +8,24 @@ class ResultPresenter {
     this.model = model;
   }
 
-  init() {
+  async init() {
     this.view = new ResultView(this.resultData, this.model);
     this.render();
+
+    // Save progress if we have result data
+    if (this.resultData) {
+      await this.saveProgress();
+    }
+  }
+
+  async saveProgress() {
+    try {
+      await ProgressTrackingService.saveExerciseProgress(this.resultData);
+      console.log('Progress saved for result:', this.resultData.uuid);
+    } catch (error) {
+      console.error('Failed to save progress:', error);
+      // Don't throw error to avoid breaking the UI
+    }
   }
 
   render() {

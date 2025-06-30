@@ -16,8 +16,8 @@ class IntroModel {
     ];
 
     // UI Text Content (Indonesian)
-    this.welcomeText = 'Mau tes seberapa bagus kemampuan berbicara bahasa Inggris kamu?';
-    this.tryAgainButtonText = 'Coba Lagi';
+    this.welcomeText = 'Mau tes seberapa bagus kemampuan berbicara bahasa Inggris Kamu?';
+    this.tryAgainButtonText = 'Mau jadi lebih jago?';
 
     // Confidence descriptions (Indonesian)
     this.confidenceDescriptions = {

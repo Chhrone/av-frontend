@@ -4,5 +4,6 @@
 @import './styles/animations.css';
 @import './styles/transitions.css';
 @import './styles/responsive.css';
+@import './features/intro/styles/index.css';
 @import './features/dashboard/styles/index.css';
 @import './styles/footer.css';

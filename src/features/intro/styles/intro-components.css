@@ -1,0 +1,182 @@
+/* Intro Pages Component Styles */
+
+/* Microphone Button Styles */
+.microphone-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #4299e1;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  opacity: 1;
+  /* Remove conflicting transitions for View Transition API */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  /* Optimize for View Transitions */
+  contain: layout style paint;
+}
+
+.microphone-button:hover {
+  background-color: #3182ce;
+  box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
+  /* Remove transform to avoid conflicts with View Transitions */
+}
+
+/* Floating Microphone Styles */
+.floating-microphone {
+  position: fixed;
+  bottom: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #4299e1;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  z-index: 1000;
+  opacity: 1;
+  transition: all 0.3s ease;
+  /* Optimize for View Transitions */
+  contain: layout style paint;
+}
+
+.floating-microphone:hover {
+  background-color: #3182ce;
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
+}
+
+.floating-microphone.recording {
+  background-color: #ff6b6b;
+  animation: recording-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6);
+}
+
+.floating-microphone.recording:hover {
+  background-color: #ee5a24;
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 107, 107, 0.8);
+}
+
+.floating-microphone.processing {
+  background-color: #ffa726;
+  cursor: not-allowed;
+}
+
+.floating-microphone.processing:hover {
+  background-color: #ffa726;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(255, 167, 38, 0.4);
+}
+
+/* Recording Duration Display */
+.recording-duration {
+  position: fixed;
+  bottom: 400px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Poppins', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Try Again Button Styles */
+.try-again-button {
+  padding: 18px 48px;
+  border-radius: 12px;
+  background-color: #4299e1;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(66, 153, 225, 0.3);
+  opacity: 1;
+}
+
+.try-again-button:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(66, 153, 225, 0.4);
+}
+
+/* Processing Spinner */
+.processing-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+}
+
+/* Microphone Icon Styles */
+.microphone-icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+/* Animations */
+@keyframes recording-pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 30px rgba(255, 107, 107, 0.8);
+  }
+}
+
+@keyframes loading-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Transitioning state styles for View Transition API */
+.microphone-button.transitioning,
+.floating-microphone.transitioning {
+  z-index: 1000;
+}
+
+/* Fallback styles for browsers without View Transition API */
+.no-view-transitions .microphone-button:hover {
+  transform: scale(1.02);
+}
+
+.no-view-transitions .floating-microphone:hover {
+  transform: translateX(-50%) scale(1.02);
+}
+
+.no-view-transitions .microphone-button:active {
+  transform: scale(0.98);
+}
+
+.no-view-transitions .floating-microphone:active {
+  transform: translateX(-50%) scale(0.98);
+}

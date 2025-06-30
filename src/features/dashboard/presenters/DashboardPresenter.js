@@ -8,7 +8,7 @@ class DashboardPresenter {
     this.chart = null;
   }
 
-  init() {
+  async init() {
     // Add dashboard mode class to body
     document.body.classList.add('dashboard-mode');
 
@@ -16,16 +16,22 @@ class DashboardPresenter {
     this.view.render();
     this.view.bindEvents(this);
 
+    // Initialize model first
+    await this.model.init();
+
     // Initialize chart after view is rendered
-    setTimeout(() => {
-      this.initializeChart();
+    setTimeout(async () => {
+      await this.initializeChart();
     }, 100);
 
     // Load and display user stats
-    this.loadUserStats();
+    await this.loadUserStats();
+
+    // Load training recommendation
+    await this.loadTrainingRecommendation();
   }
 
-  initializeChart() {
+  async initializeChart() {
     const progressCtx = document.getElementById('progressChart');
     if (!progressCtx) {
       console.error('Progress chart canvas not found');
@@ -37,13 +43,16 @@ class DashboardPresenter {
       deepBlue: '#004AAD',
     };
 
+    // Get progress data from model
+    const chartData = await this.model.getProgressData();
+
     this.chart = new Chart(progressCtx, {
       type: 'line',
       data: {
-        labels: ['4 Minggu Lalu', '3 Minggu Lalu', '2 Minggu Lalu', 'Minggu Lalu', 'Minggu Ini'],
+        labels: chartData.labels || ['4 Minggu Lalu', '3 Minggu Lalu', '2 Minggu Lalu', 'Minggu Lalu', 'Minggu Ini'],
         datasets: [{
           label: 'Skor Aksen',
-          data: [75, 78, 77, 80, 82],
+          data: chartData.data || [0, 0, 0, 0, 0],
           backgroundColor: 'rgba(0, 121, 255, 0.1)',
           borderColor: brandColors.brightBlue,
           tension: 0.4,
@@ -143,17 +152,32 @@ class DashboardPresenter {
     });
   }
 
-  loadUserStats() {
-    // Get stats from model or use default values
-    const stats = this.model.getUserStats() || {
-      accentScore: 82,
-      completedExercises: 128,
-      trainingTime: '14 Jam',
-      categoriesTried: '5/7',
-      categoriesMastered: 2
-    };
+  async loadUserStats() {
+    try {
+      // Get stats from model
+      const stats = await this.model.getUserStats();
+      this.view.updateStats(stats);
+    } catch (error) {
+      console.error('Failed to load user stats:', error);
+      // Fallback to default values
+      const fallbackStats = {
+        accentScore: 0,
+        completedExercises: 0,
+        trainingTime: '0 Menit',
+        categoriesTried: '0/7',
+        categoriesMastered: 0
+      };
+      this.view.updateStats(fallbackStats);
+    }
+  }
 
-    this.view.updateStats(stats);
+  async loadTrainingRecommendation() {
+    try {
+      const recommendation = await this.model.getTrainingRecommendation();
+      this.view.updateRecommendation(recommendation);
+    } catch (error) {
+      console.error('Failed to load training recommendation:', error);
+    }
   }
 
   handleStartTraining() {

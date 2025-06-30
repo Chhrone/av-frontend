@@ -1,7 +1,7 @@
 class FooterModel {
   constructor() {
     this.brandName = 'AureaVoice';
-    this.description = 'AureaVoice adalah platform pembelajaran aksen Amerika berbasis AI untuk penutur bahasa Indonesia, dirancang untuk membantu ada bicara bahasa Inggris dengan lebih percaya diri.';
+    this.description = 'AureaVoice adalah platform pembelajaran aksen Amerika berbasis AI untuk penutur bahasa Indonesia, dirancang untuk membantu Kamu bicara bahasa Inggris dengan lebih percaya diri.';
     this.copyrightYear = new Date().getFullYear();
     this.backgroundText = 'AUREAVOICE';
   }
