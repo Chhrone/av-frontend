@@ -21,8 +21,9 @@ class DashboardView {
           <div class="nav-logo">
             <span class="nav-logo-aurea">Aurea</span><span class="nav-logo-voice">Voice</span>
           </div>
-          <div>
-            <a href="#/" class="nav-button">Kembali ke Test</a>
+          <div class="nav-buttons">
+            <a href="#categories" class="nav-button">Kategori</a>
+            <a href="#profile" class="nav-button">Profile</a>
           </div>
         </div>
       </nav>
@@ -85,16 +86,24 @@ class DashboardView {
                     <span class="stat-value" id="completed-exercises">128</span>
                   </div>
                   <div class="stat-item">
+                    <span class="stat-label">Latihan Hari Ini</span>
+                    <span class="stat-value" id="today-exercises">5</span>
+                  </div>
+                  <div class="stat-item">
                     <span class="stat-label">Waktu Latihan</span>
                     <span class="stat-value" id="training-time">14 Jam</span>
                   </div>
                   <div class="stat-item">
-                    <span class="stat-label">Kategori Dicoba</span>
-                    <span class="stat-value" id="categories-tried">5/7</span>
+                    <span class="stat-label">Kategori Termahir</span>
+                    <span class="stat-value" id="latest-category">Pronunciation</span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Kategori Dikuasai</span>
                     <span class="stat-value" id="categories-mastered">2</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Perlu Dilatih</span>
+                    <span class="stat-value" id="need-practice">Intonation</span>
                   </div>
                 </div>
               </div>
@@ -185,15 +194,18 @@ class DashboardView {
 
   bindScrollEvent() {
     const navContainer = this.container.querySelector('.nav-container');
-    if (!navContainer) return;
+    const dashboardNav = this.container.querySelector('.dashboard-nav');
+    if (!navContainer || !dashboardNav) return;
 
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       if (scrollTop > 50) {
         navContainer.classList.add('scrolled');
+        dashboardNav.classList.add('scrolled');
       } else {
         navContainer.classList.remove('scrolled');
+        dashboardNav.classList.remove('scrolled');
       }
     };
 
@@ -209,9 +221,11 @@ class DashboardView {
 
     const accentScore = this.container.querySelector('#accent-score');
     const completedExercises = this.container.querySelector('#completed-exercises');
+    const todayExercises = this.container.querySelector('#today-exercises');
     const trainingTime = this.container.querySelector('#training-time');
-    const categoriesTried = this.container.querySelector('#categories-tried');
+    const latestCategory = this.container.querySelector('#latest-category');
     const categoriesMastered = this.container.querySelector('#categories-mastered');
+    const needPractice = this.container.querySelector('#need-practice');
 
     if (accentScore && stats.accentScore) {
       accentScore.innerHTML = `${stats.accentScore}<span class="score-percentage">%</span>`;
@@ -219,14 +233,20 @@ class DashboardView {
     if (completedExercises && stats.completedExercises) {
       completedExercises.textContent = stats.completedExercises;
     }
+    if (todayExercises && stats.todayExercises) {
+      todayExercises.textContent = stats.todayExercises;
+    }
     if (trainingTime && stats.trainingTime) {
       trainingTime.textContent = stats.trainingTime;
     }
-    if (categoriesTried && stats.categoriesTried) {
-      categoriesTried.textContent = stats.categoriesTried;
+    if (latestCategory && stats.latestCategory) {
+      latestCategory.textContent = stats.latestCategory;
     }
     if (categoriesMastered && stats.categoriesMastered) {
       categoriesMastered.textContent = stats.categoriesMastered;
+    }
+    if (needPractice && stats.needPractice) {
+      needPractice.textContent = stats.needPractice;
     }
   }
 

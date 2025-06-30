@@ -11,48 +11,45 @@
 
 /* Main Content */
 .dashboard-main {
-  max-width: 1600px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
 }
 
 /* Header */
 .dashboard-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .dashboard-title {
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   text-shadow: none;
 }
 
 .dashboard-subtitle {
-  font-size: 1.1rem;
+  font-size: 0.875rem;
   color: #64748b;
   margin: 0;
   opacity: 0.9;
 }
 
-/* Grid Layouts */
 .dashboard-grid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "main"
-    "sidebar";
-  max-height: 900px;
-  height: 900px;
+  grid-template-columns: 5fr 2fr; /* 5 bagian untuk main, 2 untuk sidebar */
+  grid-template-areas: "main sidebar";
+  max-height: 750px;
+  height: auto;
 }
 
 @media (min-width: 1024px) {
   .dashboard-grid {
-    grid-template-columns: 1fr 550px;
+    grid-template-columns: 5fr 2fr;
     grid-template-areas: "main sidebar";
-    gap: 30px;
+    gap: 20px;
   }
 }
 
@@ -61,9 +58,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 20px;
+  gap: 15px;
   height: 100%;
-  max-height: 900px;
+  max-height: 750px;
 }
 
 /* Recommendation card should be at top */
@@ -85,7 +82,7 @@
   justify-content: flex-start;
   gap: 1rem;
   height: 100%;
-  max-height: 900px;
+  max-height: 750px;
   align-self: stretch;
 }
 
@@ -96,11 +93,11 @@
   }
   
   .dashboard-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
-  
+
   .dashboard-subtitle {
-    font-size: 1.125rem;
+    font-size: 0.95rem;
   }
   
   .dashboard-grid {
@@ -120,10 +117,10 @@
   }
   
   .dashboard-title {
-    font-size: 1.75rem;
+    font-size: 1.4rem;
   }
-  
+
   .dashboard-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 }

@@ -21,9 +21,11 @@ class DashboardModel {
       this.userStats = {
         accentScore: 82,
         completedExercises: 128,
+        todayExercises: 5,
         trainingTime: '14 Jam',
-        categoriesTried: '5/7',
-        categoriesMastered: 2
+        latestCategory: 'Pronunciation',
+        categoriesMastered: 2,
+        needPractice: 'Intonation'
       };
     }
     return this.userStats;

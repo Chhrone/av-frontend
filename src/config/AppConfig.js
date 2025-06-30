@@ -3,7 +3,7 @@
  */
 class AppConfig {
   static get USE_REAL_MODEL() {
-    return true;
+    return false;
   }
 
   static get API_ENDPOINT() {

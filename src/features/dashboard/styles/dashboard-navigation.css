@@ -6,18 +6,24 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  padding-top: 20px;
+  padding-top: 10px;
+  transition: padding-top 0.3s ease-in-out;
 }
 
+.dashboard-nav.scrolled {
+  padding-top: 5px;
+}
+
+
 .nav-container {
-  max-width: 1600px;
+  max-width: 1380px;
   margin: 20px auto 8px auto;
   padding: 0.8rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: transparent;
-  box-shadow: none;
+  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
+  box-shadow: 0 4px 20px rgba(0, 121, 255, 0.3);
   border: none;
   border-radius: 0.75rem;
   transition: all 0.3s ease-in-out;
@@ -25,10 +31,10 @@
 
 /* Scrolled state */
 .nav-container.scrolled {
-  margin: 18px auto 8px auto;
-  max-width: 1200px;
-  background-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  margin: 10px auto 8px auto;
+  max-width: 1000px;
+  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
+  box-shadow: 0 4px 20px rgba(0, 121, 255, 0.4);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 1rem;
@@ -36,34 +42,44 @@
 
 
 .nav-logo {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 300;
   text-shadow: none;
 }
 
 .nav-logo-aurea {
-  color: #0079FF; /* blue color */
+  color: #ffffff; /* white color */
 }
 
 .nav-logo-voice {
   color: #fbbf24; /* golden color */
 }
 
+/* Navigation buttons */
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .nav-button {
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #1e293b;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-size: 0.9rem;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
-  font-weight: 600;
-  transition: background-color 0.2s;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .nav-button:hover {
-  background-color: #1f2937; /* slate-800 */
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
 }
 
 /* Responsive navigation */
@@ -80,20 +96,24 @@
   }
 
   .nav-logo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .nav-logo-aurea {
-    color: #0079FF;
+    color: #ffffff;
   }
 
   .nav-logo-voice {
     color: #fbbf24;
   }
 
+  .nav-buttons {
+    gap: 0.75rem;
+  }
+
   .nav-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -109,19 +129,23 @@
   }
 
   .nav-logo {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .nav-logo-aurea {
-    color: #0079FF;
+    color: #ffffff;
   }
 
   .nav-logo-voice {
     color: #fbbf24;
   }
 
+  .nav-buttons {
+    gap: 0.5rem;
+  }
+
   .nav-button {
-    padding: 0.5rem 0.75rem;
+    padding: 0.3rem 0.6rem;
     font-size: 0.75rem;
   }
 }
