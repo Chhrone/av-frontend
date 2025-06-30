@@ -75,7 +75,7 @@ class AccentDetectionService {
 
   /**
    * Process recording and navigate to result page
-   * @param {Object} recording - Recording object from RecordingStorage
+   * @param {Object} recording - Temporary recording object with audioBlob
    */
   async processRecordingAndShowResult(recording) {
     try {
@@ -85,11 +85,16 @@ class AccentDetectionService {
         throw new Error('No audio data found in recording');
       }
 
+      // Send recording to API and get confidence score
       const result = await this.analyzeAccent(audioBlob);
 
       if (result) {
+        // Store result temporarily for the result page
         sessionStorage.setItem('accentResult', JSON.stringify(result));
+        console.log('Accent analysis result:', result);
       }
+
+      // Navigate to result page to show confidence
       window.location.hash = '#/result';
 
     } catch (error) {

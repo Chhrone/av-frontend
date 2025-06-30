@@ -1,5 +1,4 @@
 import AudioRecorder from './AudioRecorder.js';
-import RecordingStorage from './RecordingStorage.js';
 
 class RecordingManager {
   constructor() {
@@ -19,7 +18,7 @@ class RecordingManager {
 
   async initialize() {
     try {
-      await RecordingStorage.initialize();
+      // No IndexedDB initialization needed - just mark as initialized
       this.isInitialized = true;
       this.notifyListeners('stateChange', { initialized: true });
       return true;
@@ -80,37 +79,35 @@ class RecordingManager {
         throw new Error('No recording data received');
       }
 
-      const recordingMetadata = {
+      // Create temporary recording object without saving to IndexedDB
+      const tempRecording = {
+        audioBlob: recordingData.blob,
         name: metadata.name || 'Speech Test Recording',
         category: metadata.category || 'speech-test',
         duration: recordingData.duration,
         sampleRate: recordingData.sampleRate,
         format: recordingData.format,
         source: this.recordingStartedFromWelcome ? 'welcome' : 'test',
+        timestamp: Date.now(),
         ...metadata
       };
 
-      const savedRecording = await RecordingStorage.saveRecording(
-        recordingData.blob,
-        recordingMetadata
-      );
-
-      this.currentRecording = savedRecording;
+      this.currentRecording = tempRecording;
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
 
       this.notifyListeners('recordingStop', {
-        recording: savedRecording,
+        recording: tempRecording,
         duration: recordingData.duration
       });
 
       this.notifyListeners('stateChange', {
         isRecording: false,
-        lastRecording: savedRecording
+        lastRecording: tempRecording
       });
 
       await this.cleanup();
-      return savedRecording;
+      return tempRecording;
     } catch (error) {
       console.error('Failed to stop recording:', error);
       this.notifyListeners('recordingError', error);
@@ -185,41 +182,8 @@ class RecordingManager {
     }
   }
 
-  async getAllRecordings() {
-    try {
-      return await RecordingStorage.getAllRecordings();
-    } catch (error) {
-      console.error('Failed to get recordings:', error);
-      throw error;
-    }
-  }
-
-  async getRecording(id) {
-    try {
-      return await RecordingStorage.getRecording(id);
-    } catch (error) {
-      console.error('Failed to get recording:', error);
-      throw error;
-    }
-  }
-
-  async deleteRecording(id) {
-    try {
-      return await RecordingStorage.deleteRecording(id);
-    } catch (error) {
-      console.error('Failed to delete recording:', error);
-      throw error;
-    }
-  }
-
-  async getStorageStats() {
-    try {
-      return await RecordingStorage.getStats();
-    } catch (error) {
-      console.error('Failed to get storage stats:', error);
-      throw error;
-    }
-  }
+  // Recording storage methods removed - no longer using IndexedDB
+  // Recordings are now temporary and sent directly to API
 
   async forceStop() {
     try {
