@@ -12,8 +12,6 @@ import {
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
-import ProgressTrackingService from './utils/ProgressTrackingService.js';
-import SampleDataGenerator from './utils/SampleDataGenerator.js';
 
 class App {
   constructor() {
@@ -54,10 +52,10 @@ class App {
     this.isFromIntroFlow = false; // Reset intro flow flag (in case user navigates directly)
   }
 
-  async showResult(resultData = null) {
+  showResult(resultData = null) {
     this.destroyCurrentPresenter();
     this.currentPresenter = new ResultPresenter(resultData, this.introModel);
-    await this.currentPresenter.init();
+    this.currentPresenter.init();
     this.introModel.setCurrentPage('result');
     this.isFromIntroFlow = true; // Mark that we're in intro flow
   }
@@ -80,10 +78,10 @@ class App {
     this.currentPresenter.init();
   }
 
-  async showDashboardDirect() {
+  showDashboardDirect() {
     this.destroyCurrentPresenter();
     this.currentPresenter = new DashboardPresenter(this.dashboardModel);
-    await this.currentPresenter.init();
+    this.currentPresenter.init();
     this.dashboardModel.setCurrentPage('dashboard');
   }
 
@@ -141,28 +139,5 @@ document.addEventListener('DOMContentLoaded', () => {
   window.forceShowSplash = () => {
     app.forceShowSplash();
     console.log('🎬 Splash screen forced');
-  };
-
-  // Expose utilities for testing and debugging
-  window.aureaVoiceUtils = {
-    progressTracking: ProgressTrackingService,
-    sampleDataGenerator: SampleDataGenerator,
-
-    // Helper methods for testing
-    async generateSampleData() {
-      return await SampleDataGenerator.generateRealisticProgressData();
-    },
-
-    async clearSampleData() {
-      return await SampleDataGenerator.clearSampleData();
-    },
-
-    async getProgressStats() {
-      return await ProgressTrackingService.getProgressStatistics();
-    },
-
-    async getAllProgress() {
-      return await ProgressTrackingService.getAllProgress();
-    }
   };
 });

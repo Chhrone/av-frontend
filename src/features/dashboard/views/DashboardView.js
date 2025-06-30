@@ -21,10 +21,8 @@ class DashboardView {
           <div class="nav-logo">
             <span class="nav-logo-aurea">Aurea</span><span class="nav-logo-voice">Voice</span>
           </div>
-          <div class="nav-buttons">
-            <a href="#/categories" class="nav-button">Kategori</a>
-            <a href="#/about" class="nav-button">About</a>
-            <a href="#/settings" class="nav-button">Settings</a>
+          <div>
+            <a href="#/" class="nav-button">Kembali ke Test</a>
           </div>
         </div>
       </nav>
@@ -33,7 +31,7 @@ class DashboardView {
       <main class="dashboard-main">
         <!-- Header Selamat Datang -->
         <div class="dashboard-header">
-          <h1 class="dashboard-title">Selamat datang kembali!</h1>
+          <h1 class="dashboard-title">Selamat datang kembali, Budi!</h1>
           <p class="dashboard-subtitle">Teruslah berlatih, konsistensi adalah kunci untuk mencapai aksen yang natural.</p>
         </div>
 
@@ -44,7 +42,7 @@ class DashboardView {
           <div class="main-column">
             <!-- Kartu Rekomendasi Latihan -->
             <div class="dashboard-card">
-              <h2 class="card-title">Rekomendasi Latihan Utama Untuk Kamu</h2>
+              <h2 class="card-title">Rekomendasi Latihan Utama Untuk Anda</h2>
               <div>
                 <div class="recommendation-item">
                   <span class="recommendation-icon">🎵</span>
@@ -58,7 +56,7 @@ class DashboardView {
             </div>
             <!-- Kartu Grafik Perkembangan -->
             <div class="dashboard-card chart-card">
-              <h2 class="card-title">Perkembangan Skor Kamu</h2>
+              <h2 class="card-title">Perkembangan Skor Anda</h2>
               <div class="chart-container">
                 <canvas id="progressChart"></canvas>
               </div>
@@ -70,13 +68,13 @@ class DashboardView {
             <!-- Kartu Profil & Skor Pengguna -->
             <div class="profile-card">
               <div class="main-gradient">
-                <p class="score-label">Skor Aksen Kamu</p>
+                <p class="score-label">Skor Aksen Anda</p>
                 <p class="score-value" id="accent-score">82<span class="score-percentage">%</span></p>
                 <p class="score-improvement">meningkat 2% dari minggu lalu!</p>
               </div>
               <div class="profile-content">
                 <div class="profile-header">
-                  <h3 class="profile-title">Statistik Kamu</h3>
+                  <h3 class="profile-title">Statistik Budi</h3>
                   <div class="profile-image-container">
                     <img src="https://placehold.co/100x100/E2E8F0/475569?text=B" alt="Foto Profil Budi" class="profile-image">
                   </div>
@@ -215,10 +213,10 @@ class DashboardView {
     const categoriesTried = this.container.querySelector('#categories-tried');
     const categoriesMastered = this.container.querySelector('#categories-mastered');
 
-    if (accentScore && stats.accentScore !== undefined) {
+    if (accentScore && stats.accentScore) {
       accentScore.innerHTML = `${stats.accentScore}<span class="score-percentage">%</span>`;
     }
-    if (completedExercises && stats.completedExercises !== undefined) {
+    if (completedExercises && stats.completedExercises) {
       completedExercises.textContent = stats.completedExercises;
     }
     if (trainingTime && stats.trainingTime) {
@@ -227,22 +225,8 @@ class DashboardView {
     if (categoriesTried && stats.categoriesTried) {
       categoriesTried.textContent = stats.categoriesTried;
     }
-    if (categoriesMastered && stats.categoriesMastered !== undefined) {
+    if (categoriesMastered && stats.categoriesMastered) {
       categoriesMastered.textContent = stats.categoriesMastered;
-    }
-  }
-
-  updateRecommendation(recommendation) {
-    if (!this.container || !recommendation) return;
-
-    const recommendationTitle = this.container.querySelector('.recommendation-title');
-    const recommendationDescription = this.container.querySelector('.recommendation-description');
-
-    if (recommendationTitle && recommendation.title) {
-      recommendationTitle.textContent = recommendation.title;
-    }
-    if (recommendationDescription && recommendation.description) {
-      recommendationDescription.textContent = recommendation.description;
     }
   }
 
