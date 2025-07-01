@@ -102,37 +102,30 @@ class DashboardView {
         <div class="categories-section">
           <h2 class="categories-title">Pilih Kategori Latihan Lainnya</h2>
           <div class="categories-grid">
-
             <a href="#" class="category-card">
-              <h3 class="category-title">Peta Vokal Amerika</h3>
-              <p class="category-description">Kuasai bunyi vokal seperti pada 'cat' dan 'cut'.</p>
+              <h3 class="category-title">Inventaris Vokal</h3>
+              <p class="category-description">Pelajari dan kuasai semua bunyi vokal dalam bahasa target.</p>
             </a>
-
-             <a href="#" class="category-card">
-              <h3 class="category-title">Irama dan Penekanan</h3>
-              <p class="category-description">Fokus pada ritme <em>stress-timed</em> untuk alur bicara yang lebih natural.</p>
-            </a>
-
             <a href="#" class="category-card">
-              <h3 class="category-title">Gugus Konsonan</h3>
-              <p class="category-description">Ucapkan kata seperti 'strengths' dan 'world'.</p>
+              <h3 class="category-title">Inventaris Konsonan</h3>
+              <p class="category-description">Kenali dan latih pengucapan konsonan yang benar.</p>
             </a>
-
             <a href="#" class="category-card">
-              <h3 class="category-title">Membaca Paragraf</h3>
-              <p class="category-description">Latih kelancaran dan intonasi dalam konteks.</p>
+              <h3 class="category-title">Struktur Suku Kata</h3>
+              <p class="category-description">Pahami pola dan struktur suku kata yang umum digunakan.</p>
             </a>
-
             <a href="#" class="category-card">
-              <h3 class="category-title">Skenario Dunia Nyata</h3>
-              <p class="category-description">Simulasi percakapan sehari-hari.</p>
+              <h3 class="category-title">Penekanan Kata</h3>
+              <p class="category-description">Latih penempatan tekanan pada suku kata yang tepat dalam kata.</p>
             </a>
-
-             <a href="#" class="category-card">
-              <h3 class="category-title">Latihan Intensif</h3>
-              <p class="category-description">Tantang diri Anda dengan kalimat acak.</p>
+            <a href="#" class="category-card">
+              <h3 class="category-title">Irama Bahasa</h3>
+              <p class="category-description">Fokus pada ritme dan alur bicara agar terdengar natural.</p>
             </a>
-
+            <a href="#" class="category-card">
+              <h3 class="category-title">Skenario dunia nyata</h3>
+              <p class="category-description">Simulasi percakapan dan latihan dalam konteks sehari-hari.</p>
+            </a>
           </div>
         </div>
 
@@ -158,13 +151,23 @@ class DashboardView {
       });
     }
 
-    // Bind category cards
+    // Bind category cards with routing
     const categoryCards = this.container.querySelectorAll('.category-card');
     categoryCards.forEach(card => {
       card.addEventListener('click', (e) => {
         e.preventDefault();
         const categoryTitle = card.querySelector('h3').textContent;
-        presenter.handleCategorySelect(categoryTitle);
+        // Convert category title to a route-friendly string (e.g., kebab-case)
+        const routeName = categoryTitle
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        // Use the global router if available, otherwise fallback to presenter
+        if (window.router && typeof window.router.navigate === 'function') {
+          window.router.navigate(`/category/${routeName}`);
+        } else if (presenter && typeof presenter.handleCategorySelect === 'function') {
+          presenter.handleCategorySelect(categoryTitle);
+        }
       });
     });
 

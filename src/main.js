@@ -12,6 +12,7 @@ import {
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
+import { categoryRouteMap, scrollToTop } from './utils/appHelpers.js';
 
 class App {
   constructor() {
@@ -22,18 +23,44 @@ class App {
     this.currentPresenter = null;
     this.footer = new FooterPresenter();
     this.isFromIntroFlow = false; // Track if coming from intro flow
-
+    this.hasCompletedIntro = this.checkIntroToken();
     this.setupRoutes();
     this.setupGlobalCleanup();
     this.initializeFooter();
   }
 
   setupRoutes() {
-    this.router.addRoute('/', () => this.showWelcome());
+    this.router.addRoute('/', () => {
+      // Cek token intro di localStorage/sessionStorage
+      this.hasCompletedIntro = this.checkIntroToken();
+      if (this.hasCompletedIntro) {
+        this.showDashboardDirect();
+      } else {
+        this.showWelcome();
+      }
+    });
     this.router.addRoute('/test', () => this.showTest());
     this.router.addRoute('/result', (resultData) => this.showResult(resultData));
     this.router.addRoute('/dashboard', () => this.showDashboard());
     this.router.addRoute('/splash', () => this.showSplash());
+    // Dynamic category route: /category/:name
+    this.router.addRoute('/category/:name', (params) => this.showCategory(params));
+  }
+
+  // Parse route and show category page
+  showCategory(params) {
+    this.destroyCurrentPresenter();
+    let routeName = params && params.name ? params.name : null;
+    if (!routeName) return;
+    const categoryId = categoryRouteMap[routeName] || 'pronunciation';
+    import('./features/category/index.js').then(mod => {
+      const CategoryModel = mod.CategoryModel;
+      const CategoryPresenter = mod.CategoryPresenter;
+      const model = new CategoryModel();
+      this.currentPresenter = new CategoryPresenter(model);
+      this.currentPresenter.init(categoryId);
+      scrollToTop();
+    });
   }
 
   showWelcome() {
@@ -83,6 +110,26 @@ class App {
     this.currentPresenter = new DashboardPresenter(this.dashboardModel);
     this.currentPresenter.init();
     this.dashboardModel.setCurrentPage('dashboard');
+    scrollToTop();
+    // Set intro completed token di localStorage/sessionStorage
+    this.setIntroToken();
+    this.hasCompletedIntro = true;
+  }
+
+  // Fungsi untuk cek token intro
+  checkIntroToken() {
+    // Bisa pilih localStorage atau sessionStorage, di sini pakai localStorage
+    return !!localStorage.getItem('aurea_intro_completed');
+  }
+
+  // Fungsi untuk set token intro selesai
+  setIntroToken() {
+    localStorage.setItem('aurea_intro_completed', '1');
+  }
+
+  // Fungsi untuk hapus token intro (untuk reset/testing)
+  removeIntroToken() {
+    localStorage.removeItem('aurea_intro_completed');
   }
 
   setupGlobalCleanup() {
@@ -130,6 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Make app available globally for testing/debugging
   window.aureaVoiceApp = app;
 
+  // Make router globally accessible for DashboardView
+  window.router = app.router;
+
   // Add global helpers for testing
   window.simulateIntroFlow = () => {
     app.simulateIntroFlow();
@@ -139,5 +189,15 @@ document.addEventListener('DOMContentLoaded', () => {
   window.forceShowSplash = () => {
     app.forceShowSplash();
     console.log('🎬 Splash screen forced');
+  };
+
+  // Tambahkan global helper untuk reset intro agar user bisa mengulang intro flow
+  window.resetIntro = () => {
+    // Hapus token intro dari localStorage/sessionStorage
+    app.removeIntroToken();
+    app.hasCompletedIntro = false;
+    // Navigasi ke root agar intro muncul lagi
+    app.router.navigate('');
+    console.log('🔄 Intro flow direset, reload halaman utama untuk melihat intro.');
   };
 });

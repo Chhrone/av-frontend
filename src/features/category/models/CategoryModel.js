@@ -26,7 +26,25 @@ class CategoryModel {
 
   getMockCategoryData(categoryId) {
     // Mock data structure for different categories
+    // Import all category models
+    let VokalInventoryModel, KonsonanInventoryModel, SukuKataStructureModel, PenekananKataModel, IramaBahasaModel, SkenarioDuniaNyataModel;
+    try {
+      VokalInventoryModel = require('./VokalInventoryModel.js').default;
+      KonsonanInventoryModel = require('./KonsonanInventoryModel.js').default;
+      SukuKataStructureModel = require('./SukuKataStructureModel.js').default;
+      PenekananKataModel = require('./PenekananKataModel.js').default;
+      IramaBahasaModel = require('./IramaBahasaModel.js').default;
+      SkenarioDuniaNyataModel = require('./SkenarioDuniaNyataModel.js').default;
+    } catch (e) {
+      // fallback for environments that don't support require
+    }
     const mockData = {
+      'vokal': VokalInventoryModel,
+      'konsonan': KonsonanInventoryModel,
+      'suku-kata': SukuKataStructureModel,
+      'penekanan': PenekananKataModel,
+      'irama': IramaBahasaModel,
+      'skenario': SkenarioDuniaNyataModel,
       'pronunciation': {
         id: 'pronunciation',
         title: 'Pelafalan Dasar',
@@ -243,7 +261,17 @@ class CategoryModel {
       }
     };
 
-    return mockData[categoryId] || mockData['pronunciation'];
+    // Mapping for route/category name to model key
+    const mapKey = {
+      'inventaris-vokal': 'vokal',
+      'inventaris-konsonan': 'konsonan',
+      'struktur-suku-kata': 'suku-kata',
+      'penekanan-kata': 'penekanan',
+      'irama-bahasa': 'irama',
+      'skenario-dunia-nyata': 'skenario',
+    };
+    const key = mapKey[categoryId] || categoryId;
+    return mockData[key] || mockData['pronunciation'];
   }
 
   getCategoryData() {
