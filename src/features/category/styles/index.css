@@ -1,0 +1,7 @@
+/* Category Feature Styles Index */
+/* Import all category-related CSS files */
+
+@import './category-navbar.css';
+@import './category-base.css';
+@import './category-sidebar.css';
+@import './category-responsive.css';

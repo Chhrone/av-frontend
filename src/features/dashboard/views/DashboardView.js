@@ -15,24 +15,11 @@ class DashboardView {
     this.container.className = 'dashboard-container';
 
     this.container.innerHTML = `
-      <!-- Navigasi -->
-      <nav class="dashboard-nav">
-        <div class="nav-container">
-          <div class="nav-logo">
-            <span class="nav-logo-aurea">Aurea</span><span class="nav-logo-voice">Voice</span>
-          </div>
-          <div class="nav-buttons">
-            <a href="#categories" class="nav-button">Kategori</a>
-            <a href="#profile" class="nav-button">Profile</a>
-          </div>
-        </div>
-      </nav>
-
       <!-- Konten Utama -->
       <main class="dashboard-main">
         <!-- Header Selamat Datang -->
         <div class="dashboard-header">
-          <h1 class="dashboard-title">Selamat datang kembali, Budi!</h1>
+          <h1 class="dashboard-title">Selamat datang kembali!</h1>
           <p class="dashboard-subtitle">Teruslah berlatih, konsistensi adalah kunci untuk mencapai aksen yang natural.</p>
         </div>
 
@@ -46,7 +33,6 @@ class DashboardView {
               <h2 class="card-title">Rekomendasi Latihan Utama Untuk Anda</h2>
               <div>
                 <div class="recommendation-item">
-                  <span class="recommendation-icon">🎵</span>
                   <div class="recommendation-content">
                     <p class="recommendation-title">Irama dan Penekanan</p>
                     <p class="recommendation-description">Fokus pada ritme *stress-timed* untuk alur bicara yang lebih natural.</p>
@@ -75,9 +61,9 @@ class DashboardView {
               </div>
               <div class="profile-content">
                 <div class="profile-header">
-                  <h3 class="profile-title">Statistik Budi</h3>
+                  <h3 class="profile-title">Statistik Kamu</h3>
                   <div class="profile-image-container">
-                    <img src="https://placehold.co/100x100/E2E8F0/475569?text=B" alt="Foto Profil Budi" class="profile-image">
+                    <img src="https://placehold.co/100x100/E2E8F0/475569?text=U" alt="Foto Profil" class="profile-image">
                   </div>
                 </div>
                 <div class="stats-container">
@@ -118,37 +104,31 @@ class DashboardView {
           <div class="categories-grid">
 
             <a href="#" class="category-card">
-              <div class="category-icon">👄</div>
               <h3 class="category-title">Peta Vokal Amerika</h3>
               <p class="category-description">Kuasai bunyi vokal seperti pada 'cat' dan 'cut'.</p>
             </a>
 
              <a href="#" class="category-card">
-              <div class="category-icon">🎵</div>
               <h3 class="category-title">Irama dan Penekanan</h3>
               <p class="category-description">Fokus pada ritme <em>stress-timed</em> untuk alur bicara yang lebih natural.</p>
             </a>
 
             <a href="#" class="category-card">
-              <div class="category-icon">🔡</div>
               <h3 class="category-title">Gugus Konsonan</h3>
               <p class="category-description">Ucapkan kata seperti 'strengths' dan 'world'.</p>
             </a>
 
             <a href="#" class="category-card">
-              <div class="category-icon">📖</div>
               <h3 class="category-title">Membaca Paragraf</h3>
               <p class="category-description">Latih kelancaran dan intonasi dalam konteks.</p>
             </a>
 
             <a href="#" class="category-card">
-              <div class="category-icon">💬</div>
               <h3 class="category-title">Skenario Dunia Nyata</h3>
               <p class="category-description">Simulasi percakapan sehari-hari.</p>
             </a>
 
              <a href="#" class="category-card">
-              <div class="category-icon">🔥</div>
               <h3 class="category-title">Latihan Intensif</h3>
               <p class="category-description">Tantang diri Anda dengan kalimat acak.</p>
             </a>
@@ -188,33 +168,10 @@ class DashboardView {
       });
     });
 
-    // Bind scroll event for navigation transition
-    this.bindScrollEvent();
+
   }
 
-  bindScrollEvent() {
-    const navContainer = this.container.querySelector('.nav-container');
-    const dashboardNav = this.container.querySelector('.dashboard-nav');
-    if (!navContainer || !dashboardNav) return;
 
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (scrollTop > 50) {
-        navContainer.classList.add('scrolled');
-        dashboardNav.classList.add('scrolled');
-      } else {
-        navContainer.classList.remove('scrolled');
-        dashboardNav.classList.remove('scrolled');
-      }
-    };
-
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
-
-    // Store reference for cleanup
-    this.scrollHandler = handleScroll;
-  }
 
   updateStats(stats) {
     if (!this.container) return;
@@ -251,12 +208,6 @@ class DashboardView {
   }
 
   destroy() {
-    // Remove scroll event listener
-    if (this.scrollHandler) {
-      window.removeEventListener('scroll', this.scrollHandler);
-      this.scrollHandler = null;
-    }
-
     // Clear the app container when destroying dashboard
     const appContainer = document.getElementById('app');
     if (appContainer) {

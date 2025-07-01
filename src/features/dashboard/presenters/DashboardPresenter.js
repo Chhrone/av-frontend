@@ -1,11 +1,13 @@
 import DashboardView from '../views/DashboardView.js';
 import Chart from 'chart.js/auto';
+import { NavbarPresenter } from '../../../shared/index.js';
 
 class DashboardPresenter {
   constructor(model) {
     this.model = model;
     this.view = null;
     this.chart = null;
+    this.navbar = new NavbarPresenter();
   }
 
   init() {
@@ -15,6 +17,20 @@ class DashboardPresenter {
     this.view = new DashboardView();
     this.view.render();
     this.view.bindEvents(this);
+
+    // Mount navbar to dashboard container, positioned before dashboard-main
+    const dashboardContainer = document.getElementById('dashboard-container');
+    const dashboardMain = dashboardContainer.querySelector('.dashboard-main');
+    if (dashboardContainer && dashboardMain) {
+      // Initialize and render navbar first
+      this.navbar.init();
+
+      // Mount navbar directly to dashboard container before dashboard-main
+      dashboardContainer.insertBefore(this.navbar.view.element, dashboardMain);
+
+      // Manually trigger scroll event binding since we're not using mount()
+      this.navbar.view.bindScrollEvent();
+    }
 
     // Initialize chart after view is rendered
     setTimeout(() => {
@@ -184,6 +200,12 @@ class DashboardPresenter {
     if (this.chart) {
       this.chart.destroy();
       this.chart = null;
+    }
+
+    if (this.navbar) {
+      this.navbar.view.removeScrollEvent();
+      this.navbar.destroy();
+      this.navbar = null;
     }
 
     if (this.view) {
