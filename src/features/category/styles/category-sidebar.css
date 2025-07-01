@@ -47,11 +47,11 @@
 }
 
 .practice-header {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .practice-title {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #1e293b;
   margin: 0;
@@ -60,9 +60,9 @@
 
 .practice-description {
   color: #64748b;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   line-height: 1.5;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -73,10 +73,10 @@
   background: #0079FF;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-weight: 600;
   width: 100%;
   transition: all 0.2s ease;
