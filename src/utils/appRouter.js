@@ -5,6 +5,7 @@ class AppRouter {
     this.previousRoute = null;
     this.onRouteChange = null;
     this.middlewares = [];
+    this.errorHandler = null;
 
     // Bind methods
     this.navigate = this.navigate.bind(this);
@@ -31,6 +32,14 @@ class AppRouter {
    * Add global middleware
    * @param {Function} middleware - Middleware function
    */
+  /**
+   * Set a handler for routing errors
+   * @param {Function} handler - The function to call on error
+   */
+  setErrorHandler(handler) {
+    this.errorHandler = handler;
+  }
+
   use(middleware) {
     if (typeof middleware === 'function') {
       this.middlewares.push(middleware);
@@ -109,12 +118,16 @@ class AppRouter {
       } catch (error) {
         console.error('Error during route execution:', error);
         // Tetap di halaman saat ini, tampilkan error
-        this.showError('An error occurred while loading the page');
+        if (this.errorHandler) {
+          this.errorHandler('An error occurred while loading the page');
+        }
       }
     } catch (error) {
       console.error('Error during route change:', error);
       // Tetap di halaman saat ini, tampilkan error
-      this.showError('An unexpected error occurred');
+      if (this.errorHandler) {
+        this.errorHandler('An unexpected error occurred');
+      }
     }
   }
 

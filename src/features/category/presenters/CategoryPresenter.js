@@ -1,3 +1,4 @@
+import { appRouter } from '../../../utils/appRouter.js';
 import CategoryView from '../views/CategoryView.js';
 import CategoryNavbarPresenter from './CategoryNavbarPresenter.js';
 import { FooterPresenter } from '../../../shared/index.js';
@@ -85,12 +86,7 @@ class CategoryPresenter {
         await this.footerPresenter.init();
       }
       
-      // Make sure the view has the bindEvents method before calling it
-      if (this.view && typeof this.view.bindEvents === 'function') {
-        this.view.bindEvents(this);
-      } else {
-        console.warn('View does not have a bindEvents method');
-      }
+      // Event binding is now handled once in the init method.
       
       return viewElement;
     } catch (error) {
@@ -126,12 +122,23 @@ class CategoryPresenter {
     });
 
     // Bind practice start button events
-    this.view.bindPracticeStart((practiceId) => {
-      this.handlePracticeStart(practiceId);
+    this.view.bindPracticeStart((categoryId, practiceId) => {
+      this.handlePracticeStart(categoryId, practiceId);
     });
   }
 
 
+
+  handlePracticeStart(categoryId, practiceId) {
+    if (categoryId && practiceId) {
+      const formattedCategoryId = categoryId.replace(/_/g, '-');
+      const path = `/practice/${formattedCategoryId}/${practiceId}`;
+      console.log(`Navigating to path: ${path}`);
+      appRouter.navigate(path);
+    } else {
+      console.error('Could not start practice: missing categoryId or practiceId');
+    }
+  }
 
   handlePronunciationPlay(audioUrl) {
     console.log('Playing pronunciation audio:', audioUrl);
@@ -147,19 +154,7 @@ class CategoryPresenter {
     }
   }
 
-  handlePracticeStart(practiceId) {
-    console.log('Starting practice:', practiceId);
-    
-    // Get practice item data from model
-    const practiceItems = this.model.getPracticeItems();
-    const practiceItem = practiceItems.find(p => p.id === practiceId);
-    
-    if (practiceItem) {
-      // For now, just show practice info
-      // In a real app, this might navigate to a practice session
-      alert(`Memulai latihan: ${practiceItem.title}\n\n${practiceItem.description}`);
-    }
-  }
+
 
 
 

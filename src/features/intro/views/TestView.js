@@ -21,8 +21,11 @@ class TestView {
     testText.className = 'test-text';
 
     this.floatingMic = document.createElement('button');
-    MicrophoneIcon.setInnerHTML(this.floatingMic, { className: 'microphone-icon' });
     this.floatingMic.className = 'floating-microphone';
+    
+    // Create and append the microphone icon
+    const micIcon = new MicrophoneIcon({ className: 'microphone-icon' });
+    this.floatingMic.appendChild(micIcon.element);
 
     // Add data attribute for view transition
     this.floatingMic.setAttribute('data-transition-trigger', 'true');

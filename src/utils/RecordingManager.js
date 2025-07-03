@@ -29,7 +29,7 @@ class RecordingManager {
     }
   }
 
-  async startRecordingFromWelcome() {
+  async startRecording() {
     try {
       if (!this.isInitialized) {
         await this.initialize();
@@ -53,7 +53,7 @@ class RecordingManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to start recording from welcome:', error);
+      console.error('Failed to start recording:', error);
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
 

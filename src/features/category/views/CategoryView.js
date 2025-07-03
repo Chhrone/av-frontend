@@ -82,7 +82,7 @@ class CategoryView {
           <div class="sidebar-content">
             <h3 class="sidebar-title">Item Latihan</h3>
             <div class="practice-items" id="practice-container">
-              ${this.renderPracticeItems(categoryData.practiceItems || [])}
+              ${this.renderPracticeItems(categoryData.id, categoryData.practiceItems || [])}
             </div>
           </div>
         </aside>
@@ -138,18 +138,18 @@ class CategoryView {
     `).join('');
   }
 
-  renderPracticeItems(practiceItems) {
+  renderPracticeItems(categoryId, practiceItems) {
     if (!practiceItems || practiceItems.length === 0) {
       return '<p class="empty-state">Belum ada latihan tersedia</p>';
     }
 
     return practiceItems.map((item, index) => `
-      <div class="practice-item" data-practice-id="${item.id || 'practice' + (index + 1)}">
+      <div class="practice-item">
         <div class="practice-header">
           <h4 class="practice-title">${item.title || 'Latihan ' + (index + 1)}</h4>
         </div>
         <p class="practice-description">${item.instruction || item.description || ''}</p>
-        <button class="practice-button" data-practice-id="${item.id || 'practice' + (index + 1)}">
+        <button class="practice-button" data-category-id="${categoryId}" data-practice-id="${item.id}">
           Mulai Latihan
         </button>
       </div>
@@ -232,14 +232,18 @@ class CategoryView {
 
   bindPracticeStart(handler) {
     if (!this.container) return;
-    
-    const practiceButtons = this.container.querySelectorAll('.practice-button');
-    practiceButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
+
+    // Using event delegation on the container for robustness
+    this.container.addEventListener('click', (e) => {
+      const button = e.target.closest('.practice-button');
+      if (button) {
         e.preventDefault();
+        const categoryId = button.dataset.categoryId;
         const practiceId = button.dataset.practiceId;
-        handler(practiceId);
-      });
+        if (categoryId && practiceId) {
+          handler(categoryId, practiceId);
+        }
+      }
     });
   }
 
@@ -290,78 +294,12 @@ class CategoryView {
     this.sidebar = null;
   }
   
-  /**
-   * Bind event listeners to the view elements
-   * @param {Object} presenter - The presenter instance that will handle the events
-   */
-  bindEvents(presenter) {
-    if (!this.container) {
-      console.warn('Cannot bind events: container is null');
-      return;
-    }
 
-    try {
-      // Bind click events for practice items if they exist
-      const practiceItems = this.container.querySelectorAll('.practice-item, [data-practice-id]');
-      if (practiceItems.length > 0) {
-        practiceItems.forEach(item => {
-          item.addEventListener('click', (e) => {
-            e.preventDefault();
-            const itemId = item.dataset.practiceId || item.dataset.itemId;
-            if (presenter?.handlePracticeItemClick) {
-              presenter.handlePracticeItemClick(itemId);
-            }
-          });
-        });
-      }
-
-      // Bind tab switching if tabs exist
-      const tabButtons = this.container.querySelectorAll('.tab-button, [role="tab"]');
-      if (tabButtons.length > 0) {
-        tabButtons.forEach(button => {
-          button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const tabId = button.dataset.tab || button.getAttribute('aria-controls');
-            if (presenter?.handleTabChange && tabId) {
-              presenter.handleTabChange(tabId);
-            }
-          });
-        });
-      }
-
-      // Bind any other interactive elements here
-      const actionButtons = this.container.querySelectorAll('[data-action]');
-      actionButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-          const action = button.dataset.action;
-          if (presenter?.[`handle${action.charAt(0).toUpperCase() + action.slice(1)}`]) {
-            presenter[`handle${action.charAt(0).toUpperCase() + action.slice(1)}`](e);
-          }
-        });
-      });
-    } catch (error) {
-      console.error('Error binding events in CategoryView:', error);
-    }
-  }
-  
-  /**
-   * Clean up event listeners when the view is destroyed
-   */
-  unbindEvents() {
-    // Clean up any event listeners here if needed
-    // This helps prevent memory leaks when the view is destroyed
-  }
   
   /**
    * Clean up the view when it's no longer needed
    */
-  destroy() {
-    this.unbindEvents();
-    if (this.container && this.container.parentNode) {
-      this.container.parentNode.removeChild(this.container);
-    }
-    this.container = null;
-  }
+
 }
 
 export default CategoryView;

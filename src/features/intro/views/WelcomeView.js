@@ -16,8 +16,11 @@ class WelcomeView {
     welcomeText.className = 'welcome-text';
 
     const micButton = document.createElement('button');
-    MicrophoneIcon.setInnerHTML(micButton, { className: 'microphone-icon' });
     micButton.className = 'microphone-button';
+    
+    // Create and append the microphone icon
+    const micIcon = new MicrophoneIcon({ className: 'microphone-icon' });
+    micButton.appendChild(micIcon.element);
 
     // Add data attribute for view transition
     micButton.setAttribute('data-transition-trigger', 'true');
@@ -29,7 +32,7 @@ class WelcomeView {
       // Navigate to test page
       window.location.hash = '#/test';
 
-      RecordingManager.startRecordingFromWelcome().catch(error => {
+      RecordingManager.startRecording().catch(error => {
         console.error('Failed to start recording:', error);
       });
     });
