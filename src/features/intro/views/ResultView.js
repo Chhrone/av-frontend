@@ -1,8 +1,11 @@
 class ResultView {
   constructor(resultData = null, model = null) {
     this.container = null;
-    this.resultData = resultData || { us_confidence: 0 };
+    this.resultData = resultData || {};
     this.model = model;
+    
+    // Ensure us_confidence is a number with a default of 0
+    this.resultData.us_confidence = Number(this.resultData.us_confidence) || 0;
   }
 
   render() {
@@ -10,15 +13,29 @@ class ResultView {
     this.container.className = 'container';
 
     const confidenceText = document.createElement('h1');
-    confidenceText.textContent = this.model ?
-      this.model.formatConfidenceText(this.resultData.us_confidence) :
-      `Your US accent confidence: ${this.resultData.us_confidence.toFixed(1)}%`;
+    const confidence = this.resultData.us_confidence || 0;
+    
+    try {
+      confidenceText.textContent = this.model ?
+        this.model.formatConfidenceText(confidence) :
+        `Your US accent confidence: ${confidence.toFixed(1)}%`;
+    } catch (error) {
+      console.error('Error formatting confidence text:', error);
+      confidenceText.textContent = 'Your accent analysis is ready!';
+    }
     confidenceText.className = 'result-text';
 
     const descriptionText = document.createElement('p');
-    descriptionText.textContent = this.model ?
-      this.model.getConfidenceDescription(this.resultData.us_confidence) :
-      this.getConfidenceDescription(this.resultData.us_confidence);
+    try {
+      descriptionText.textContent = this.model ?
+        (typeof this.model.getConfidenceDescription === 'function' ? 
+          this.model.getConfidenceDescription(this.resultData.us_confidence) :
+          'Your accent analysis results are ready!') :
+        this.getConfidenceDescription(this.resultData.us_confidence);
+    } catch (error) {
+      console.error('Error getting confidence description:', error);
+      descriptionText.textContent = 'Your accent analysis results are ready!';
+    }
     descriptionText.className = 'result-description';
 
     const tryAgainButton = document.createElement('button');

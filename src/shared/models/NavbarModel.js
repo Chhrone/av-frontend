@@ -2,9 +2,8 @@ class NavbarModel {
   constructor() {
     this.brandName = 'AureaVoice';
     this.navigationLinks = [
-      { text: 'Dashboard', href: '#dashboard' },
-      { text: 'Kategori', href: '#categories' },
-      { text: 'Profile', href: '#profile' }
+      { text: 'Dashboard', href: '/dashboard', type: 'route' },
+      { text: 'Profile', href: '/profile', type: 'route' }
     ];
   }
 

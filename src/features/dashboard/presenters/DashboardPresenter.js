@@ -14,15 +14,28 @@ class DashboardPresenter {
     // Add dashboard mode class to body
     document.body.classList.add('dashboard-mode');
 
+    // Clean up existing view and chart if any
+    if (this.view) {
+      this.view.unmount();
+    }
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+
     this.view = new DashboardView();
     this.view.render();
     this.view.bindEvents(this);
 
     // Mount navbar to dashboard container, positioned before dashboard-main
     const dashboardContainer = document.getElementById('dashboard-container');
-    const dashboardMain = dashboardContainer.querySelector('.dashboard-main');
+    const dashboardMain = dashboardContainer?.querySelector('.dashboard-main');
     if (dashboardContainer && dashboardMain) {
       // Initialize and render navbar first
+      if (this.navbar) {
+        this.navbar.destroy();
+      }
+      this.navbar = new NavbarPresenter();
       this.navbar.init();
 
       // Mount navbar directly to dashboard container before dashboard-main
@@ -33,12 +46,24 @@ class DashboardPresenter {
     }
 
     // Initialize chart after view is rendered
-    setTimeout(() => {
-      this.initializeChart();
-    }, 100);
+    this.initializeChart();
 
     // Load and display user stats
     this.loadUserStats();
+  }
+
+  destroy() {
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+    if (this.view) {
+      this.view.unmount();
+    }
+    if (this.navbar) {
+      this.navbar.destroy();
+    }
+    document.body.classList.remove('dashboard-mode');
   }
 
   initializeChart() {
@@ -48,12 +73,17 @@ class DashboardPresenter {
       return;
     }
 
+    // Destroy existing chart if it exists
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
     const brandColors = {
       brightBlue: '#0079FF',
       deepBlue: '#004AAD',
     };
 
-    this.chart = new Chart(progressCtx, {
+    this.chart = new Chart(progressCtx.getContext('2d'), {
       type: 'line',
       data: {
         labels: ['4 Minggu Lalu', '3 Minggu Lalu', '2 Minggu Lalu', 'Minggu Lalu', 'Minggu Ini'],
@@ -180,10 +210,31 @@ class DashboardPresenter {
     alert('Fitur latihan akan segera tersedia!');
   }
 
-  handleCategorySelect(categoryTitle) {
-    console.log('Selected category:', categoryTitle);
-    // For now, just show an alert. Later this can navigate to specific category training
-    alert(`Kategori "${categoryTitle}" akan segera tersedia!`);
+  handleCategorySelect(categoryId) {
+    console.log('handleCategorySelect called with categoryId:', categoryId);
+    
+    if (!categoryId) {
+      console.error('No categoryId provided');
+      return;
+    }
+    
+    const targetPath = `/categories/${categoryId}`;
+    console.log('Navigating to:', targetPath);
+    
+    // Use the router to navigate to the category
+    if (window.router && typeof window.router.navigateTo === 'function') {
+      console.log('Using router.navigateTo');
+      const success = window.router.navigateTo(targetPath);
+      console.log('Navigation result:', success);
+      
+      if (!success) {
+        console.warn('Router navigation failed, falling back to direct navigation');
+        window.location.href = targetPath;
+      }
+    } else {
+      console.log('Router not available, using direct navigation');
+      window.location.href = targetPath;
+    }
   }
 
   updateProgressData(newData) {

@@ -15,7 +15,7 @@ class NavbarView {
         </div>
         <div class="nav-buttons">
           ${data.navigationLinks.map(link =>
-            `<a href="${link.href}" class="nav-button">${link.text}</a>`
+            `<a href="${link.href}" class="nav-button" data-type="${link.type}">${link.text}</a>`
           ).join('')}
         </div>
       </div>
@@ -31,6 +31,7 @@ class NavbarView {
     }
     container.appendChild(this.element);
     this.bindScrollEvent();
+    this.bindNavLinks();
   }
 
   unmount() {
@@ -67,8 +68,43 @@ class NavbarView {
     }
   }
 
+  scrollToSection(sectionId) {
+    const section = document.querySelector(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  handleNavClick(event) {
+    const target = event.target.closest('a');
+    if (!target) return;
+
+    const href = target.getAttribute('href');
+    const linkType = target.dataset.type;
+    
+    // Handle scroll to section
+    if (linkType === 'scroll') {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      // Always just scroll to the categories section without changing the URL
+      this.scrollToSection(href);
+    }
+    // For route links, we let the default behavior handle the navigation
+  }
+
+  bindNavLinks() {
+    if (!this.element) return;
+    this.element.addEventListener('click', (event) => {
+      this.handleNavClick(event);
+    });
+  }
+
   destroy() {
     this.removeScrollEvent();
+    if (this.element) {
+      this.element.removeEventListener('click', this.handleNavClick);
+    }
     this.unmount();
     this.element = null;
   }

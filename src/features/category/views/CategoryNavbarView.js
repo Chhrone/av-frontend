@@ -8,13 +8,13 @@ class CategoryNavbarView {
     this.element.className = 'category-nav';
     
     this.element.innerHTML = `
-      <div class="category-nav-container">
+      <div class="nav-container">
         <div class="nav-logo">
           <span class="nav-logo-aurea">${data.brandParts.aurea}</span><span class="nav-logo-voice">${data.brandParts.voice}</span>
         </div>
         <div class="nav-buttons">
           ${data.navigationLinks.map(link =>
-            `<a href="${link.href}" class="nav-button">${link.text}</a>`
+            `<a href="${link.href}" class="nav-button ${link.className || ''}">${link.text}</a>`
           ).join('')}
         </div>
       </div>

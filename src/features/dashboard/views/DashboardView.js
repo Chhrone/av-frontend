@@ -10,6 +10,11 @@ class DashboardView {
       appContainer.innerHTML = '';
     }
 
+    // Clean up existing container if it exists
+    if (this.container) {
+      this.container.remove();
+    }
+
     this.container = document.createElement('div');
     this.container.id = 'dashboard-container';
     this.container.className = 'dashboard-container';
@@ -102,27 +107,27 @@ class DashboardView {
         <div class="categories-section">
           <h2 class="categories-title">Pilih Kategori Latihan Lainnya</h2>
           <div class="categories-grid">
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="inventaris-vokal">
               <h3 class="category-title">Inventaris Vokal</h3>
               <p class="category-description">Pelajari dan kuasai semua bunyi vokal dalam bahasa target.</p>
             </a>
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="inventaris-konsonan">
               <h3 class="category-title">Inventaris Konsonan</h3>
               <p class="category-description">Kenali dan latih pengucapan konsonan yang benar.</p>
             </a>
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="struktur-suku-kata">
               <h3 class="category-title">Struktur Suku Kata</h3>
               <p class="category-description">Pahami pola dan struktur suku kata yang umum digunakan.</p>
             </a>
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="penekanan-kata">
               <h3 class="category-title">Penekanan Kata</h3>
               <p class="category-description">Latih penempatan tekanan pada suku kata yang tepat dalam kata.</p>
             </a>
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="irama-bahasa">
               <h3 class="category-title">Irama Bahasa</h3>
               <p class="category-description">Fokus pada ritme dan alur bicara agar terdengar natural.</p>
             </a>
-            <a href="#" class="category-card">
+            <a href="#" class="category-card" data-category-id="skenario-dunia-nyata">
               <h3 class="category-title">Skenario dunia nyata</h3>
               <p class="category-description">Simulasi percakapan dan latihan dalam konteks sehari-hari.</p>
             </a>
@@ -143,35 +148,47 @@ class DashboardView {
   }
 
   bindEvents(presenter) {
+    // Clean up any existing event listeners first
+    this.unbindEvents();
+    
+    // Store the presenter reference for cleanup
+    this.presenter = presenter;
+
     // Bind start training button
     const startTrainingBtn = this.container.querySelector('#start-training-btn');
     if (startTrainingBtn) {
-      startTrainingBtn.addEventListener('click', () => {
-        presenter.handleStartTraining();
-      });
+      this.startTrainingHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (presenter && typeof presenter.handleStartTraining === 'function') {
+          presenter.handleStartTraining();
+        }
+      };
+      startTrainingBtn.addEventListener('click', this.startTrainingHandler, true);
     }
 
-    // Bind category cards with routing
-    const categoryCards = this.container.querySelectorAll('.category-card');
-    categoryCards.forEach(card => {
-      card.addEventListener('click', (e) => {
+    // Bind category card click events
+    this.categoryCards = this.container.querySelectorAll('.category-card');
+    this.categoryCards.forEach(card => {
+      const handler = (e) => {
         e.preventDefault();
-        const categoryTitle = card.querySelector('h3').textContent;
-        // Convert category title to a route-friendly string (e.g., kebab-case)
-        const routeName = categoryTitle
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
-        // Use the global router if available, otherwise fallback to presenter
-        if (window.router && typeof window.router.navigate === 'function') {
-          window.router.navigate(`/category/${routeName}`);
-        } else if (presenter && typeof presenter.handleCategorySelect === 'function') {
-          presenter.handleCategorySelect(categoryTitle);
+        e.stopPropagation();
+        const categoryId = card.dataset.categoryId;
+        if (categoryId && presenter) {
+          console.log('Category card clicked:', categoryId);
+          if (typeof presenter.handleCategorySelect === 'function') {
+            presenter.handleCategorySelect(categoryId);
+          } else if (typeof presenter.onCategorySelect === 'function') {
+            presenter.onCategorySelect(categoryId);
+          }
         }
-      });
+        return false;
+      };
+      
+      card.addEventListener('click', handler, true);
+      this.categoryCardHandlers = this.categoryCardHandlers || [];
+      this.categoryCardHandlers.push({ card, handler });
     });
-
-
   }
 
 
@@ -210,17 +227,41 @@ class DashboardView {
     }
   }
 
+  unbindEvents() {
+    // Remove start training button handler
+    const startTrainingBtn = this.container?.querySelector('#start-training-btn');
+    if (startTrainingBtn && this.startTrainingHandler) {
+      startTrainingBtn.removeEventListener('click', this.startTrainingHandler, true);
+      this.startTrainingHandler = null;
+    }
+
+    // Remove category card handlers
+    if (this.categoryCardHandlers) {
+      this.categoryCardHandlers.forEach(({ card, handler }) => {
+        card.removeEventListener('click', handler, true);
+      });
+      this.categoryCardHandlers = [];
+    }
+  }
+
   destroy() {
+    // Clean up event listeners
+    this.unbindEvents();
+    
     // Clear the app container when destroying dashboard
     const appContainer = document.getElementById('app');
     if (appContainer) {
       appContainer.innerHTML = '';
     }
 
-    if (this.container && this.container.parentNode) {
+    // Remove container from DOM
+    if (this.container?.parentNode) {
       this.container.parentNode.removeChild(this.container);
     }
+    
+    // Clean up references
     this.container = null;
+    this.presenter = null;
   }
 }
 

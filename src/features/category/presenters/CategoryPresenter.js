@@ -10,40 +10,111 @@ class CategoryPresenter {
     this.footerPresenter = null;
   }
 
-  init(categoryId = 'pronunciation') {
-    // Set the current category in the model
-    this.model.setCurrentCategory(categoryId);
+  async init(categoryId = 'pronunciation') {
+    try {
+      // Clear the app container
+      const appContainer = document.getElementById('app');
+      if (appContainer) {
+        appContainer.innerHTML = '';
+        // Add dashboard mode class to body
+        document.body.classList.add('dashboard-mode');
+      }
 
-    // Create and render the view
-    this.view = new CategoryView();
-    const categoryData = this.model.getCategoryData();
-    this.render(categoryData);
+      // Show loading state
+      if (appContainer) {
+        appContainer.innerHTML = '<div class="loading">Memuat konten...</div>';
+      }
 
-    // Initialize and mount navbar
-    this.navbarPresenter = new CategoryNavbarPresenter();
-    this.navbarPresenter.init();
-    this.navbarPresenter.mount(document.body);
+      // Set the current category in the model (awaits the async operation)
+      await this.model.setCurrentCategory(categoryId);
 
-    // Initialize and mount footer
-    this.footerPresenter = new FooterPresenter();
-    this.footerPresenter.init();
-    const footerContainer = document.getElementById('category-footer-container');
-    if (footerContainer) {
-      this.footerPresenter.mount(footerContainer);
+      // Create and render the view
+      this.view = new CategoryView();
+      const categoryData = this.model.getCategoryData();
+      await this.render(categoryData);
+
+      // Bind event handlers
+      this.bindEvents();
+
+      // Add dashboard mode class for consistent styling
+      document.body.classList.add('dashboard-mode');
+    } catch (error) {
+      console.error('Error initializing category presenter:', error);
     }
-
-    // Bind event handlers
-    this.bindEvents();
-
-    // Add dashboard mode class for consistent styling
-    document.body.classList.add('dashboard-mode');
   }
 
-  render(categoryData) {
-    if (!this.view) return;
+  async render(categoryData) {
+    if (!this.view) return null;
     
-    const viewElement = this.view.render(categoryData);
-    return viewElement;
+    try {
+      // Get the app container
+      const appContainer = document.getElementById('app');
+      if (!appContainer) return null;
+      
+      // Clear the container
+      appContainer.innerHTML = '';
+      
+      // Create navbar container
+      const navbarContainer = document.createElement('div');
+      navbarContainer.id = 'navbar-container';
+      navbarContainer.className = 'navbar-container';
+      
+      // Create category container
+      const categoryContainer = document.createElement('div');
+      categoryContainer.id = 'category-container';
+      categoryContainer.className = 'category-container';
+      
+      // Add containers to app
+      appContainer.appendChild(navbarContainer);
+      appContainer.appendChild(categoryContainer);
+      
+      // Initialize and mount the navbar
+      if (!this.navbarPresenter) {
+        this.navbarPresenter = new CategoryNavbarPresenter(this.model);
+        await this.navbarPresenter.init();
+        this.navbarPresenter.mount(navbarContainer);
+      }
+      
+      // Render the view with the category data
+      this.view.container = categoryContainer; // Set the container for the view
+      const viewElement = this.view.render(categoryData);
+      
+      // Initialize the footer if not already initialized
+      if (!this.footerPresenter) {
+        this.footerPresenter = new FooterPresenter();
+        await this.footerPresenter.init();
+      }
+      
+      // Make sure the view has the bindEvents method before calling it
+      if (this.view && typeof this.view.bindEvents === 'function') {
+        this.view.bindEvents(this);
+      } else {
+        console.warn('View does not have a bindEvents method');
+      }
+      
+      return viewElement;
+    } catch (error) {
+      console.error('Error rendering category view:', error);
+      const appContainer = document.getElementById('app');
+      if (appContainer) {
+        appContainer.innerHTML = `
+          <div class="error-message">
+            <h2>Terjadi Kesalahan</h2>
+            <p>Gagal memuat konten. Silakan coba lagi nanti.</p>
+            <button id="retry-button">Coba Lagi</button>
+          </div>
+        `;
+        
+        // Add retry functionality
+        const retryButton = document.getElementById('retry-button');
+        if (retryButton) {
+          retryButton.addEventListener('click', () => {
+            window.location.reload();
+          });
+        }
+      }
+      return null;
+    }
   }
 
   bindEvents() {

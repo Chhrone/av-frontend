@@ -1,112 +1,116 @@
-/* Category Navigation Styles */
+/* Category Navigation Styles - Specific to category pages only */
+.category-container {
+  /* Add padding to prevent content from being hidden behind fixed navbar */
+  padding-top: 60px; /* Height of the navbar */
+}
 
-/* Navigation */
 .category-nav {
-  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
-  width: 100%;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 121, 255, 0.3);
-}
-
-.category-nav-container {
-  width: 100%;
-  padding: 1rem 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 60px;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  max-width: none;
-  margin: 0;
 }
 
-.nav-logo {
+/* Nav container */
+.category-nav .nav-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+/* Logo styles */
+.category-nav .nav-logo {
   font-size: 1.5rem;
   font-weight: 300;
-  text-shadow: none;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.nav-logo-aurea {
+.category-nav .nav-logo-aurea {
   color: #ffffff;
+  font-weight: 600;
 }
 
-.nav-logo-voice {
+.category-nav .nav-logo-voice {
   color: #fbbf24;
+  font-weight: 400;
 }
 
 /* Navigation buttons */
-.nav-buttons {
+.category-nav .nav-buttons {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.nav-button {
-  background: rgba(255, 255, 255, 0.2);
+.category-nav .nav-button {
+  background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
-.nav-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+.category-nav .nav-button:hover {
+  background: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 
-.nav-button:active {
+.category-nav .nav-button:active {
   transform: translateY(0);
 }
 
-/* Responsive navigation */
+/* Responsive styles */
 @media (max-width: 768px) {
-  .category-nav-container {
-    padding: 0.75rem 1rem;
+  .category-nav .nav-container {
+    padding: 0 1.25rem;
   }
   
-  .nav-logo {
+  .category-nav .nav-logo {
     font-size: 1.25rem;
   }
   
-  .nav-buttons {
+  .category-nav .nav-buttons {
     gap: 0.5rem;
   }
   
-  .nav-button {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.8rem;
+  .category-nav .nav-button {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
-  .category-nav-container {
-    padding: 0.5rem 0.75rem;
-    flex-direction: column;
-    gap: 0.75rem;
+  .category-nav .nav-container {
+    padding: 0 1rem;
   }
   
-  .nav-logo {
-    font-size: 1.125rem;
+  .category-nav .nav-logo {
+    font-size: 1.1rem;
   }
   
-  .nav-buttons {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .nav-button {
-    flex: 1;
-    min-width: 80px;
-    text-align: center;
-    padding: 0.5rem 0.5rem;
-    font-size: 0.75rem;
+  .category-nav .nav-button {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.8rem;
   }
 }

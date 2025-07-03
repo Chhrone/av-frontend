@@ -2,13 +2,20 @@
 
 // Helper: Map kebab-case route to categoryId used in model
 export const categoryRouteMap = {
+  // Old routes (kept for backward compatibility)
   'peta-vokal-amerika': 'pronunciation',
   'irama-dan-penekanan': 'pronunciation',
   'gugus-konsonan': 'pronunciation',
   'membaca-paragraf': 'pronunciation',
-  'skenario-dunia-nyata': 'pronunciation',
   'latihan-intensif': 'pronunciation',
-  // Tambahkan mapping lain jika ada kategori baru
+  
+  // New category routes
+  'inventaris-vokal': 'vokal',
+  'inventaris-konsonan': 'konsonan',
+  'struktur-suku-kata': 'suku-kata',
+  'penekanan-kata': 'penekanan',
+  'irama-bahasa': 'irama',
+  'skenario-dunia-nyata': 'skenario'
 };
 
 // Helper to scroll to top

@@ -1,4 +1,5 @@
-import Router from './utils/router.js';
+import AppRouter from './utils/appRouter.js';
+import IntroRouter from './utils/introRouter.js';
 import {
   WelcomePresenter,
   TestPresenter,
@@ -16,51 +17,224 @@ import { categoryRouteMap, scrollToTop } from './utils/appHelpers.js';
 
 class App {
   constructor() {
-    this.router = new Router();
+    // Create and expose the routers globally for navigation helpers
+    this.mainRouter = new AppRouter();
+    this.hasCompletedIntro = this.checkIntroToken();
+    
+    // Only initialize intro router if intro is not completed
+    if (!this.hasCompletedIntro) {
+      this.introRouter = new IntroRouter();
+    } else {
+      this.introRouter = null;
+    }
+    
+    // For backward compatibility, expose the main router as window.router
+    window.router = this.mainRouter;
+    
+    // Set the default router to main router
+    this.router = this.mainRouter;
+    
     this.introModel = new IntroModel();
     this.splashModel = new SplashModel();
     this.dashboardModel = new DashboardModel();
     this.currentPresenter = null;
     this.footer = new FooterPresenter();
     this.isFromIntroFlow = false; // Track if coming from intro flow
-    this.hasCompletedIntro = this.checkIntroToken();
-    this.setupRoutes();
+    
+    // Set up routes
+    this.setupMainRoutes();
+    
+    // Only setup intro routes if intro is not completed
+    if (!this.hasCompletedIntro) {
+      this.setupIntroRoutes();
+    }
+    
+    // Only start the main router if it has a start method
+    if (typeof this.mainRouter.start === 'function') {
+      this.mainRouter.start();
+    }
+    
     this.setupGlobalCleanup();
     this.initializeFooter();
   }
 
-  setupRoutes() {
-    this.router.addRoute('/', () => {
-      // Cek token intro di localStorage/sessionStorage
-      this.hasCompletedIntro = this.checkIntroToken();
-      if (this.hasCompletedIntro) {
+  setupMainRoutes() {
+    // Main app routes (non-intro pages)
+    this.mainRouter.addRoute('/dashboard', () => this.showDashboardDirect());
+    
+    // Profile route
+    this.mainRouter.addRoute('/profile', () => this.showProfile());
+    
+    // Category routes with parameters
+    this.mainRouter.addRoute('/categories/:categoryId', (params) => {
+      this.showCategory(params);
+    });
+    
+    // Root path - redirect based on intro completion
+    this.mainRouter.addRoute('/', () => {
+      if (this.checkIntroToken()) {
+        // If intro is completed, go to dashboard
         this.showDashboardDirect();
-      } else {
-        this.showWelcome();
+      } else if (this.introRouter) {
+        // If intro not completed and intro router exists, let it handle the welcome page
+        window.location.hash = '/welcome';
       }
     });
-    this.router.addRoute('/test', () => this.showTest());
-    this.router.addRoute('/result', (resultData) => this.showResult(resultData));
-    this.router.addRoute('/dashboard', () => this.showDashboard());
-    this.router.addRoute('/splash', () => this.showSplash());
-    // Dynamic category route: /category/:name
-    this.router.addRoute('/category/:name', (params) => this.showCategory(params));
+    
+    // Fallback route - must be last
+    this.mainRouter.addRoute('*', () => {
+      console.warn('AppRouter: No route matched for:', window.location.pathname);
+      this.showError('Halaman tidak ditemukan');
+    });
+  }
+  
+  setupIntroRoutes() {
+    // Home route - let the main router handle the root path
+    this.introRouter.addRoute('/', () => {
+      this.hasCompletedIntro = this.checkIntroToken();
+      if (this.hasCompletedIntro) {
+        // If intro is completed, let the main router handle the root path
+        window.location.href = '/';
+        return;
+      }
+      // Only change hash if not already on welcome
+      if (window.location.hash !== '#/welcome') {
+        window.location.hash = '/welcome';
+      }
+    });
+
+    // Intro routes
+    this.introRouter.addRoute('/welcome', () => {
+      if (this.checkIntroToken()) {
+        if (window.location.pathname !== '/dashboard') {
+          window.location.href = '/dashboard';
+        }
+        return;
+      }
+      this.showWelcome();
+    });
+
+    this.introRouter.addRoute('/test', () => {
+      if (this.checkIntroToken()) {
+        if (window.location.pathname !== '/dashboard') {
+          window.location.href = '/dashboard';
+        }
+        return;
+      }
+      this.showTest();
+    });
+
+    this.introRouter.addRoute('/result', () => {
+      if (this.checkIntroToken()) {
+        if (window.location.pathname !== '/dashboard') {
+          window.location.href = '/dashboard';
+        }
+        return;
+      }
+      this.showResult();
+    });
+
+    this.introRouter.addRoute('/splash', () => {
+      if (this.checkIntroToken()) {
+        if (window.location.pathname !== '/dashboard') {
+          window.location.href = '/dashboard';
+        }
+        return;
+      }
+      this.showSplash();
+    });
+    
+    // Dashboard route in intro router (for redirection after intro flow)
+    this.introRouter.addRoute('/dashboard', () => {
+      this.setIntroToken();
+      this.showDashboardDirect();
+    });
+    
+    // Fallback route for intro router - redirect to welcome
+    this.introRouter.addRoute('*', () => {
+      if (this.checkIntroToken()) {
+        if (window.location.pathname !== '/dashboard') {
+          window.location.href = '/dashboard';
+        }
+        return;
+      }
+      if (window.location.hash !== '#/welcome') {
+        window.location.hash = '/welcome';
+      }
+    });
+  }
+  
+  showProfile() {
+    // Implement profile view logic here
+    console.log('Showing profile page');
+    // You'll need to create and show the profile view
   }
 
-  // Parse route and show category page
+  // Show category page
+  // Show error message to user
+  showError(message) {
+    const appContainer = document.getElementById('app');
+    if (appContainer) {
+      appContainer.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <h2>Terjadi Kesalahan</h2>
+          <p>${message}</p>
+          <button onclick="window.history.back()" style="padding: 0.5rem 1rem; margin-top: 1rem; cursor: pointer;">
+            Kembali
+          </button>
+        </div>
+      `;
+    }
+    console.error('Error:', message);
+  }
+
   showCategory(params) {
+    console.log('Navigating to category with params:', params);
     this.destroyCurrentPresenter();
-    let routeName = params && params.name ? params.name : null;
-    if (!routeName) return;
-    const categoryId = categoryRouteMap[routeName] || 'pronunciation';
-    import('./features/category/index.js').then(mod => {
-      const CategoryModel = mod.CategoryModel;
-      const CategoryPresenter = mod.CategoryPresenter;
-      const model = new CategoryModel();
-      this.currentPresenter = new CategoryPresenter(model);
-      this.currentPresenter.init(categoryId);
-      scrollToTop();
-    });
+    
+    try {
+      // Get categoryId from params (either from route or direct call)
+      const categoryId = params.categoryId || (params.name ? params.name : null);
+      
+      if (!categoryId) {
+        const errorMsg = 'ID kategori tidak ditemukan';
+        console.error(errorMsg, params);
+        this.showError(errorMsg);
+        return;
+      }
+      
+      console.log('Loading category module for:', categoryId);
+      
+      // Show loading state
+      const appContainer = document.getElementById('app');
+      if (appContainer) {
+        appContainer.innerHTML = '<div style="text-align: center; padding: 2rem;">Memuat konten...</div>';
+      }
+      
+      import('./features/category/index.js')
+        .then(mod => {
+          console.log('Category module loaded successfully');
+          try {
+            const CategoryModel = mod.CategoryModel;
+            const CategoryPresenter = mod.CategoryPresenter;
+            const model = new CategoryModel();
+            this.currentPresenter = new CategoryPresenter(model);
+            this.currentPresenter.init(categoryId);
+            scrollToTop();
+            console.log('Category presenter initialized for:', categoryId);
+          } catch (initError) {
+            console.error('Error initializing category presenter:', initError);
+            this.showError('Gagal memuat konten kategori');
+          }
+        })
+        .catch(error => {
+          console.error('Error loading category module:', error);
+          this.showError('Gagal memuat modul kategori');
+        });
+    } catch (error) {
+      console.error('Unexpected error in showCategory:', error);
+      this.showError('Terjadi kesalahan tak terduga');
+    }
   }
 
   showWelcome() {
@@ -79,7 +253,11 @@ class App {
     this.isFromIntroFlow = false; // Reset intro flow flag (in case user navigates directly)
   }
 
-  showResult(resultData = null) {
+  showResult() {
+    // Get the result data from sessionStorage
+    const resultData = JSON.parse(sessionStorage.getItem('accentResult') || '{}');
+    console.log('Showing result with data:', resultData);
+    
     this.destroyCurrentPresenter();
     this.currentPresenter = new ResultPresenter(resultData, this.introModel);
     this.currentPresenter.init();
@@ -160,14 +338,27 @@ class App {
     this.footer.mount(document.body);
   }
 
+  // Method to navigate to a specific route
+  navigateTo(route) {
+    if (['/welcome', '/test', '/result', '/splash'].includes(route)) {
+      // Use hash-based navigation for intro routes
+      window.location.hash = route;
+    } else {
+      // Use main router for other routes
+      window.location.pathname = route;
+    }
+  }
+
   // Method to force show splash (for testing)
   forceShowSplash() {
-    this.showSplash();
+    this.destroyCurrentPresenter();
+    window.location.hash = '/splash';
   }
 
   // Method to simulate intro flow (for testing)
   simulateIntroFlow() {
-    this.isFromIntroFlow = true;
+    this.removeIntroToken();
+    window.location.hash = '/welcome';
   }
 }
 

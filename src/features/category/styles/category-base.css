@@ -1,12 +1,40 @@
 /* AureaVoice Category Page Base Styles */
 
-/* Category Container */
-.category-container {
+/* App Layout */
+#app {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #ffffff;
   color: #1e293b;
   font-family: 'Poppins', sans-serif;
+}
+
+/* Navbar Container */
+.navbar-container {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+/* Category Container */
+.category-container {
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  overflow-x: hidden;
   position: relative;
+}
+
+/* Content Wrapper */
+.category-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
 }
 
 /* Banner Section */
@@ -301,42 +329,114 @@
 
 /* Common Mistakes Section */
 .mistakes-section {
-  margin-bottom: 3rem;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.mistakes-section .section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .mistakes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .mistake-card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  border-left: 4px solid #ef4444;
+  border: 1px solid #e2e8f0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .mistake-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
 }
 
 .mistake-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: #1e293b;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mistake-title::before {
+  content: '⚠️';
+  font-size: 1.25rem;
 }
 
 .mistake-description {
-  color: #64748b;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  padding-left: 0.25rem;
+}
+
+.mistake-examples {
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: 1px solid #e2e8f0;
+  flex-grow: 1;
+}
+
+.mistake-examples strong {
+  display: block;
+  color: #475569;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.mistake-examples ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.25rem;
+}
+
+.mistake-examples li {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.mistake-examples li::before {
+  content: '•';
+  color: #0079FF;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .mistakes-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* More Materials Section */

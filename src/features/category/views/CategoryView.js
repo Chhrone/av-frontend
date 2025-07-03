@@ -7,17 +7,25 @@ class CategoryView {
   }
 
   render(categoryData) {
-    // Clear the app container and replace its content
-    const appContainer = document.getElementById('app');
-    if (appContainer) {
-      appContainer.innerHTML = '';
+    // Get or create the category container
+    this.container = document.getElementById('category-container');
+    
+    if (this.container) {
+      // Clear existing content if container exists
+      this.container.innerHTML = '';
+    } else {
+      // Create new container if it doesn't exist
+      this.container = document.createElement('div');
+      this.container.id = 'category-container';
+      this.container.className = 'category-container';
     }
-
-    this.container = document.createElement('div');
-    this.container.id = 'category-container';
-    this.container.className = 'category-container';
-
-    this.container.innerHTML = `
+    
+    // Create content container
+    const content = document.createElement('div');
+    content.className = 'category-content';
+    
+    // Add the rest of the content
+    content.innerHTML = `
       <!-- Banner Section -->
       <section class="category-banner">
         <div class="banner-content">
@@ -79,18 +87,12 @@ class CategoryView {
           </div>
         </aside>
       </div>
-
-      <!-- Footer will be mounted here by CategoryPresenter -->
-      <div id="category-footer-container"></div>
     `;
+    
+    // Append content to container
+    this.container.appendChild(content);
 
-    // Append to app container
-    if (appContainer) {
-      appContainer.appendChild(this.container);
-    } else {
-      document.body.appendChild(this.container);
-    }
-
+    // Return the container to be mounted by the presenter
     return this.container;
   }
 
@@ -141,13 +143,13 @@ class CategoryView {
       return '<p class="empty-state">Belum ada latihan tersedia</p>';
     }
 
-    return practiceItems.map(item => `
-      <div class="practice-item" data-practice-id="${item.id}">
+    return practiceItems.map((item, index) => `
+      <div class="practice-item" data-practice-id="${item.id || 'practice' + (index + 1)}">
         <div class="practice-header">
-          <h4 class="practice-title">${item.title}</h4>
+          <h4 class="practice-title">${item.title || 'Latihan ' + (index + 1)}</h4>
         </div>
-        <p class="practice-description">${item.description}</p>
-        <button class="practice-button" data-practice-id="${item.id}">
+        <p class="practice-description">${item.instruction || item.description || ''}</p>
+        <button class="practice-button" data-practice-id="${item.id || 'practice' + (index + 1)}">
           Mulai Latihan
         </button>
       </div>
@@ -166,30 +168,38 @@ class CategoryView {
 
 
   renderCommonMistakes(commonMistakes) {
-    if (!commonMistakes || !commonMistakes.mistakes) {
+    if (!commonMistakes || commonMistakes.length === 0) {
       return '<p class="empty-state">Belum ada informasi kesalahan umum</p>';
     }
 
-    return commonMistakes.mistakes.map(mistake => `
+    return commonMistakes.map(mistake => `
       <div class="mistake-card">
         <h4 class="mistake-title">${mistake.title}</h4>
         <p class="mistake-description">${mistake.description}</p>
+        ${mistake.examples && mistake.examples.length > 0 ? `
+          <div class="mistake-examples">
+            <strong>Contoh:</strong>
+            <ul>
+              ${mistake.examples.map(example => `<li>${example}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
       </div>
     `).join('');
   }
 
   renderMoreMaterials(moreMaterials) {
-    if (!moreMaterials || !moreMaterials.materials) {
+    if (!moreMaterials || !moreMaterials.materials || moreMaterials.materials.length === 0) {
       return '<p class="empty-state">Belum ada materi tambahan</p>';
     }
 
     return moreMaterials.materials.map(material => `
       <a href="${material.url}" target="_blank" rel="noopener noreferrer" class="material-link-card">
-        <div class="material-icon">${material.icon}</div>
+        <div class="material-icon">${material.icon || '📄'}</div>
         <div class="material-info">
           <h4 class="material-link-title">${material.title}</h4>
-          <p class="material-link-description">${material.description}</p>
-          <span class="material-type-badge">${this.getTypeText(material.type)}</span>
+          <p class="material-link-description">${material.description || ''}</p>
+          <span class="material-type-badge">${this.getTypeText(material.type || 'link')}</span>
         </div>
         <div class="external-link-icon">↗</div>
       </a>
@@ -278,6 +288,79 @@ class CategoryView {
     this.bannerSection = null;
     this.mainContent = null;
     this.sidebar = null;
+  }
+  
+  /**
+   * Bind event listeners to the view elements
+   * @param {Object} presenter - The presenter instance that will handle the events
+   */
+  bindEvents(presenter) {
+    if (!this.container) {
+      console.warn('Cannot bind events: container is null');
+      return;
+    }
+
+    try {
+      // Bind click events for practice items if they exist
+      const practiceItems = this.container.querySelectorAll('.practice-item, [data-practice-id]');
+      if (practiceItems.length > 0) {
+        practiceItems.forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const itemId = item.dataset.practiceId || item.dataset.itemId;
+            if (presenter?.handlePracticeItemClick) {
+              presenter.handlePracticeItemClick(itemId);
+            }
+          });
+        });
+      }
+
+      // Bind tab switching if tabs exist
+      const tabButtons = this.container.querySelectorAll('.tab-button, [role="tab"]');
+      if (tabButtons.length > 0) {
+        tabButtons.forEach(button => {
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = button.dataset.tab || button.getAttribute('aria-controls');
+            if (presenter?.handleTabChange && tabId) {
+              presenter.handleTabChange(tabId);
+            }
+          });
+        });
+      }
+
+      // Bind any other interactive elements here
+      const actionButtons = this.container.querySelectorAll('[data-action]');
+      actionButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const action = button.dataset.action;
+          if (presenter?.[`handle${action.charAt(0).toUpperCase() + action.slice(1)}`]) {
+            presenter[`handle${action.charAt(0).toUpperCase() + action.slice(1)}`](e);
+          }
+        });
+      });
+    } catch (error) {
+      console.error('Error binding events in CategoryView:', error);
+    }
+  }
+  
+  /**
+   * Clean up event listeners when the view is destroyed
+   */
+  unbindEvents() {
+    // Clean up any event listeners here if needed
+    // This helps prevent memory leaks when the view is destroyed
+  }
+  
+  /**
+   * Clean up the view when it's no longer needed
+   */
+  destroy() {
+    this.unbindEvents();
+    if (this.container && this.container.parentNode) {
+      this.container.parentNode.removeChild(this.container);
+    }
+    this.container = null;
   }
 }
 

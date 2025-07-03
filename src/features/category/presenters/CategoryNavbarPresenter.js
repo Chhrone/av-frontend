@@ -25,9 +25,8 @@ class CategoryNavbarPresenter {
         voice: 'Voice'
       },
       navigationLinks: [
-        { href: '#dashboard', text: 'Dashboard' },
-        { href: '#categories', text: 'Kategori' },
-        { href: '#profile', text: 'Profil' }
+        { href: '/dashboard', text: 'Dashboard', className: 'nav-dashboard' },
+        { href: '/profile', text: 'Profil', className: 'nav-profile' }
       ]
     };
   }
@@ -35,6 +34,37 @@ class CategoryNavbarPresenter {
   mount(container) {
     if (this.view) {
       this.view.mount(container);
+      this.bindEvents();
+    }
+  }
+
+  bindEvents() {
+    if (!this.view || !this.view.element) return;
+
+    // Handle dashboard navigation
+    const dashboardLink = this.view.element.querySelector('.nav-dashboard');
+    if (dashboardLink) {
+      dashboardLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.router) {
+          window.router.navigate('/dashboard');
+        } else {
+          window.location.href = '/dashboard';
+        }
+      });
+    }
+
+    // Handle profile navigation
+    const profileLink = this.view.element.querySelector('.nav-profile');
+    if (profileLink) {
+      profileLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.router) {
+          window.router.navigate('/profile');
+        } else {
+          window.location.href = '/profile';
+        }
+      });
     }
   }
 
