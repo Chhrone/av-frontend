@@ -1,13 +1,12 @@
-import RecordingManager from '../../../utils/RecordingManager.js';
-import AccentDetectionService from '../../../utils/AccentDetectionService.js';
+// ...existing code...
+import '../styles/index.css';
+import '../styles/intro-animation.css';
+
 import MicrophoneIcon from '../../../assets/MicrophoneIcon.js';
 
 class TestView {
   constructor(testText = '') {
     this.container = null;
-    this.floatingMic = null;
-    this.isRecording = false;
-    this.recordingTimer = null;
     this.durationDisplay = null;
     this.testText = testText;
   }
@@ -19,191 +18,93 @@ class TestView {
     const testText = document.createElement('p');
     testText.textContent = this.testText;
     testText.className = 'test-text';
+    this.container.appendChild(testText);
 
-    this.floatingMic = document.createElement('button');
-    this.floatingMic.className = 'floating-microphone';
-    
-    // Create and append the microphone icon
-    const micIcon = new MicrophoneIcon({ className: 'microphone-icon' });
-    this.floatingMic.appendChild(micIcon.element);
+    // Microphone button with icon (for view transition)
+    const micButton = document.createElement('button');
+    micButton.className = 'microphone-btn round-shadow';
+    micButton.setAttribute('id', 'test-mic-btn');
+    micButton.setAttribute('aria-label', 'Mulai Tes');
+    micButton.style.viewTransitionName = 'microphone-move';
 
-    // Add data attribute for view transition
-    this.floatingMic.setAttribute('data-transition-trigger', 'true');
+    const micIcon = new MicrophoneIcon().element;
+    micIcon.classList.add('microphone-icon');
+    micIcon.setAttribute('id', 'microphone-icon');
+    micButton.appendChild(micIcon);
+
+    this.container.appendChild(micButton);
 
     this.durationDisplay = document.createElement('div');
     this.durationDisplay.className = 'recording-duration';
     this.durationDisplay.style.display = 'none';
     this.durationDisplay.textContent = '00:00';
-
-    this.floatingMic.addEventListener('click', () => {
-      this.handleMicrophoneClick();
-    });
-
-    this.container.appendChild(testText);
     this.container.appendChild(this.durationDisplay);
-    document.body.appendChild(this.floatingMic);
 
-    this.setupCleanupListeners();
-    this.checkRecordingState();
+    // Logic: handle click for recording/processing
+    micButton.addEventListener('click', () => {
+      if (this.onMicClick) this.onMicClick();
+    });
 
     return this.container;
   }
 
-  setupCleanupListeners() {
-    window.addEventListener('beforeunload', this.handlePageUnload.bind(this));
-    window.addEventListener('hashchange', this.handleNavigation.bind(this));
-    document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
-  }
 
-  handlePageUnload() {
-    RecordingManager.forceStop();
-  }
-
-  handleNavigation() {
-    const currentHash = window.location.hash;
-    if (currentHash !== '#/test' && this.isRecording) {
-      RecordingManager.forceStop();
-    }
-  }
-
-  handleVisibilityChange() {
-    if (document.hidden && this.isRecording) {
-      RecordingManager.forceStop();
-    }
-  }
-
-  checkRecordingState() {
-    const state = RecordingManager.getRecordingState();
-
-    if (state.isRecording && state.recordingStartedFromWelcome) {
-      this.startRecordingUI();
+  setMicLoading(isLoading) {
+    const micBtn = this.container.querySelector('#test-mic-btn');
+    if (!micBtn) return;
+    if (isLoading) {
+      micBtn.disabled = true;
+      micBtn.classList.add('loading');
     } else {
-      this.showLoadingState();
+      micBtn.disabled = false;
+      micBtn.classList.remove('loading');
     }
   }
 
-  showLoadingState() {
-    this.floatingMic.classList.add('loading');
-    this.floatingMic.disabled = true;
-
-    const checkInitialization = () => {
-      const state = RecordingManager.getRecordingState();
-      if (state.isRecording) {
-        this.hideLoadingState();
-        this.startRecordingUI();
-      } else {
-        setTimeout(checkInitialization, 100);
-      }
-    };
-
-    setTimeout(checkInitialization, 100);
-
-    setTimeout(() => {
-      this.hideLoadingState();
-    }, 5000);
-  }
-
-  hideLoadingState() {
-    this.floatingMic.classList.remove('loading');
-    this.floatingMic.disabled = false;
-  }
-
-  async handleMicrophoneClick() {
-    try {
-      if (this.isRecording) {
-        await this.stopRecording();
-      } else {
-        await RecordingManager.startRecordingFromWelcome();
-        this.startRecordingUI();
-      }
-    } catch (error) {
-      console.error('Error handling microphone click:', error);
+  setMicRecording(isRecording) {
+    const micBtn = this.container.querySelector('#test-mic-btn');
+    if (!micBtn) return;
+    if (isRecording) {
+      micBtn.classList.add('recording');
+    } else {
+      micBtn.classList.remove('recording');
     }
   }
 
-  startRecordingUI() {
-    this.isRecording = true;
-    this.floatingMic.classList.add('recording');
-    this.durationDisplay.style.display = 'block';
-    this.startTimer();
-  }
-
-  async stopRecording() {
-    try {
-      const savedRecording = await RecordingManager.stopRecording({
-        name: 'Speech Test Recording',
-        category: 'speech-test'
-      });
-
-      this.showProcessingUI();
-      await AccentDetectionService.processRecordingAndShowResult(savedRecording);
-
-    } catch (error) {
-      console.error('Failed to stop recording:', error);
-      this.stopRecordingUI();
+  setMicProcessing(isProcessing) {
+    const micBtn = this.container.querySelector('#test-mic-btn');
+    if (!micBtn) return;
+    const micIcon = micBtn.querySelector('.microphone-icon');
+    if (isProcessing) {
+      micBtn.classList.add('processing');
+      micBtn.disabled = true;
+      // Sembunyikan icon mic (untuk fallback jika CSS gagal)
+      if (micIcon) micIcon.style.display = 'none';
+    } else {
+      micBtn.classList.remove('processing');
+      micBtn.disabled = false;
+      // Tampilkan kembali icon mic
+      if (micIcon) micIcon.style.display = '';
     }
   }
 
-  showProcessingUI() {
-    this.isRecording = false;
-    this.floatingMic.classList.remove('recording');
-    this.floatingMic.classList.add('processing');
-
-    this.floatingMic.innerHTML = `
-      <div class="processing-spinner"></div>
-    `;
-
-    this.durationDisplay.style.display = 'none';
-    this.stopTimer();
-  }
-
-  stopRecordingUI() {
-    this.isRecording = false;
-    this.floatingMic.classList.remove('recording');
-    this.durationDisplay.style.display = 'none';
-    this.stopTimer();
-  }
-
-  startTimer() {
-    this.recordingTimer = setInterval(() => {
-      const duration = RecordingManager.getCurrentDuration();
-      this.updateDurationDisplay(duration);
-    }, 100);
-  }
-
-  stopTimer() {
-    if (this.recordingTimer) {
-      clearInterval(this.recordingTimer);
-      this.recordingTimer = null;
-    }
+  showDuration(show) {
+    if (!this.durationDisplay) return;
+    this.durationDisplay.style.display = show ? 'block' : 'none';
   }
 
   updateDurationDisplay(duration) {
+    if (!this.durationDisplay) return;
     const seconds = Math.floor(duration / 1000);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-
     const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     this.durationDisplay.textContent = formattedTime;
   }
 
   destroy() {
-    if (this.isRecording) {
-      RecordingManager.forceStop();
-    }
-
-    this.stopTimer();
-
-    window.removeEventListener('beforeunload', this.handlePageUnload.bind(this));
-    window.removeEventListener('hashchange', this.handleNavigation.bind(this));
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
-
     if (this.container && this.container.parentNode) {
       this.container.parentNode.removeChild(this.container);
-    }
-
-    if (this.floatingMic && this.floatingMic.parentNode) {
-      this.floatingMic.parentNode.removeChild(this.floatingMic);
     }
   }
 }

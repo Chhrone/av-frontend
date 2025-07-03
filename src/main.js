@@ -8,10 +8,14 @@ import {
   IntroModel,
   SplashModel,
   DashboardPresenter,
-  DashboardModel,
-  PracticePresenter,
-  PracticeModel
+  DashboardModel
 } from './features/index.js';
+import {
+  PracticeTestPresenter,
+  PracticeResultPresenter,
+  PracticeTestModel,
+  PracticeResultModel
+} from './features/practice/index.js';
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
@@ -31,7 +35,8 @@ class App {
     this.introModel = new IntroModel();
     this.splashModel = new SplashModel();
     this.dashboardModel = new DashboardModel();
-    this.practiceModel = new PracticeModel();
+    this.practiceTestModel = new PracticeTestModel();
+    this.practiceResultModel = new PracticeResultModel();
     this.currentPresenter = null;
     this.footer = new FooterPresenter();
     this.isFromIntroFlow = false;
@@ -246,18 +251,18 @@ class App {
   async showPractice(params) {
     try {
       const { categoryId, practiceId } = params;
-      console.log('showPractice params:', { categoryId, practiceId }); // Log parameter
-      
+      console.log('showPractice params:', { categoryId, practiceId });
       if (!categoryId || !practiceId) {
         throw new Error('Category ID atau Practice ID tidak ditemukan');
       }
-      
-      // Pastikan categoryId sesuai dengan yang ada di PracticeModel
       const normalizedCategoryId = categoryId === 'konsonan' ? 'konsonan-inventory' : categoryId;
-      
-      const presenter = new PracticePresenter(this.practiceModel, normalizedCategoryId, practiceId);
-      await presenter.init();
-      this.currentPresenter = presenter;
+      // Show test view first, then you can show result view after recording is done
+      const testPresenter = new PracticeTestPresenter(this.practiceTestModel, normalizedCategoryId, practiceId);
+      await testPresenter.init();
+      this.currentPresenter = testPresenter;
+      // Example: to show result after test, you can call PracticeResultPresenter
+      // const resultPresenter = new PracticeResultPresenter(this.practiceResultModel);
+      // resultPresenter.showResult(resultData);
     } catch (error) {
       console.error('Error showing practice page:', error);
       this.showError('Gagal memuat halaman latihan. ' + (error.message || ''));
@@ -361,8 +366,29 @@ class App {
   }
 
   initializeFooter() {
-    // Mount footer to body, it will be persistent across all pages
-    this.footer.mount(document.body);
+    // Only mount footer if not on welcome page
+    const isWelcome = window.location.hash === '#/welcome' || window.location.hash === '';
+    if (!isWelcome) {
+      this.footer.mount(document.body);
+    } else {
+      // Remove if exists
+      if (document.getElementById('footer')) {
+        document.getElementById('footer').remove();
+      }
+    }
+    // Listen to hashchange to update footer visibility
+    window.addEventListener('hashchange', () => {
+      const isWelcomeNow = window.location.hash === '#/welcome' || window.location.hash === '';
+      if (isWelcomeNow) {
+        if (document.getElementById('footer')) {
+          document.getElementById('footer').remove();
+        }
+      } else {
+        if (!document.getElementById('footer')) {
+          this.footer.mount(document.body);
+        }
+      }
+    });
   }
 
   // Method to navigate to a specific route

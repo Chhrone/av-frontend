@@ -1,5 +1,15 @@
-import PracticePresenter from './presenters/PracticePresenter.js';
-import PracticeModel from './models/PracticeModel.js';
-import PracticeView from './views/PracticeView.js';
+import PracticeTestPresenter from './presenters/PracticeTestPresenter.js';
+import PracticeResultPresenter from './presenters/PracticeResultPresenter.js';
+import PracticeTestModel from './models/PracticeTestModel.js';
+import PracticeResultModel from './models/PracticeResultModel.js';
+import PracticeTestView from './views/PracticeTestView.js';
+import PracticeResultView from './views/PracticeResultView.js';
 
-export { PracticePresenter, PracticeModel, PracticeView };
+export {
+  PracticeTestPresenter,
+  PracticeResultPresenter,
+  PracticeTestModel,
+  PracticeResultModel,
+  PracticeTestView,
+  PracticeResultView
+};

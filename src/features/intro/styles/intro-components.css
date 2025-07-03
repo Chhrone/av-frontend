@@ -1,102 +1,101 @@
+
+.microphone-btn.recording {
+  background: #f56565;
+  box-shadow: 0 0 0 4px rgba(245, 101, 101, 0.15);
+  color: #fff;
+}
+.microphone-btn.recording .microphone-icon {
+  color: #fff;
+}
+
+.microphone-btn.processing {
+  background: #f6e05e;
+  box-shadow: 0 0 0 4px rgba(246, 224, 94, 0.15);
+  color: #fff;
+  opacity: 0.7;
+  pointer-events: none;
+  position: relative;
+}
+.microphone-btn.processing::after {
+  content: '...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #b7791f;
+  font-size: 1.2rem;
+  font-weight: bold;
+  z-index: 2;
+}
+/* Microphone Button Styles */
+.microphone-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  background: #fff;
+}
+
+.microphone-btn:hover {
+  box-shadow: 0 8px 32px rgba(66, 153, 225, 0.28), 0 2px 8px rgba(0,0,0,0.12);
+  transform: translateY(-2px) scale(1.07);
+  background: #f0f8ff;
+}
+
+.round-shadow {
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  width: 56px;
+  height: 56px;
+  padding: 0;
+}
+
+.microphone-icon {
+  width: 32px;
+  height: 32px;
+  color: #4299e1;
+  transition: color 0.2s;
+}
+.microphone-btn:hover .microphone-icon {
+  color: #3182ce;
+}
 /* Intro Pages Component Styles */
 
-/* Microphone Button Styles */
-.microphone-button {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: #4299e1;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.5rem;
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-  opacity: 1;
-  /* Remove conflicting transitions for View Transition API */
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  /* Optimize for View Transitions */
-  contain: layout style paint;
-}
-
-.microphone-button:hover {
-  background-color: #3182ce;
-  box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
-  /* Remove transform to avoid conflicts with View Transitions */
-}
-
-/* Floating Microphone Styles */
-.floating-microphone {
-  position: fixed;
-  bottom: 250px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: #4299e1;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.3rem;
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
-  z-index: 1000;
-  opacity: 1;
-  transition: all 0.3s ease;
-  /* Optimize for View Transitions */
-  contain: layout style paint;
-}
-
-.floating-microphone:hover {
-  background-color: #3182ce;
-  transform: translateX(-50%) scale(1.05);
-  box-shadow: 0 6px 16px rgba(66, 153, 225, 0.4);
-}
-
-.floating-microphone.recording {
-  background-color: #ff6b6b;
-  animation: recording-pulse 1.5s ease-in-out infinite;
-  box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6);
-}
-
-.floating-microphone.recording:hover {
-  background-color: #ee5a24;
-  transform: translateX(-50%) scale(1.05);
-  box-shadow: 0 6px 25px rgba(255, 107, 107, 0.8);
-}
-
-.floating-microphone.processing {
-  background-color: #ffa726;
-  cursor: not-allowed;
-}
-
-.floating-microphone.processing:hover {
-  background-color: #ffa726;
-  transform: translateX(-50%);
-  box-shadow: 0 4px 12px rgba(255, 167, 38, 0.4);
-}
 
 /* Recording Duration Display */
 .recording-duration {
-  position: fixed;
-  bottom: 330px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin: 40px auto 0 auto;
+  display: block;
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 6px 12px;
+  padding: 6px 18px;
   border-radius: 16px;
   font-family: 'Poppins', monospace;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bold;
-  z-index: 1000;
+  z-index: 2;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  width: max-content;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
 }
 
 /* Try Again Button Styles */
@@ -118,65 +117,4 @@
   background-color: #3182ce;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(66, 153, 225, 0.4);
-}
-
-/* Processing Spinner */
-.processing-spinner {
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid white;
-  border-radius: 50%;
-  animation: loading-spin 1s linear infinite;
-}
-
-/* Microphone Icon Styles */
-.microphone-icon {
-  width: 1em;
-  height: 1em;
-  fill: currentColor;
-}
-
-/* Animations */
-@keyframes recording-pulse {
-  0%, 100% {
-    transform: translateX(-50%) scale(1);
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6);
-  }
-  50% {
-    transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 6px 30px rgba(255, 107, 107, 0.8);
-  }
-}
-
-@keyframes loading-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Transitioning state styles for View Transition API */
-.microphone-button.transitioning,
-.floating-microphone.transitioning {
-  z-index: 1000;
-}
-
-/* Fallback styles for browsers without View Transition API */
-.no-view-transitions .microphone-button:hover {
-  transform: scale(1.02);
-}
-
-.no-view-transitions .floating-microphone:hover {
-  transform: translateX(-50%) scale(1.02);
-}
-
-.no-view-transitions .microphone-button:active {
-  transform: scale(0.98);
-}
-
-.no-view-transitions .floating-microphone:active {
-  transform: translateX(-50%) scale(0.98);
 }

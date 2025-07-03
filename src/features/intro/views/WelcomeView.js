@@ -1,4 +1,5 @@
-import RecordingManager from '../../../utils/RecordingManager.js';
+// ...existing code...
+
 import MicrophoneIcon from '../../../assets/MicrophoneIcon.js';
 
 class WelcomeView {
@@ -14,36 +15,25 @@ class WelcomeView {
     const welcomeText = document.createElement('h1');
     welcomeText.textContent = this.welcomeText;
     welcomeText.className = 'welcome-text';
-
-    const micButton = document.createElement('button');
-    micButton.className = 'microphone-button';
-    
-    // Create and append the microphone icon
-    const micIcon = new MicrophoneIcon({ className: 'microphone-icon' });
-    micButton.appendChild(micIcon.element);
-
-    // Add data attribute for view transition
-    micButton.setAttribute('data-transition-trigger', 'true');
-
-    micButton.addEventListener('click', () => {
-      // Add transitioning class for enhanced animation
-      micButton.classList.add('transitioning');
-
-      // Navigate to test page
-      window.location.hash = '#/test';
-
-      RecordingManager.startRecording().catch(error => {
-        console.error('Failed to start recording:', error);
-      });
-    });
-
-
     this.container.appendChild(welcomeText);
-    this.container.appendChild(micButton);
 
-    // Show elements immediately without transitions
+    // Microphone button with icon
+    const micButton = document.createElement('button');
+    micButton.className = 'microphone-btn round-shadow';
+    micButton.setAttribute('id', 'welcome-mic-btn');
+    micButton.setAttribute('aria-label', 'Mulai Tes');
+    // For view transition API
+    micButton.style.viewTransitionName = 'microphone-move';
+
+    // Microphone icon 32px
+    const micIcon = new MicrophoneIcon().element;
+    micIcon.classList.add('microphone-icon');
+    micIcon.setAttribute('id', 'microphone-icon');
+    // Hapus viewTransitionName di icon, hanya di button saja
+    micButton.appendChild(micIcon);
+
+    this.container.appendChild(micButton);
     welcomeText.classList.add('visible');
-    micButton.classList.add('visible');
 
     return this.container;
   }
