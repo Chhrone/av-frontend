@@ -7,26 +7,26 @@
     margin-bottom: 1.5rem;
   }
 
-  .test-text {
+  .intro-test-text {
     font-size: 1.1rem;
   }
 
-  .result-text {
+  .intro-result-text {
     font-size: 1.8rem;
   }
 
-  .result-description {
+  .intro-result-description {
     font-size: 1rem;
     margin-bottom: 1.8rem;
   }
 
-  .try-again-button {
+  .intro-try-again-button {
     padding: 10px 24px;
     font-size: 1rem;
     border-radius: 8px;
   }
 
-  .container {
+  .intro-container {
     padding: 1rem;
   }
 
@@ -37,7 +37,7 @@
     bottom: 200px;
   }
 
-  .microphone-button {
+  .intro-microphone-btn {
     width: 50px;
     height: 50px;
     font-size: 1.3rem;
@@ -50,19 +50,19 @@
     font-size: 1.5rem;
   }
 
-  .test-text {
+  .intro-test-text {
     font-size: 1.2rem;
   }
 
-  .result-text {
+  .intro-result-text {
     font-size: 2rem;
   }
 
-  .result-description {
+  .intro-result-description {
     font-size: 1.2rem;
   }
 
-  .try-again-button {
+  .intro-try-again-button {
     padding: 14px 28px;
     font-size: 1.2rem;
     border-radius: 8px;
@@ -75,13 +75,13 @@
     bottom: 1.5rem;
   }
 
-  .microphone-button {
+  .intro-microphone-btn {
     width: 65px;
     height: 65px;
     font-size: 1.6rem;
   }
 
-  .recording-duration {
+  .intro-recording-duration {
     bottom: 350px;
     font-size: 12px;
     padding: 6px 12px;

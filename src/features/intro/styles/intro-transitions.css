@@ -1,0 +1,200 @@
+/* ===== MICROPHONE ICON TRANSITIONS ===== */
+/* Assign same view-transition-name to both microphone buttons */
+
+.intro-microphone-btn {
+  view-transition-name: microphone-icon;
+}
+
+.floating-microphone {
+  view-transition-name: microphone-icon;
+}
+
+/* ===== TEXT CONTENT TRANSITIONS ===== */
+/* Assign view-transition-name to main text elements for smooth transitions */
+
+.intro-welcome-text {
+  view-transition-name: main-text;
+}
+
+.intro-test-text {
+  view-transition-name: main-text;
+}
+
+.intro-result-text {
+  view-transition-name: main-text;
+}
+
+.intro-result-description {
+  view-transition-name: secondary-text;
+}
+
+.intro-try-again-button {
+  view-transition-name: action-button;
+}
+
+/* Simplified View Transition animations - let browser handle the morphing */
+::view-transition-old(microphone-icon),
+::view-transition-new(microphone-icon) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Optional: Custom fade animations (browser will handle position morphing automatically) */
+::view-transition-old(microphone-icon) {
+  animation-name: fade-out-smooth;
+}
+
+::view-transition-new(microphone-icon) {
+  animation-name: fade-in-smooth;
+}
+
+/* ===== MAIN TEXT VIEW TRANSITIONS ===== */
+::view-transition-old(main-text),
+::view-transition-new(main-text) {
+  animation-duration: 0.1s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+::view-transition-old(main-text) {
+  animation-name: main-text-exit;
+}
+
+::view-transition-new(main-text) {
+  animation-name: main-text-enter;
+}
+
+/* ===== SECONDARY TEXT VIEW TRANSITIONS ===== */
+::view-transition-old(secondary-text),
+::view-transition-new(secondary-text) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: 0.1s;
+}
+
+::view-transition-old(secondary-text) {
+  animation-name: secondary-text-exit;
+}
+
+::view-transition-new(secondary-text) {
+  animation-name: secondary-text-enter;
+}
+
+/* ===== ACTION BUTTON VIEW TRANSITIONS ===== */
+::view-transition-old(action-button),
+::view-transition-new(action-button) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: 0.2s;
+}
+
+::view-transition-old(action-button) {
+  animation-name: button-exit;
+}
+
+::view-transition-new(action-button) {
+  animation-name: button-enter;
+}
+
+@keyframes fade-out-smooth {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-smooth {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ===== MAIN TEXT ANIMATIONS ===== */
+@keyframes main-text-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes main-text-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== SECONDARY TEXT ANIMATIONS ===== */
+@keyframes secondary-text-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+  }
+}
+
+@keyframes secondary-text-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== ACTION BUTTON ANIMATIONS ===== */
+@keyframes button-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.9);
+  }
+}
+
+@keyframes button-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== INITIAL LOAD TRANSITION ===== */
+@keyframes initial-load {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply initial load transition to app container */
+#app {
+  animation: initial-load 0.6s ease-out forwards;
+}

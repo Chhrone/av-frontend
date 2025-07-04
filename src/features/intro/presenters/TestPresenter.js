@@ -23,11 +23,7 @@ class TestPresenter {
     const viewElement = this.view.render();
     appElement.appendChild(viewElement);
     this.setupCleanupListeners();
-    // Cek state recording, langsung update UI jika sudah recording
-    const state = RecordingManager.getRecordingState();
-    if (state.isRecording && state.recordingStartedFromWelcome) {
-      this.startRecordingUI();
-    }
+    this.checkRecordingState();
   }
 
   setupCleanupListeners() {
@@ -59,7 +55,37 @@ class TestPresenter {
     }
   }
 
-  // checkRecordingState, showLoadingState, hideLoadingState dihapus karena tidak diperlukan lagi
+  checkRecordingState() {
+    const state = RecordingManager.getRecordingState();
+    if (state.isRecording && state.recordingStartedFromWelcome) {
+      this.startRecordingUI();
+    } else {
+      this.showLoadingState();
+    }
+  }
+
+  showLoadingState() {
+    this.view.setMicLoading(true);
+    const checkInitialization = () => {
+      const state = RecordingManager.getRecordingState();
+      if (state.isRecording) {
+        this.hideLoadingState();
+        this.startRecordingUI();
+      } else {
+        setTimeout(checkInitialization, 100);
+      }
+    };
+    setTimeout(checkInitialization, 100);
+    setTimeout(() => {
+      this.hideLoadingState();
+    }, 5000);
+  }
+
+  hideLoadingState() {
+    if (this.view) {
+      this.view.setMicLoading(false);
+    }
+  }
 
   async handleMicrophoneClick() {
     try {
@@ -78,8 +104,10 @@ class TestPresenter {
 
   startRecordingUI() {
     this.isRecording = true;
-    this.view.setMicRecording(true);
-    this.view.showDuration(true);
+    if (this.view) {
+      this.view.setMicRecording(true);
+      this.view.showDuration(true);
+    }
     this.startTimer();
   }
 

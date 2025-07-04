@@ -10,16 +10,16 @@ class WelcomeView {
 
   render() {
     this.container = document.createElement('div');
-    this.container.className = 'container';
+    this.container.className = 'intro-container';
 
     const welcomeText = document.createElement('h1');
     welcomeText.textContent = this.welcomeText;
-    welcomeText.className = 'welcome-text';
+    welcomeText.className = 'intro-welcome-text';
     this.container.appendChild(welcomeText);
 
     // Microphone button with icon
     const micButton = document.createElement('button');
-    micButton.className = 'microphone-btn round-shadow';
+    micButton.className = 'intro-microphone-btn intro-round-shadow';
     micButton.setAttribute('id', 'welcome-mic-btn');
     micButton.setAttribute('aria-label', 'Mulai Tes');
     // For view transition API
@@ -27,7 +27,7 @@ class WelcomeView {
 
     // Microphone icon 32px
     const micIcon = new MicrophoneIcon().element;
-    micIcon.classList.add('microphone-icon');
+    micIcon.classList.add('intro-microphone-icon');
     micIcon.setAttribute('id', 'microphone-icon');
     // Hapus viewTransitionName di icon, hanya di button saja
     micButton.appendChild(micIcon);

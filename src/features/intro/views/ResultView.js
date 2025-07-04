@@ -10,7 +10,7 @@ class ResultView {
 
   render() {
     this.container = document.createElement('div');
-    this.container.className = 'container';
+    this.container.className = 'intro-container';
 
     const confidenceText = document.createElement('h1');
     const confidence = this.resultData.us_confidence || 0;
@@ -23,7 +23,7 @@ class ResultView {
       console.error('Error formatting confidence text:', error);
       confidenceText.textContent = 'Your accent analysis is ready!';
     }
-    confidenceText.className = 'result-text';
+    confidenceText.className = 'intro-result-text';
 
     const descriptionText = document.createElement('p');
     try {
@@ -36,13 +36,13 @@ class ResultView {
       console.error('Error getting confidence description:', error);
       descriptionText.textContent = 'Your accent analysis results are ready!';
     }
-    descriptionText.className = 'result-description';
+    descriptionText.className = 'intro-result-description';
 
     const tryAgainButton = document.createElement('button');
     tryAgainButton.textContent = this.model ?
       this.model.getTryAgainButtonText() :
       'Try Again';
-    tryAgainButton.className = 'try-again-button';
+    tryAgainButton.className = 'intro-try-again-button';
 
     tryAgainButton.addEventListener('click', () => {
       window.location.hash = '#/dashboard';
@@ -79,8 +79,8 @@ class ResultView {
   updateResult(newResultData) {
     this.resultData = newResultData;
     if (this.container) {
-      const confidenceText = this.container.querySelector('.result-text');
-      const descriptionText = this.container.querySelector('.result-description');
+      const confidenceText = this.container.querySelector('.intro-result-text');
+      const descriptionText = this.container.querySelector('.intro-result-description');
 
       if (confidenceText) {
         confidenceText.textContent = this.model ?

@@ -2,6 +2,8 @@
 /* Import all intro-related CSS files */
 
 @import './intro-layout.css';
+@import './intro-animation.css';
+@import './intro-transitions.css';
 @import './intro-components.css';
 @import './intro-responsive.css';
 @import './splash.css';
