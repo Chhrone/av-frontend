@@ -11,10 +11,9 @@ import {
   DashboardModel
 } from './features/index.js';
 import {
-  PracticeTestPresenter,
-  PracticeResultPresenter,
-  PracticeTestModel,
-  PracticeResultModel
+  PracticeModel,
+  PracticePresenter,
+  PracticeView
 } from './features/practice/index.js';
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
@@ -35,8 +34,7 @@ class App {
     this.introModel = new IntroModel();
     this.splashModel = new SplashModel();
     this.dashboardModel = new DashboardModel();
-    this.practiceTestModel = new PracticeTestModel();
-    this.practiceResultModel = new PracticeResultModel();
+    this.practiceModel = new PracticeModel();
     this.currentPresenter = null;
     this.footer = new FooterPresenter();
     this.isFromIntroFlow = false;
@@ -77,9 +75,6 @@ class App {
     });
 
     appRouter.addRoute('/practice/:categoryId/:practiceId', (params) => this.showPractice(params));
-    appRouter.addRoute('/practice/:categoryId/:practiceId/result', (params) => {
-      this.showPracticeResult(params);
-    });
     
     // Root path - redirect based on intro completion
     appRouter.addRoute('/', () => {
@@ -259,13 +254,11 @@ class App {
         throw new Error('Category ID atau Practice ID tidak ditemukan');
       }
       const normalizedCategoryId = categoryId === 'konsonan' ? 'konsonan-inventory' : categoryId;
-      // Show test view first, then you can show result view after recording is done
-      const testPresenter = new PracticeTestPresenter(this.practiceTestModel, normalizedCategoryId, practiceId);
-      await testPresenter.init();
-      this.currentPresenter = testPresenter;
-      // Example: to show result after test, you can call PracticeResultPresenter
-      // const resultPresenter = new PracticeResultPresenter(this.practiceResultModel);
-      // resultPresenter.showResult(resultData);
+      // Show test view and result view in one flow (no routing)
+      this.destroyCurrentPresenter();
+      const presenter = new PracticePresenter(this.practiceModel);
+      await presenter.init(normalizedCategoryId, practiceId);
+      this.currentPresenter = presenter;
     } catch (error) {
       console.error('Error showing practice page:', error);
       this.showError('Gagal memuat halaman latihan. ' + (error.message || ''));
@@ -273,19 +266,7 @@ class App {
   }
 
   // Tambahkan method baru untuk menampilkan hasil practice
-  async showPracticeResult(params) {
-    try {
-      // Ambil data hasil dari localStorage
-      const resultData = JSON.parse(localStorage.getItem('practiceResult'));
-      this.destroyCurrentPresenter();
-      const resultPresenter = new PracticeResultPresenter(this.practiceResultModel);
-      resultPresenter.init();
-      this.currentPresenter = resultPresenter;
-    } catch (error) {
-      console.error('Error showing practice result:', error);
-      this.showError('Gagal memuat hasil latihan. ' + (error.message || ''));
-    }
-  }
+  // showPracticeResult tidak diperlukan lagi karena flow test-result digabung
 
   showWelcome() {
     this.destroyCurrentPresenter();
