@@ -27,14 +27,12 @@ class ResultView {
 
     const descriptionText = document.createElement('p');
     try {
-      descriptionText.textContent = this.model ?
-        (typeof this.model.getConfidenceDescription === 'function' ? 
-          this.model.getConfidenceDescription(this.resultData.us_confidence) :
-          'Your accent analysis results are ready!') :
-        this.getConfidenceDescription(this.resultData.us_confidence);
+      descriptionText.textContent = this.model && typeof this.model.getConfidenceDescription === 'function'
+        ? this.model.getConfidenceDescription(this.resultData.us_confidence)
+        : '';
     } catch (error) {
       console.error('Error getting confidence description:', error);
-      descriptionText.textContent = 'Your accent analysis results are ready!';
+      descriptionText.textContent = '';
     }
     descriptionText.className = 'intro-result-description';
 
@@ -60,21 +58,7 @@ class ResultView {
     return this.container;
   }
 
-  getConfidenceDescription(confidence) {
-    if (confidence >= 90) {
-      return "Excellent! Your American accent is very strong and clear.";
-    } else if (confidence >= 80) {
-      return "Great job! You have a good American accent with room for minor improvements.";
-    } else if (confidence >= 70) {
-      return "Good work! Your American accent is developing well. Keep practicing!";
-    } else if (confidence >= 60) {
-      return "Not bad! You're on the right track. More practice will help improve your accent.";
-    } else if (confidence >= 50) {
-      return "You're making progress! Focus on pronunciation and intonation patterns.";
-    } else {
-      return "Keep practicing! Every expert was once a beginner. You'll improve with time.";
-    }
-  }
+
 
   updateResult(newResultData) {
     this.resultData = newResultData;
@@ -89,9 +73,9 @@ class ResultView {
       }
 
       if (descriptionText) {
-        descriptionText.textContent = this.model ?
-          this.model.getConfidenceDescription(this.resultData.us_confidence) :
-          this.getConfidenceDescription(this.resultData.us_confidence);
+        descriptionText.textContent = this.model && typeof this.model.getConfidenceDescription === 'function'
+          ? this.model.getConfidenceDescription(this.resultData.us_confidence)
+          : '';
       }
     }
   }

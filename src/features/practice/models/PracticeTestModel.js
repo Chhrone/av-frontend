@@ -1,6 +1,7 @@
 class PracticeTestModel {
   constructor() {
-    this.practiceData = null;
+    this.practiceData = {};
+    this.practiceSessions = {};
   }
 
   async getPracticeText(categoryId, practiceId) {
@@ -324,11 +325,29 @@ class PracticeTestModel {
       const text = Array.isArray(practiceItems) 
         ? practiceItems[Math.floor(Math.random() * practiceItems.length)]
         : practiceItems;
-      this.practiceData = { id: practiceId, text };
-      return this.practiceData.text;
+      // Simpan data practice terakhir yang di-load
+      this.practiceData.last = { id: practiceId, text };
+      return text;
     }
     console.error(`Practice data not found for ${categoryId}/${practiceId}`);
     return null;
+  }
+
+  savePracticeRecording(categoryId, practiceId, recording, score) {
+    if (!this.practiceData[categoryId]) this.practiceData[categoryId] = {};
+    if (!this.practiceData[categoryId][practiceId]) this.practiceData[categoryId][practiceId] = [];
+    this.practiceData[categoryId][practiceId].push({ recording, score });
+  }
+
+  savePracticeSession(categoryId, practiceId, recordings, scores, avgScore) {
+    if (!this.practiceSessions[categoryId]) this.practiceSessions[categoryId] = {};
+    if (!this.practiceSessions[categoryId][practiceId]) this.practiceSessions[categoryId][practiceId] = [];
+    this.practiceSessions[categoryId][practiceId].push({
+      recordings,
+      scores,
+      avgScore,
+      timestamp: Date.now()
+    });
   }
 }
 

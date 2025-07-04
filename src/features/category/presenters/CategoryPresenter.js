@@ -17,8 +17,6 @@ class CategoryPresenter {
       const appContainer = document.getElementById('app');
       if (appContainer) {
         appContainer.innerHTML = '';
-        // Add dashboard mode class to body
-        document.body.classList.add('dashboard-mode');
       }
 
       // Show loading state
@@ -37,8 +35,17 @@ class CategoryPresenter {
       // Bind event handlers
       this.bindEvents();
 
-      // Add dashboard mode class for consistent styling
-      document.body.classList.add('dashboard-mode');
+      // Mount footer inside .category-container after .category-content
+      const categoryContainer = document.querySelector('.category-container');
+      if (categoryContainer) {
+        if (!this.footerPresenter) {
+          this.footerPresenter = new FooterPresenter();
+        }
+        // Remove existing footer in categoryContainer if any (avoid duplicate)
+        const existingFooter = categoryContainer.querySelector('#footer');
+        if (existingFooter) existingFooter.remove();
+        this.footerPresenter.mount(categoryContainer);
+      }
     } catch (error) {
       console.error('Error initializing category presenter:', error);
     }
@@ -216,9 +223,6 @@ class CategoryPresenter {
       this.footerPresenter.destroy();
       this.footerPresenter = null;
     }
-
-    // Remove dashboard mode class
-    document.body.classList.remove('dashboard-mode');
   }
 }
 

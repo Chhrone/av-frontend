@@ -1,4 +1,4 @@
-import '../styles/practice.css';
+import '../styles/index.css';
 import MicrophoneIcon from '../../../assets/MicrophoneIcon';
 
 class PracticeTestView {
@@ -10,42 +10,63 @@ class PracticeTestView {
   render(practiceText) {
     this.app.innerHTML = `
       <div class="practice-container">
-        <p class="practice-text">${practiceText}</p>
-        <button id="record-button" class="record-button" aria-label="Record">
+        <div class="practice-top-group">
+          <p class="practice-text">${practiceText}</p>
+          <div id="practice-recording-duration" class="practice-recording-duration" style="display:none;">00:00</div>
+        </div>
+        <button id="practice-record-button" class="practice-recording" aria-label="Record">
         </button>
-        <div id="recording-duration" class="recording-duration" style="display:none;">00:00</div>
       </div>
     `;
     const button = this.getRecordButton();
     this.microphoneIcon = new MicrophoneIcon({ isRecording: false });
     button.appendChild(this.microphoneIcon.element);
-    this.durationElem = document.getElementById('recording-duration');
+    this.spinnerElem = null;
+    this.durationElem = document.getElementById('practice-recording-duration');
   }
 
   getRecordButton() {
-    return document.getElementById('record-button');
+    return document.getElementById('practice-record-button');
   }
 
-  setRecordingState(isRecording) {
+  setRecordingState(isRecording, isProcessing = false) {
     const button = this.getRecordButton();
-    if (isRecording) {
-      button.classList.add('recording');
-      button.classList.add('recording-active');
-      if (this.durationElem) {
-        this.durationElem.style.display = 'block';
+    if (!button) return;
+    button.classList.remove('practice-recording-active', 'practice-recording-processing');
+    // Remove spinner if exists
+    if (this.spinnerElem) {
+      this.spinnerElem.remove();
+      this.spinnerElem = null;
+    }
+    // Show/hide mic icon
+    if (this.microphoneIcon && this.microphoneIcon.element && !button.contains(this.microphoneIcon.element)) {
+      button.appendChild(this.microphoneIcon.element);
+    }
+    if (isProcessing) {
+      button.classList.add('practice-recording-processing');
+      // Hide mic icon
+      if (this.microphoneIcon && this.microphoneIcon.element) {
+        this.microphoneIcon.element.style.display = 'none';
       }
+      // Add spinner
+      this.spinnerElem = document.createElement('span');
+      this.spinnerElem.className = 'practice-spinner';
+      this.spinnerElem.setAttribute('aria-label', 'Loading');
+      button.appendChild(this.spinnerElem);
+    } else if (isRecording) {
+      button.classList.add('practice-recording-active');
       if (this.microphoneIcon) {
-        this.microphoneIcon.update({ isRecording: true });
+        this.microphoneIcon.element.style.display = '';
+        this.microphoneIcon.update({ isRecording: true, isProcessing: false });
       }
     } else {
-      button.classList.remove('recording');
-      button.classList.remove('recording-active');
-      if (this.durationElem) {
-        this.durationElem.style.display = 'none';
-      }
       if (this.microphoneIcon) {
-        this.microphoneIcon.update({ isRecording: false });
+        this.microphoneIcon.element.style.display = '';
+        this.microphoneIcon.update({ isRecording: false, isProcessing: false });
       }
+    }
+    if (this.durationElem) {
+      this.durationElem.style.display = isRecording ? 'block' : 'none';
     }
   }
 

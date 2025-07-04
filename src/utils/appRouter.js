@@ -65,15 +65,14 @@ class AppRouter {
       const path = window.location.pathname;
       const hash = window.location.hash;
       
-      // Skip if this is a hash-based route (handled by introRouter)
-      if (hash && hash !== '#/') {
-        console.log('AppRouter: Ignoring hash-based route:', hash);
-        return;
+      // Support both hash and pathname based routing
+      // If hash exists and matches a route, use hash as path
+      let effectivePath = path;
+      if (hash && hash.startsWith('#/')) {
+        effectivePath = hash.slice(1); // remove '#'
       }
-      
-      console.log('AppRouter: Handling route:', path);
-      
-      const { route, params } = this.findMatchingRoute(path);
+      // console.log('AppRouter: Handling route:', effectivePath);
+      const { route, params } = this.findMatchingRoute(effectivePath);
       
       if (!route) {
         // Don't warn for root path as it's handled by introRouter
@@ -85,11 +84,11 @@ class AppRouter {
 
       // Store previous route
       this.previousRoute = this.currentRoute;
-      this.currentRoute = path;
+      this.currentRoute = effectivePath;
 
       const routeContext = { 
         from: this.previousRoute, 
-        to: path,
+        to: effectivePath,
         params
       };
 
@@ -144,21 +143,27 @@ class AppRouter {
 
     // Dynamic route matching (e.g., /category/:id)
     for (const routePath in this.routes) {
+      if (!routePath || routePath === '*') continue; // skip empty or wildcard
       const paramNames = [];
-      const pathRegex = new RegExp(
-        '^' + routePath.replace(/:([^\/]+)/g, (_, paramName) => {
-          paramNames.push(paramName);
-          return '([^\/]+)';
-        }) + '$'
-      );
-      
-      const match = path.match(pathRegex);
-      if (match) {
-        const params = {};
-        paramNames.forEach((paramName, index) => {
-          params[paramName] = match[index + 1];
-        });
-        return { route: this.routes[routePath], params };
+      let safeRoutePath = routePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // Only replace :param with group, not all special chars
+      safeRoutePath = routePath.replace(/:([^\/]+)/g, (_, paramName) => {
+        paramNames.push(paramName);
+        return '([^\/]+)';
+      });
+      try {
+        const pathRegex = new RegExp('^' + safeRoutePath + '$');
+        const match = path.match(pathRegex);
+        if (match) {
+          const params = {};
+          paramNames.forEach((paramName, index) => {
+            params[paramName] = match[index + 1];
+          });
+          return { route: this.routes[routePath], params };
+        }
+      } catch (e) {
+        // skip invalid regex
+        continue;
       }
     }
 
@@ -171,9 +176,19 @@ class AppRouter {
    * @param {Object} state - Optional state object
    */
   navigate(path, state = {}) {
-    if (path === window.location.pathname) return;
-
-    window.history.pushState(state, '', path);
+    // Support both hash and pathname navigation
+    if (path.startsWith('/')) {
+      // Use pathname
+      if (path === window.location.pathname) return;
+      window.history.pushState(state, '', path);
+    } else if (path.startsWith('#/')) {
+      // Use hash
+      if (window.location.hash === path) return;
+      window.location.hash = path;
+    } else {
+      // fallback
+      window.location.hash = '#' + path;
+    }
     this.handleRouteChange();
   }
 

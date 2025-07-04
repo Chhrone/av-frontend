@@ -1,16 +1,34 @@
 import PracticeTestView from '../views/PracticeTestView.js';
 import recordingManager from '../../../utils/RecordingManager.js';
+import accentDetectionService from '../../../utils/AccentDetectionService.js';
+import { appRouter } from '../../../utils/appRouter.js';
 
 class PracticeTestPresenter {
   constructor(model, categoryId, practiceId) {
     this.model = model;
-    this.categoryId = categoryId;
+    this.categoryId = this.normalizeCategoryId(categoryId);
     this.practiceId = practiceId;
     this.view = new PracticeTestView();
     this.recordingManager = recordingManager;
     this.isRecording = false;
     this.recordingInterval = null;
     this.recordingStartTime = null;
+    this.sessionRecordings = [];
+    this.sessionScores = [];
+    this.maxSession = 4;
+  }
+
+  normalizeCategoryId(categoryId) {
+    // Mapping dari url ke key data model
+    const map = {
+      'vokal': 'vokal-inventory',
+      'konsonan': 'konsonan-inventory',
+      'penekanan': 'penekanan-kata',
+      'skenario': 'skenario-dunia-nyata',
+      'struktur': 'struktur-suku-kata',
+      'irama': 'irama-bahasa',
+    };
+    return map[categoryId] || categoryId;
   }
 
   async init() {
@@ -81,12 +99,39 @@ class PracticeTestPresenter {
         if (this.recordingInterval) clearInterval(this.recordingInterval);
         this.view.setRecordingDuration('00:00');
         try {
-          const audioBlob = await this.recordingManager.stopRecording();
+          // Tampilkan state processing pada tombol
+          this.view.setRecordingState(false, true);
+          const recording = await this.recordingManager.stopRecording();
           console.log('Recording stopped');
-          // Handle the recorded audio blob, e.g., send to server or pass to result presenter
+          if (recording && recording.audioBlob) {
+            // Kirim ke AccentDetectionService
+            const result = await accentDetectionService.analyzeAccent(recording.audioBlob);
+            const score = result && typeof result.us_confidence === 'number' ? result.us_confidence : null;
+            this.sessionRecordings.push(recording);
+            this.sessionScores.push(score);
+            // Simpan ke model
+            this.model.savePracticeRecording(this.categoryId, this.practiceId, recording, score);
+
+            // Simpan hasil ke localStorage sebelum navigasi ke halaman result
+            localStorage.setItem('practiceResult', JSON.stringify(result));
+            // Navigasi ke route result
+            appRouter.navigate(`/practice/${this.categoryId}/${this.practiceId}/result`);
+
+            // Jika sudah 4 rekaman, hitung rata-rata dan simpan hasil sesi
+            if (this.sessionRecordings.length >= this.maxSession) {
+              const avgScore = this.sessionScores.reduce((a, b) => a + b, 0) / this.sessionScores.length;
+              this.model.savePracticeSession(this.categoryId, this.practiceId, this.sessionRecordings, this.sessionScores, avgScore);
+              // Reset sesi
+              this.sessionRecordings = [];
+              this.sessionScores = [];
+            }
+          }
         } catch (error) {
           console.error('Error stopping recording:', error);
           alert('Terjadi kesalahan saat menghentikan perekaman.');
+        } finally {
+          // Kembalikan tombol ke state normal
+          this.view.setRecordingState(false, false);
         }
       }
     } catch (error) {

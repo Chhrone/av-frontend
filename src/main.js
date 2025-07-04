@@ -77,6 +77,9 @@ class App {
     });
 
     appRouter.addRoute('/practice/:categoryId/:practiceId', (params) => this.showPractice(params));
+    appRouter.addRoute('/practice/:categoryId/:practiceId/result', (params) => {
+      this.showPracticeResult(params);
+    });
     
     // Root path - redirect based on intro completion
     appRouter.addRoute('/', () => {
@@ -266,6 +269,21 @@ class App {
     } catch (error) {
       console.error('Error showing practice page:', error);
       this.showError('Gagal memuat halaman latihan. ' + (error.message || ''));
+    }
+  }
+
+  // Tambahkan method baru untuk menampilkan hasil practice
+  async showPracticeResult(params) {
+    try {
+      // Ambil data hasil dari localStorage
+      const resultData = JSON.parse(localStorage.getItem('practiceResult'));
+      this.destroyCurrentPresenter();
+      const resultPresenter = new PracticeResultPresenter(this.practiceResultModel);
+      resultPresenter.init();
+      this.currentPresenter = resultPresenter;
+    } catch (error) {
+      console.error('Error showing practice result:', error);
+      this.showError('Gagal memuat hasil latihan. ' + (error.message || ''));
     }
   }
 
