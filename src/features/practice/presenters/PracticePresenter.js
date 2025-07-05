@@ -1,0 +1,312 @@
+
+import PracticeTestView from '../views/PracticeTestView.js';
+import PracticeResultView from '../views/PracticeResultView.js';
+import PracticeResultModel from '../models/PracticeResultModel.js';
+import recordingManager from '../../../utils/RecordingManager.js';
+import accentDetectionService from '../../../utils/AccentDetectionService.js';
+import PracticeRecordingService from '../services/PracticeRecordingService.js';
+import PracticeResultService from '../services/PracticeResultService.js';
+import PracticeViewService from '../services/PracticeViewService.js';
+
+
+class PracticePresenter {
+  constructor(model, categoryId, practiceId) {
+    console.log('[LOG] PracticePresenter constructor dipanggil', { model, categoryId, practiceId });
+    this.model = model;
+    this.resultModel = new PracticeResultModel();
+    this.categoryId = this.normalizeCategoryId(categoryId);
+    this.practiceId = practiceId;
+    this.testView = new PracticeTestView();
+    this.resultView = new PracticeResultView();
+    this.recordingManager = recordingManager;
+    this.currentView = 'test';
+    this.container = document.getElementById('practice-container') || document.body;
+
+    // Service instances
+    this.recordingService = new PracticeRecordingService(this.recordingManager);
+    this.resultService = new PracticeResultService(this.resultModel);
+    this.viewService = new PracticeViewService();
+    // Session logic moved back here
+    this.maxSession = 4;
+    this.sessionRecordings = [];
+    this.sessionScores = [];
+    this.sessionCount = 0;
+
+    // Simpan referensi handler agar bisa dihapus
+    this._recordButtonClickHandler = this._recordButtonClickHandler?.bind(this) || this.toggleRecording.bind(this);
+    this._recordButtonKeydownHandler = this._recordButtonKeydownHandler?.bind(this) || ((e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.toggleRecording();
+      }
+    });
+  }
+
+  normalizeCategoryId(categoryId) {
+    const map = {
+      'vokal': 'vokal-inventory',
+      'konsonan': 'konsonan-inventory',
+      'penekanan': 'penekanan-kata',
+      'skenario': 'skenario-dunia-nyata',
+      'struktur': 'struktur-suku-kata',
+      'irama': 'irama-bahasa',
+    };
+    return map[categoryId] || categoryId;
+  }
+
+  async init() {
+    console.log('[LOG] PracticePresenter.init dipanggil', { categoryId: this.categoryId, practiceId: this.practiceId });
+    try {
+      await this.recordingManager.initialize();
+      const practiceText = await this.model.getPracticeText(this.categoryId, this.practiceId);
+      if (practiceText) {
+        this.renderTest(practiceText);
+        this.bindEvents();
+      } else {
+        this.testView.render('Latihan tidak ditemukan.');
+      }
+    } catch (error) {
+      console.error('Error initializing practice:', error);
+      this.testView.render('Terjadi kesalahan saat memuat latihan.');
+    }
+  }
+
+  bindEvents() {
+    const recordButton = this.testView.getRecordButton();
+    if (recordButton) {
+      if (this._recordButtonClickHandler) {
+        recordButton.removeEventListener('click', this._recordButtonClickHandler);
+      }
+      if (this._recordButtonKeydownHandler) {
+        recordButton.removeEventListener('keydown', this._recordButtonKeydownHandler);
+      }
+      recordButton.addEventListener('click', this._recordButtonClickHandler);
+      recordButton.addEventListener('keydown', this._recordButtonKeydownHandler);
+    } else {
+      console.error('Record button not found');
+    }
+  }
+
+  destroy() {
+    const recordButton = this.testView.getRecordButton();
+    if (recordButton) {
+      if (this._recordButtonClickHandler) {
+        recordButton.removeEventListener('click', this._recordButtonClickHandler);
+      }
+      if (this._recordButtonKeydownHandler) {
+        recordButton.removeEventListener('keydown', this._recordButtonKeydownHandler);
+      }
+    }
+  }
+
+  async toggleRecording() {
+    try {
+      this.recordingService.isRecording = !this.recordingService.isRecording;
+      this.testView.setRecordingState(this.recordingService.isRecording);
+      if (this.recordingService.isRecording) {
+        this.recordingService.startRecordingTimer((duration) => this.testView.setRecordingDuration(duration));
+        this.sessionCount += 1;
+        const startLog = {
+          session: this.sessionCount,
+          type: 'mulai',
+          time: new Date().toLocaleString(),
+        };
+        if (!this.sessionLogs) this.sessionLogs = [];
+        this.sessionLogs.push(startLog);
+        console.log(`[LOG] Sesi ${startLog.session} dimulai pada ${startLog.time}`);
+        try {
+          await this.recordingManager.startRecording();
+          console.log('Recording started');
+        } catch (error) {
+          console.error('Error starting recording:', error);
+          this.recordingService.isRecording = false;
+          this.testView.setRecordingState(false);
+          this.recordingService.stopRecordingTimer((duration) => this.testView.setRecordingDuration(duration));
+          alert('Tidak dapat mengakses mikrofon. Pastikan Anda telah memberikan izin akses mikrofon.');
+        }
+      } else {
+        this.recordingService.stopRecordingTimer((duration) => this.testView.setRecordingDuration(duration));
+        const endLog = {
+          session: this.sessionCount,
+          type: 'berakhir',
+          time: new Date().toLocaleString(),
+        };
+        if (!this.sessionLogs) this.sessionLogs = [];
+        this.sessionLogs.push(endLog);
+        console.log(`[LOG] Sesi ${endLog.session} berakhir pada ${endLog.time}`);
+        try {
+          this.testView.setRecordingState(false, true);
+          const recording = await this.recordingManager.stopRecording();
+          console.log('Recording stopped');
+          if (recording && recording.audioBlob) {
+            const result = await accentDetectionService.analyzeAccent(recording.audioBlob);
+            const score = this.resultService.getScoreFromResult(result);
+            this.sessionRecordings.push(recording);
+            this.sessionScores.push(score);
+            this.model.savePracticeRecording(this.categoryId, this.practiceId, recording, score);
+            this.resultModel.setResultData(result);
+            if (this.sessionRecordings.length >= this.maxSession) {
+              const avgScore = this.resultService.getAverageScore(this.sessionScores);
+              this.model.savePracticeSession(
+                this.categoryId,
+                this.practiceId,
+                this.sessionRecordings,
+                this.sessionScores,
+                avgScore
+              );
+              this.showResultView({
+                ...result,
+                isAverage: true,
+                avgScore: avgScore
+              });
+              this.sessionRecordings = [];
+              this.sessionScores = [];
+              this.sessionCount = 0;
+              return;
+            }
+            this.showResultView(result);
+          }
+        } catch (error) {
+          console.error('Error stopping recording:', error);
+          alert('Terjadi kesalahan saat menghentikan perekaman.');
+        } finally {
+          this.testView.setRecordingState(false, false);
+        }
+      }
+    } catch (error) {
+      console.error('Error in toggleRecording:', error);
+      this.recordingService.isRecording = false;
+      this.testView.setRecordingState(false);
+      this.recordingService.stopRecordingTimer((duration) => this.testView.setRecordingDuration(duration));
+    }
+  }
+
+  showResultView(resultData) {
+    let viewData = {};
+    // Logging perpindahan ke result view
+    console.log('[LOG] showResultView dipanggil, resultData:', resultData);
+    // Clean up previous event listeners to avoid duplicate triggers
+    // Remove from continue button
+    const prevContinueBtn = this.resultView.getContinueButton && this.resultView.getContinueButton();
+    if (prevContinueBtn && this._continueBtnHandler) {
+      prevContinueBtn.removeEventListener('click', this._continueBtnHandler);
+      console.log('[LOG] Event handler continueBtn dihapus');
+    }
+    // Remove from return button
+    const prevReturnBtn = this.resultView.getReturnButton && this.resultView.getReturnButton();
+    if (prevReturnBtn && this._returnBtnHandler) {
+      prevReturnBtn.removeEventListener('click', this._returnBtnHandler);
+      console.log('[LOG] Event handler returnBtn dihapus');
+    }
+
+    if (resultData && resultData.isAverage && typeof resultData.avgScore === 'number') {
+      const score = this.resultService.getScoreFromResult({ us_confidence: resultData.avgScore });
+      const motivationalDescription = this.resultService.getMotivationalDescription(score);
+      viewData = {
+        score,
+        motivationalDescription,
+        averageInfo: `Skor rata-rata dari 4 sesi: ${score.toFixed(2)}`
+      };
+      console.log('[LOG] Menampilkan result rata-rata sesi, score:', score, 'viewData:', viewData);
+      this.viewService.animateViewTransition(this.testView, this.resultView, viewData);
+      this.currentView = 'result';
+      // Pasang handler baru
+      const returnBtn = this.resultView.getReturnButton && this.resultView.getReturnButton();
+      this._returnBtnHandler = () => {
+        console.log('[LOG] Tombol kembali ke kategori diklik');
+        if (window.appRouter) {
+          window.appRouter.navigate(`/categories/${this.categoryId}`);
+        } else {
+          window.location.hash = `#/categories/${this.categoryId}`;
+        }
+      };
+      if (returnBtn) {
+        returnBtn.addEventListener('click', this._returnBtnHandler);
+        console.log('[LOG] Event handler returnBtn dipasang');
+      }
+      return;
+    }
+    // Sesi biasa (bukan rata-rata)
+    const score = this.resultService.getScoreFromResult(resultData);
+    const motivationalDescription = this.resultService.getMotivationalDescription(score);
+    viewData = {
+      score,
+      motivationalDescription
+    };
+    console.log('[LOG] Menampilkan result sesi biasa, score:', score, 'viewData:', viewData);
+    this.viewService.animateViewTransition(this.testView, this.resultView, viewData);
+    this.currentView = 'result';
+    // Repeat button (jika ada)
+    const repeatBtn = this.resultView.getRepeatButton && this.resultView.getRepeatButton();
+    if (repeatBtn) {
+      repeatBtn.addEventListener('click', () => {
+        console.log('[LOG] Tombol ulangi sesi diklik');
+        this.backToTest();
+      });
+      console.log('[LOG] Event handler repeatBtn dipasang');
+    }
+    // Continue button
+    const continueBtn = this.resultView.getContinueButton && this.resultView.getContinueButton();
+    if (continueBtn) {
+      console.log('[LOG] continueBtn ditemukan, akan dipasang event handler. Elemen:', continueBtn);
+      // Handler dengan log event
+      this._continueBtnHandler = (e) => {
+        console.log('[LOG] Tombol lanjut sesi berikutnya diklik, event:', e, 'event.type:', e?.type, 'event.isTrusted:', e?.isTrusted, 'event.detail:', e?.detail);
+        this.handleContinueToNextSession();
+      };
+      continueBtn.addEventListener('click', this._continueBtnHandler);
+      console.log('[LOG] Event handler continueBtn dipasang');
+    } else {
+      console.log('[LOG] continueBtn tidak ditemukan setelah render');
+    }
+  }
+
+  async handleContinueToNextSession() {
+    console.log('[LOG] handleContinueToNextSession dipanggil, currentView:', this.currentView, 'sessionRecordings:', this.sessionRecordings.length, 'sessionScores:', this.sessionScores.length, 'sessionCount:', this.sessionCount);
+    console.trace('[TRACE] handleContinueToNextSession dipanggil dari:');
+    this.viewService.animateViewTransition(this.resultView, this.testView);
+    this.currentView = 'test';
+    let nextSessionIdx = this.sessionRecordings.length;
+    if (nextSessionIdx >= this.maxSession) {
+      console.log('[LOG] Reset session karena nextSessionIdx >= maxSession');
+      nextSessionIdx = 0;
+      this.sessionRecordings = [];
+      this.sessionScores = [];
+      this.sessionCount = 0;
+    }
+    if (typeof this.model.getPracticeText === 'function') {
+      try {
+        const practiceText = await this.model.getPracticeText(this.categoryId, this.practiceId, nextSessionIdx);
+        if (practiceText) {
+          console.log('[LOG] Render test baru untuk sesi ke', nextSessionIdx + 1, 'dengan text:', practiceText);
+          this.viewService.renderTest(this.testView, this.resultView, practiceText);
+          this.bindEvents();
+        } else {
+          console.log('[LOG] Tidak ada practiceText ditemukan');
+          this.testView.render('Latihan tidak ditemukan.');
+        }
+      } catch (error) {
+        console.error('[LOG] Error saat memuat latihan:', error);
+        this.testView.render('Terjadi kesalahan saat memuat latihan.');
+      }
+    }
+  }
+
+  backToTest() {
+    console.log('[LOG] backToTest dipanggil, currentView:', this.currentView);
+    this.viewService.animateViewTransition(this.resultView, this.testView);
+    this.currentView = 'test';
+    this.bindEvents();
+  }
+
+  renderTest(practiceText) {
+    console.log('[LOG] renderTest dipanggil, currentView:', this.currentView, 'practiceText:', practiceText);
+    this.viewService.renderTest(this.testView, this.resultView, practiceText);
+  }
+
+  animateViewTransition(fromView, toView, resultData) {
+    this.viewService.animateViewTransition(fromView, toView, resultData);
+  }
+}
+
+export default PracticePresenter;

@@ -1,0 +1,8 @@
+/*
+practice-index.css
+Import seluruh style utama fitur practice agar mudah di-include di view
+*/
+
+@import './practice-test.css';
+@import './practice-result.css';
+@import './practice-shared.css';

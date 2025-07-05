@@ -1,9 +1,0 @@
-/* Fade-in transition for result page */
-.practice-fade-in {
-  animation: practice-fade-in-anim 0.5s cubic-bezier(0.4,0,0.2,1);
-}
-
-@keyframes practice-fade-in-anim {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}

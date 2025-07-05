@@ -1,0 +1,67 @@
+/*
+practice-result.css
+Styling PracticeResultView mengikuti style fitur intro
+*/
+
+.practice-result-ctn {
+  width: 100%;
+  max-width: 480px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.practice-result-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.practice-result-average {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 16px;
+}
+
+.practice-result-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.practice-result-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+  margin-top: 4px;
+}
+
+.practice-continue-btn, .practice-return-btn {
+  padding: 12px 32px;
+  border-radius: 8px;
+  background-color: #4299e1;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  opacity: 1;
+  margin-top: 8px;
+}
+
+.practice-continue-btn:hover, .practice-return-btn:hover {
+  background-color: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(66, 153, 225, 0.4);
+}

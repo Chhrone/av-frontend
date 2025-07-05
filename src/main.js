@@ -11,11 +11,13 @@ import {
   DashboardModel
 } from './features/index.js';
 import {
-  PracticeTestPresenter,
-  PracticeResultPresenter,
+  PracticePresenter,
   PracticeTestModel,
   PracticeResultModel
 } from './features/practice/index.js';
+import { setupMainRoutes, setupIntroRoutes } from './utils/routerSetup.js';
+import { showError } from './utils/errorHandler.js';
+import { setupGlobalCleanup } from './utils/appEvents.js';
 import RecordingManager from './utils/RecordingManager.js';
 import { FooterPresenter } from './shared/index.js';
 import './utils/ViewTransitionHelper.js'; // Initialize View Transition API support
@@ -29,7 +31,7 @@ class App {
     window.router = appRouter;
 
     // Set up error handling
-    appRouter.setErrorHandler(this.showError.bind(this));
+    appRouter.setErrorHandler(showError);
 
     // Initialize models and presenters
     this.introModel = new IntroModel();
@@ -48,9 +50,9 @@ class App {
     this.introRouter = this.hasCompletedIntro ? null : new IntroRouter();
     
     // Set up application routes
-    this.setupMainRoutes();
+    setupMainRoutes(this);
     if (!this.hasCompletedIntro) {
-      this.setupIntroRoutes();
+      setupIntroRoutes(this);
     }
     
     // Start the router if available
@@ -59,107 +61,10 @@ class App {
     }
     
     // Initialize application components
-    this.setupGlobalCleanup();
+    setupGlobalCleanup();
     this.initializeFooter();
   }
 
-  setupMainRoutes() {
-    // Main app routes (non-intro pages)
-    this.mainRouter.addRoute('/dashboard', () => this.showDashboard());
-    this.mainRouter.addRoute('/practice', () => this.showPractice());
-    
-    // Profile route
-    appRouter.addRoute('/profile', () => this.showProfile());
-    
-    // Category routes with parameters
-    appRouter.addRoute('/categories/:categoryId', (params) => {
-      this.showCategory(params);
-    });
-
-    appRouter.addRoute('/practice/:categoryId/:practiceId', (params) => this.showPractice(params));
-    appRouter.addRoute('/practice/:categoryId/:practiceId/result', (params) => {
-      this.showPracticeResult(params);
-    });
-    
-    // Root path - redirect based on intro completion
-    appRouter.addRoute('/', () => {
-      if (this.checkIntroToken()) {
-        // If intro is completed, go to dashboard
-        this.showDashboardDirect();
-      } else if (this.introRouter) {
-        // If intro not completed and intro router exists, let it handle the welcome page
-        window.location.hash = '/welcome';
-      }
-    });
-    
-    // Fallback route - must be last
-    appRouter.addRoute('*', () => {
-      console.warn('AppRouter: No route matched for:', window.location.pathname);
-      this.showError('Halaman tidak ditemukan');
-    });
-  }
-  
-  /**
-   * Check if user should be redirected to dashboard
-   * @private
-   * @returns {boolean} True if redirect occurred
-   */
-  _checkAndRedirectToDashboard() {
-    if (this.checkIntroToken() && window.location.pathname !== '/dashboard') {
-      window.location.href = '/dashboard';
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Handle root path routing
-   * @private
-   */
-  _handleRootPath() {
-    this.hasCompletedIntro = this.checkIntroToken();
-    if (this.hasCompletedIntro) {
-      window.location.href = '/';
-    } else if (window.location.hash !== '#/welcome') {
-      window.location.hash = '/welcome';
-    }
-  }
-
-  setupIntroRoutes() {
-    // Home route
-    this.introRouter.addRoute('/', () => this._handleRootPath());
-
-    // Intro routes with common redirect logic
-    const introRoutes = [
-      { path: '/welcome', handler: () => this.showWelcome() },
-      { path: '/test', handler: () => this.showTest() },
-      { path: '/result', handler: () => this.showResult() },
-      { path: '/splash', handler: () => this.showSplash() }
-    ];
-
-    // Register intro routes with common redirect logic
-    introRoutes.forEach(route => {
-      this.introRouter.addRoute(route.path, () => {
-        if (!this._checkAndRedirectToDashboard()) {
-          route.handler();
-        }
-      });
-    });
-    
-    // Dashboard route in intro router (for redirection after intro flow)
-    this.introRouter.addRoute('/dashboard', () => {
-      this.setIntroToken();
-      this.showDashboardDirect();
-    });
-    
-    // Fallback route for intro router - redirect to welcome
-    this.introRouter.addRoute('*', () => {
-      if (!this._checkAndRedirectToDashboard() && window.location.hash !== '#/welcome') {
-        window.location.hash = '/welcome';
-      }
-    });
-  }
-  
   showProfile() {
     // Implement profile view logic here
     console.log('Showing profile page');
@@ -167,41 +72,6 @@ class App {
   }
 
   // Show category page
-  /**
-   * Show error message to user
-   * @param {string|Error} message - Error message or Error object
-   * @param {string} [title='Terjadi Kesalahan'] - Optional error title
-   */
-  showError(message, title = 'Terjadi Kesalahan') {
-    const errorMessage = message instanceof Error ? message.message : String(message);
-    const appContainer = document.getElementById('app');
-    
-    if (!appContainer) {
-      console.error('App container not found');
-      return;
-    }
-
-    try {
-      appContainer.innerHTML = `
-        <div class="error-container" style="text-align: center; padding: 2rem;">
-          <h2>${title}</h2>
-          <p>${errorMessage}</p>
-          <button 
-            onclick="window.history.back()" 
-            class="error-button"
-            style="padding: 0.5rem 1rem; margin-top: 1rem; cursor: pointer;"
-          >
-            Kembali
-          </button>
-        </div>
-      `;
-    } catch (error) {
-      console.error('Failed to render error:', error);
-    }
-    
-    console.error('Application Error:', errorMessage);
-  }
-
   showCategory(params) {
     console.log('Navigating to category with params:', params);
     this.destroyCurrentPresenter();
@@ -213,7 +83,7 @@ class App {
       if (!categoryId) {
         const errorMsg = 'ID kategori tidak ditemukan';
         console.error(errorMsg, params);
-        this.showError(errorMsg);
+        showError(errorMsg);
         return;
       }
       
@@ -238,16 +108,16 @@ class App {
             console.log('Category presenter initialized for:', categoryId);
           } catch (initError) {
             console.error('Error initializing category presenter:', initError);
-            this.showError('Gagal memuat konten kategori');
+            showError('Gagal memuat konten kategori');
           }
         })
         .catch(error => {
           console.error('Error loading category module:', error);
-          this.showError('Gagal memuat modul kategori');
+          showError('Gagal memuat modul kategori');
         });
     } catch (error) {
       console.error('Unexpected error in showCategory:', error);
-      this.showError('Terjadi kesalahan tak terduga');
+      showError('Terjadi kesalahan tak terduga');
     }
   }
 
@@ -258,9 +128,16 @@ class App {
       if (!categoryId || !practiceId) {
         throw new Error('Category ID atau Practice ID tidak ditemukan');
       }
+      // Destroy presenter lama
+      this.destroyCurrentPresenter();
+      // Bersihkan root container
+      const appContainer = document.getElementById('app');
+      if (appContainer) {
+        appContainer.innerHTML = '';
+      }
+      // Inisialisasi presenter baru
       const normalizedCategoryId = categoryId === 'konsonan' ? 'konsonan-inventory' : categoryId;
-      // Show test view first, then you can show result view after recording is done
-      const testPresenter = new PracticeTestPresenter(this.practiceTestModel, normalizedCategoryId, practiceId);
+      const testPresenter = new PracticePresenter(this.practiceTestModel, normalizedCategoryId, practiceId);
       await testPresenter.init();
       this.currentPresenter = testPresenter;
       // Example: to show result after test, you can call PracticeResultPresenter
@@ -268,7 +145,7 @@ class App {
       // resultPresenter.showResult(resultData);
     } catch (error) {
       console.error('Error showing practice page:', error);
-      this.showError('Gagal memuat halaman latihan. ' + (error.message || ''));
+      showError('Gagal memuat halaman latihan. ' + (error.message || ''));
     }
   }
 
@@ -283,7 +160,7 @@ class App {
       this.currentPresenter = resultPresenter;
     } catch (error) {
       console.error('Error showing practice result:', error);
-      this.showError('Gagal memuat hasil latihan. ' + (error.message || ''));
+      showError('Gagal memuat hasil latihan. ' + (error.message || ''));
     }
   }
 
@@ -358,22 +235,6 @@ class App {
   // Fungsi untuk hapus token intro (untuk reset/testing)
   removeIntroToken() {
     localStorage.removeItem('aurea_intro_completed');
-  }
-
-  setupGlobalCleanup() {
-    window.addEventListener('beforeunload', () => {
-      RecordingManager.forceStop();
-    });
-
-    window.addEventListener('pagehide', () => {
-      RecordingManager.forceStop();
-    });
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        RecordingManager.forceStop();
-      }
-    });
   }
 
   destroyCurrentPresenter() {

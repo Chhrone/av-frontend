@@ -9,6 +9,10 @@ export const ROUTES = {
   CATEGORY: '/category',
   PROFILE: '/profile',
   SETTINGS: '/settings',
+  PRACTICE: '/practice',
+  CATEGORIES_DYNAMIC: '/categories/:categoryId',
+  PRACTICE_DYNAMIC: '/practice/:categoryId/:practiceId',
+  PRACTICE_RESULT_DYNAMIC: '/practice/:categoryId/:practiceId/result',
   
   // Auth routes
   LOGIN: '/login',
