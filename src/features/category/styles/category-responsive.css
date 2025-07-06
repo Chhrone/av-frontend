@@ -1,3 +1,4 @@
+@import url('../../../styles/color-global.css');
 /* AureaVoice Category Responsive Styles */
 
 /* Tablet Styles */
@@ -38,28 +39,35 @@
   .category-banner {
     padding: 2rem 1rem;
     margin-bottom: 1.5rem;
+    background: var(--color-bg-banner);
+    color: var(--color-text-main);
   }
   
   .banner-title {
     font-size: 1.75rem;
+    color: var(--color-text-main);
   }
   
   .banner-subtitle {
     font-size: 0.875rem;
+    color: var(--color-text-secondary);
   }
   
   .banner-img {
     height: 150px;
+    box-shadow: var(--color-banner-img-shadow);
   }
   
   .category-layout {
     padding: 0 0.75rem 1.5rem;
     gap: 1rem;
+    background: var(--color-bg-main);
   }
   
   .section-title {
     font-size: 1.25rem;
     margin-bottom: 1rem;
+    color: var(--color-text-main);
   }
   
   .material-section,
@@ -71,10 +79,14 @@
 
   .material-article {
     padding: 1.25rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-card);
+    box-shadow: var(--color-shadow);
   }
 
   .material-title {
     font-size: 1.5rem;
+    color: var(--color-text-main);
   }
 
   .material-meta {
@@ -85,10 +97,12 @@
 
   .material-content h2 {
     font-size: 1.25rem;
+    color: var(--color-text-main);
   }
 
   .material-content h3 {
     font-size: 1.125rem;
+    color: var(--color-text-main);
   }
   
   .pronunciation-grid,
@@ -99,10 +113,14 @@
   
   .pronunciation-card {
     padding: 1rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border-card);
+    box-shadow: var(--color-shadow);
   }
   
   .word-text {
     font-size: 1.125rem;
+    color: var(--color-text-main);
   }
   
   .pronunciation-controls {
@@ -113,6 +131,8 @@
   
   .play-button {
     justify-content: center;
+    background: var(--color-primary);
+    color: white;
   }
 }
 

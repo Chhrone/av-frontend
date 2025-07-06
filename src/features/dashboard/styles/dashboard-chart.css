@@ -1,3 +1,4 @@
+@import url('../../../styles/color-global.css');
 /* Dashboard Chart Styles */
 
 /* Chart Container */
@@ -23,7 +24,7 @@
   align-items: center;
   justify-content: center;
   height: 300px;
-  color: #64748b;
+  color: var(--color-slate-600);
   font-size: 0.875rem;
 }
 
@@ -31,8 +32,8 @@
   content: '';
   width: 16px;
   height: 16px;
-  border: 2px solid #e2e8f0;
-  border-top: 2px solid #0079FF;
+  border: 2px solid var(--color-slate-200);
+  border-top: 2px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-right: 0.5rem;
@@ -49,7 +50,7 @@
   align-items: center;
   justify-content: center;
   height: 300px;
-  color: #ef4444;
+  color: var(--color-red);
   font-size: 0.875rem;
   text-align: center;
   flex-direction: column;

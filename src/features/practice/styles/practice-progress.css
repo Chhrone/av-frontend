@@ -1,6 +1,7 @@
+@import url('../../../styles/color-global.css');
 /*
 practice-progress.css
-Progress bar for session indicator in PracticeTestView
+Progress bar for session indicator in PracticeTestView, now using color-global
 */
 
 .practice-session-progress-bar {
@@ -9,24 +10,24 @@ Progress bar for session indicator in PracticeTestView
   left: 0;
   width: 100vw;
   height: 4px;
-  background: rgba(230,230,230,0.85);
+  background: var(--color-bg-card-alt);
   z-index: 1000;
   display: flex;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  box-shadow: var(--color-shadow);
 }
 .practice-session-progress-segment {
   flex: 1 1 0;
   height: 100%;
-  background: #e2e8f0;
+  background: var(--color-slate-200);
   transition: background 0.3s;
-  border-right: 1px solid #fff;
+  border-right: 1px solid var(--color-white);
 }
 .practice-session-progress-segment:last-child {
   border-right: none;
 }
 .practice-session-progress-segment.active {
-  background: #006bcf;
+  background: var(--color-primary);
 }
 .practice-session-progress-segment.completed {
-  background: #002950;
+  background: var(--color-primary-dark);
 }

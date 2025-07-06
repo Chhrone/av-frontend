@@ -9,7 +9,7 @@ class DashboardPresenter {
     this.view = null;
     this.chart = null;
     this.navbar = new NavbarPresenter();
-    this.footerPresenter = null;
+    // this.footerPresenter = null;
   }
 
   init() {
@@ -48,8 +48,7 @@ class DashboardPresenter {
       this.navbar.view.bindScrollEvent();
     }
 
-    // Footer tidak perlu dimount ke dashboardContainer, cukup di luar (body/app) oleh App
-    // (Bagian ini dikosongkan agar tidak ada footer di dalam dashboard-container)
+    // Footer initialization removed
 
     // Initialize chart after view is rendered
     this.initializeChart();
@@ -69,10 +68,10 @@ class DashboardPresenter {
     if (this.navbar) {
       this.navbar.destroy();
     }
-    if (this.footerPresenter) {
-      this.footerPresenter.destroy();
-      this.footerPresenter = null;
-    }
+    // if (this.footerPresenter) {
+    //   this.footerPresenter.destroy();
+    //   this.footerPresenter = null;
+    // }
     document.body.classList.remove('dashboard-mode');
   }
 
@@ -88,10 +87,19 @@ class DashboardPresenter {
       this.chart.destroy();
     }
 
-    const brandColors = {
-      brightBlue: '#0079FF',
-      deepBlue: '#004AAD',
-    };
+    // Ambil warna dari CSS variable global
+    const cssVars = getComputedStyle(document.documentElement);
+    const colorPrimary = cssVars.getPropertyValue('--color-primary').trim();
+    const colorPrimaryDark = cssVars.getPropertyValue('--color-primary-dark').trim();
+    const colorPrimaryLight = cssVars.getPropertyValue('--color-primary-light').trim();
+    const colorPrimaryShadow = cssVars.getPropertyValue('--color-primary-shadow').trim();
+    const colorText = cssVars.getPropertyValue('--color-text-main').trim();
+    const colorTextSecondary = cssVars.getPropertyValue('--color-text-secondary').trim();
+    const colorBgGrid = cssVars.getPropertyValue('--color-slate-100').trim();
+    const colorTooltipBg = cssVars.getPropertyValue('--color-slate-800').trim();
+    const colorTooltipTitle = cssVars.getPropertyValue('--color-bg-card-alt').trim();
+    const colorTooltipBody = cssVars.getPropertyValue('--color-bg-card-alt').trim();
+    const colorTooltipBorder = cssVars.getPropertyValue('--color-text-muted').trim();
 
     this.chart = new Chart(progressCtx.getContext('2d'), {
       type: 'line',
@@ -100,11 +108,11 @@ class DashboardPresenter {
         datasets: [{
           label: 'Skor Aksen',
           data: [75, 78, 77, 80, 82],
-          backgroundColor: 'rgba(0, 121, 255, 0.1)',
-          borderColor: brandColors.brightBlue,
+          backgroundColor: colorPrimaryLight,
+          borderColor: colorPrimary,
           tension: 0.4,
           fill: true,
-          pointBackgroundColor: brandColors.deepBlue,
+          pointBackgroundColor: colorPrimaryDark,
           pointRadius: 5,
           pointHoverRadius: 7
         }]
@@ -120,11 +128,11 @@ class DashboardPresenter {
           x: {
             grid: {
               display: true,
-              color: '#f1f5f9',
+              color: colorBgGrid,
               lineWidth: 1
             },
             ticks: {
-              color: '#64748b',
+              color: colorTextSecondary,
               font: {
                 size: 14
               },
@@ -137,11 +145,11 @@ class DashboardPresenter {
             max: 100,
             grid: {
               display: true,
-              color: '#f1f5f9',
+              color: colorBgGrid,
               lineWidth: 1
             },
             ticks: {
-              color: '#64748b',
+              color: colorTextSecondary,
               font: {
                 size: 14
               },
@@ -158,10 +166,10 @@ class DashboardPresenter {
             display: false
           },
           tooltip: {
-            backgroundColor: '#1e293b',
-            titleColor: '#f8fafc',
-            bodyColor: '#f8fafc',
-            borderColor: '#475569',
+            backgroundColor: colorTooltipBg,
+            titleColor: colorTooltipTitle,
+            bodyColor: colorTooltipBody,
+            borderColor: colorTooltipBorder,
             borderWidth: 1,
             cornerRadius: 8,
             displayColors: false,

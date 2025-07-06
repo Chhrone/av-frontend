@@ -1,3 +1,4 @@
+@import url('../../../styles/color-global.css');
 /* Dashboard Navigation Styles */
 
 /* Navigation */
@@ -22,8 +23,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
-  box-shadow: 0 4px 20px rgba(0, 121, 255, 0.3);
+  background: var(--color-primary-gradient);
+  box-shadow: 0 4px 20px var(--color-primary-shadow);
   border: none;
   border-radius: 0.75rem;
   transition: all 0.3s ease-in-out;
@@ -33,8 +34,8 @@
 .nav-container.scrolled {
   margin: 10px auto 8px auto;
   max-width: 1000px;
-  background: linear-gradient(135deg, #0079FF 0%, #004AAD 100%);
-  box-shadow: 0 4px 20px rgba(0, 121, 255, 0.4);
+  background: var(--color-primary-gradient);
+  box-shadow: 0 4px 20px var(--color-primary-shadow-strong);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 1rem;
@@ -43,7 +44,7 @@
 
 .nav-logo {
   font-size: 1.5rem;
-  font-weight: 300;
+  font-weight: bold;
   text-shadow: none;
 }
 
@@ -52,7 +53,7 @@
 }
 
 .nav-logo-voice {
-  color: #fbbf24; /* golden color */
+  color: var(--color-secondary);
 }
 
 /* Navigation buttons */
@@ -64,7 +65,7 @@
 
 .nav-button {
   background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  color: var(--color-white);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   text-decoration: none;

@@ -140,6 +140,16 @@ class DashboardView {
       </main>
     `;
 
+    // Mount footer langsung di dashboard-container
+    // Hapus footer lama jika ada
+    const existingFooter = this.container.querySelector('#footer');
+    if (existingFooter) existingFooter.remove();
+    // Import FooterPresenter secara dinamis agar tidak circular
+    import('../../../shared/index.js').then(({ FooterPresenter }) => {
+      const footerPresenter = new FooterPresenter();
+      footerPresenter.mount(this.container);
+    });
+
     // Append to app container instead of body
     if (appContainer) {
       appContainer.appendChild(this.container);

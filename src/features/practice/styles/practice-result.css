@@ -1,15 +1,16 @@
+@import url('../../../styles/color-global.css');
 /*
 practice-result.css
-Styling PracticeResultView mengikuti style fitur intro
+Styling PracticeResultView mengikuti style fitur intro dan color-global
 */
 
 .practice-result-ctn {
   width: 100%;
   max-width: 480px;
   margin: 32px auto;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  box-shadow: var(--color-shadow);
   padding: 32px 24px 24px 24px;
   display: flex;
   flex-direction: column;
@@ -27,20 +28,20 @@ Styling PracticeResultView mengikuti style fitur intro
 .practice-result-average {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #1976d2;
+  color: var(--color-primary-dark);
   margin-bottom: 16px;
 }
 
 .practice-result-text {
   font-size: 1.2rem;
   font-weight: 500;
-  color: #222;
+  color: var(--color-text-main);
   margin-bottom: 16px;
 }
 
 .practice-result-description {
   font-size: 1rem;
-  color: #555;
+  color: var(--color-text-secondary);
   margin-bottom: 20px;
   margin-top: 4px;
 }
@@ -48,20 +49,20 @@ Styling PracticeResultView mengikuti style fitur intro
 .practice-continue-btn, .practice-return-btn {
   padding: 12px 32px;
   border-radius: 8px;
-  background-color: #4299e1;
+  background-color: var(--color-primary);
   border: none;
   cursor: pointer;
-  color: white;
+  color: var(--color-white);
   font-size: 1.1rem;
   font-weight: 500;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  box-shadow: var(--color-shadow-hover);
   opacity: 1;
   margin-top: 8px;
 }
 
 .practice-continue-btn:hover, .practice-return-btn:hover {
-  background-color: #3182ce;
+  background-color: var(--color-primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(66, 153, 225, 0.4);
+  box-shadow: 0 8px 24px var(--color-primary-shadow-strong);
 }

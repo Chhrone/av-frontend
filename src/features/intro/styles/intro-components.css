@@ -1,8 +1,9 @@
+@import url('../../../styles/color-global.css');
 /* Processing state: yellow background, spinner handled in JS */
 .intro-microphone-btn.intro-processing {
-  background: #f6e05e;
-  box-shadow: 0 0 0 4px rgba(246, 224, 94, 0.15);
-  color: #fff;
+  background: var(--color-secondary);
+  box-shadow: 0 0 0 4px var(--color-secondary-light);
+  color: var(--color-white);
   opacity: 0.7;
   pointer-events: none;
   position: relative;
@@ -12,8 +13,8 @@
 .intro-mic-spinner {
   width: 28px;
   height: 28px;
-  border: 3px solid #fff;
-  border-top: 3px solid #b7791f;
+  border: 3px solid var(--color-white);
+  border-top: 3px solid var(--color-secondary-mid);
   border-radius: 50%;
   animation: intro-mic-spin 0.8s linear infinite;
   margin: 0 auto;
@@ -34,23 +35,23 @@
   justify-content: center;
   margin-top: 32px;
   transition: box-shadow 0.2s, transform 0.2s;
-  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.2), 0 0px 4px rgba(0,0,0,0.2);
+  box-shadow: var(--color-shadow);
   border-radius: 50%;
   width: 56px;
   height: 56px;
   padding: 0;
-  background: #fff;
+  background: var(--color-bg-card);
 }
 
 .intro-microphone-btn:hover {
-  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.2), 0 0px 4px rgba(0,0,0,0.5);
+  box-shadow: var(--color-shadow-hover);
   transform: translateY(-4px) scale(1.07);
 }
 
 .intro-round-shadow {
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.18), 0 1.5px 4px rgba(0,0,0,0.08);
+  background: var(--color-bg-card);
+  box-shadow: var(--color-shadow);
   width: 56px;
   height: 56px;
   padding: 0;
@@ -59,15 +60,15 @@
 .intro-microphone-icon {
   width: 32px;
   height: 32px;
-  color: #4299e1;
+  color: var(--color-primary);
   transition: color 0.2s;
 }
 
 /* Recording Duration Display */
 .intro-recording-duration {
   position: relative;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
+  background: var(--color-slate-800);
+  color: var(--color-white);
   margin-top: 20px;
   padding: 6px 18px;
   border-radius: 16px;
@@ -76,7 +77,7 @@
   font-weight: bold;
   z-index: 2;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border-light);
   width: max-content;
   opacity: 1;
   transform: translateY(0);
@@ -103,19 +104,18 @@
 .intro-try-again-button {
   padding: 12px 32px;
   border-radius: 8px;
-  background-color: #4299e1;
+  background-color: var(--color-primary);
   border: none;
   cursor: pointer;
-  color: white;
+  color: var(--color-white);
   font-size: 1.1rem;
   font-weight: 500;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  box-shadow: var(--color-shadow-hover);
   opacity: 1;
 }
-
 .intro-try-again-button:hover {
-  background-color: #3182ce;
+  background-color: var(--color-primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(66, 153, 225, 0.4);
+  box-shadow: 0 8px 24px var(--color-primary-shadow-strong);
 }

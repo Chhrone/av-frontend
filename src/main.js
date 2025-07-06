@@ -41,7 +41,7 @@ class App {
     this.practiceTestModel = new PracticeTestModel();
     this.practiceResultModel = new PracticeResultModel();
     this.currentPresenter = null;
-    this.footer = new FooterPresenter();
+    // this.footer = new FooterPresenter();
     this.isFromIntroFlow = false;
     
     // Check intro completion status
@@ -63,7 +63,7 @@ class App {
     
     // Initialize application components
     setupGlobalCleanup();
-    this.initializeFooter();
+    // this.initializeFooter();
   }
 
   showProfile() {
@@ -258,32 +258,6 @@ class App {
       this.currentPresenter.destroy();
       this.currentPresenter = null;
     }
-  }
-
-  initializeFooter() {
-    // Only mount footer if not on welcome page
-    const isWelcome = window.location.hash === '#/welcome' || window.location.hash === '';
-    if (!isWelcome) {
-      this.footer.mount(document.body);
-    } else {
-      // Remove if exists
-      if (document.getElementById('footer')) {
-        document.getElementById('footer').remove();
-      }
-    }
-    // Listen to hashchange to update footer visibility
-    window.addEventListener('hashchange', () => {
-      const isWelcomeNow = window.location.hash === '#/welcome' || window.location.hash === '';
-      if (isWelcomeNow) {
-        if (document.getElementById('footer')) {
-          document.getElementById('footer').remove();
-        }
-      } else {
-        if (!document.getElementById('footer')) {
-          this.footer.mount(document.body);
-        }
-      }
-    });
   }
 
   // Method to navigate to a specific route

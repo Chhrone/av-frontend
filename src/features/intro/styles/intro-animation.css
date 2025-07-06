@@ -1,12 +1,14 @@
+
+@import url('../../../styles/color-global.css');
 /* Microphone recording state styles (moved from intro-components.css) */
 .intro-microphone-btn.intro-recording {
-  background: #780404;
-  box-shadow: 0 0 0 4px rgba(245, 101, 101, 0.15);
-  color: #fff;
+  background: var(--color-red);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+  color: var(--color-white);
   animation: intro-breathing 1.4s infinite ease-in-out;
 }
 .intro-microphone-btn.intro-recording .intro-microphone-icon {
-  color: #fff;
+  color: var(--color-white);
 }
 
 /* Breathing animation for microphone button */
