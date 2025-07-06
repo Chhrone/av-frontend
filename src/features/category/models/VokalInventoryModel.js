@@ -3,7 +3,7 @@
 class VokalInventoryModel {
   constructor() {
     this.data = {
-      id: 'vokal',
+      id: 'inventaris-vokal',
       title: 'Inventaris Vokal',
       description: 'Pelajari pelafalan vokal dalam bahasa Inggris secara lengkap.',
       banner: {

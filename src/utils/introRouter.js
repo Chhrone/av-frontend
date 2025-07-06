@@ -122,7 +122,8 @@ class IntroRouter {
       if (hash === '/splash') {
         // After splash, navigate to dashboard
         setTimeout(() => {
-          this.navigate('/dashboard');
+          // Gunakan pathname agar AppRouter yang handle, bukan hash
+          window.location.pathname = '/dashboard';
         }, 2000);
         return;
       }

@@ -8,9 +8,11 @@ class CategoryModel {
   }
 
   async setCurrentCategory(categoryId) {
-    this.currentCategory = categoryId;
+    // Normalisasi categoryId ke dash-case
+    const normalizedCategoryId = categoryId.replace(/_/g, '-');
+    this.currentCategory = normalizedCategoryId;
     try {
-      await this.loadCategoryData(categoryId);
+      await this.loadCategoryData(normalizedCategoryId);
       return this.categoryData;
     } catch (error) {
       console.error('Error setting current category:', error);
@@ -52,19 +54,22 @@ class CategoryModel {
 
   async getModelForCategory(categoryId) {
     try {
-      // Map URL-friendly names to model names
+      // Map dash-case category IDs to model keys
       const categoryMap = {
         'inventaris-vokal': 'vokal',
         'inventaris-konsonan': 'konsonan',
         'struktur-suku-kata': 'suku-kata',
         'penekanan-kata': 'penekanan',
         'irama-bahasa': 'irama',
-        'skenario-dunia-nyata': 'skenario'
+        'skenario-dunia-nyata': 'skenario',
+        
       };
 
-      // Get the model key, falling back to the original categoryId if not found
-      const modelKey = categoryMap[categoryId] || categoryId;
-      
+      // Normalisasi categoryId ke dash-case
+      const dashCategoryId = categoryId.replace(/_/g, '-');
+      // Get the model key, falling back to the original dash-case categoryId if not found
+      const modelKey = categoryMap[dashCategoryId] || dashCategoryId;
+
       // Dynamically import the module based on the model key
       let module;
       switch(modelKey) {
@@ -89,7 +94,7 @@ class CategoryModel {
         default:
           return null;
       }
-      
+
       return module.default || null;
     } catch (e) {
       console.error('Error loading model for category:', categoryId, e);
@@ -107,9 +112,11 @@ class CategoryModel {
       'irama-bahasa': 'irama',
       'skenario-dunia-nyata': 'skenario',
     };
-    
-    const key = mapKey[categoryId] || categoryId;
-    
+
+    // Normalisasi categoryId ke dash-case
+    const dashCategoryId = categoryId.replace(/_/g, '-');
+    const key = mapKey[dashCategoryId] || dashCategoryId;
+
     // Return mock data for the specific category or fallback to default
     if (key === 'pronunciation') {
       return {

@@ -1,7 +1,7 @@
 // Model untuk Penekanan Kata
 
 const PenekananKataModel = {
-  id: 'penekanan_kata',
+  id: 'penekanan-kata',
   title: 'Penekanan Kata',
   description: 'Penekanan kata adalah "detak jantung" dari sebuah kata dalam Bahasa Inggris. Menguasainya akan mengubah pelafalan dari datar menjadi dinamis dan alami, serta memastikan makna tersampaikan dengan benar.',
   banner: {

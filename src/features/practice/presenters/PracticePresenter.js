@@ -61,6 +61,7 @@ class PracticePresenter {
       const practiceText = await this.model.getPracticeText(this.categoryId, this.practiceId);
       if (practiceText) {
         this.renderTest(practiceText);
+        this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
         this.bindEvents();
       } else {
         this.testView.render('Latihan tidak ditemukan.');
@@ -97,6 +98,10 @@ class PracticePresenter {
         recordButton.removeEventListener('keydown', this._recordButtonKeydownHandler);
       }
     }
+    // Hapus progress bar jika ada
+    if (this.testView && typeof this.testView.removeSessionProgress === 'function') {
+      this.testView.removeSessionProgress();
+    }
   }
 
   async toggleRecording() {
@@ -106,6 +111,7 @@ class PracticePresenter {
       if (this.recordingService.isRecording) {
         this.recordingService.startRecordingTimer((duration) => this.testView.setRecordingDuration(duration));
         this.sessionCount += 1;
+        this.testView.renderSessionProgress(this.sessionCount, this.maxSession);
         const startLog = {
           session: this.sessionCount,
           type: 'mulai',
@@ -154,6 +160,8 @@ class PracticePresenter {
                 this.sessionScores,
                 avgScore
               );
+              // Tampilkan progress bar full sebelum result rata-rata
+              this.testView.renderSessionProgress(this.maxSession, this.maxSession);
               this.showResultView({
                 ...result,
                 isAverage: true,
@@ -165,6 +173,7 @@ class PracticePresenter {
               return;
             }
             this.showResultView(result);
+            this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
           }
         } catch (error) {
           console.error('Error stopping recording:', error);
@@ -182,6 +191,10 @@ class PracticePresenter {
   }
 
   showResultView(resultData) {
+    // Hapus progress bar saat masuk ke result view
+    if (this.testView && typeof this.testView.removeSessionProgress === 'function') {
+      this.testView.removeSessionProgress();
+    }
     let viewData = {};
     // Logging perpindahan ke result view
     console.log('[LOG] showResultView dipanggil, resultData:', resultData);
@@ -296,12 +309,14 @@ class PracticePresenter {
     console.log('[LOG] backToTest dipanggil, currentView:', this.currentView);
     this.viewService.animateViewTransition(this.resultView, this.testView);
     this.currentView = 'test';
+    this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
     this.bindEvents();
   }
 
   renderTest(practiceText) {
     console.log('[LOG] renderTest dipanggil, currentView:', this.currentView, 'practiceText:', practiceText);
     this.viewService.renderTest(this.testView, this.resultView, practiceText);
+    this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
   }
 
   animateViewTransition(fromView, toView, resultData) {

@@ -1,4 +1,5 @@
 import { appRouter } from './utils/appRouter.js';
+import { seedIfNeeded } from './utils/database/seedDB.js';
 import IntroRouter from './utils/introRouter.js';
 import {
   WelcomePresenter,
@@ -135,8 +136,11 @@ class App {
       if (appContainer) {
         appContainer.innerHTML = '';
       }
-      // Inisialisasi presenter baru
-      const normalizedCategoryId = categoryId === 'konsonan' ? 'konsonan-inventory' : categoryId;
+      // Normalisasi categoryId ke dash-case (dan khusus konsonan)
+      let normalizedCategoryId = categoryId.replace(/_/g, '-');
+      if (normalizedCategoryId === 'konsonan') {
+        normalizedCategoryId = 'konsonan-inventory';
+      }
       const testPresenter = new PracticePresenter(this.practiceTestModel, normalizedCategoryId, practiceId);
       await testPresenter.init();
       this.currentPresenter = testPresenter;
@@ -193,6 +197,7 @@ class App {
   }
 
   showDashboard() {
+    console.log('[App] showDashboard dipanggil, isFromIntroFlow:', this.isFromIntroFlow);
     // Show splash screen only if coming from intro flow
     if (this.isFromIntroFlow) {
       this.isFromIntroFlow = false; // Reset flag
@@ -211,6 +216,7 @@ class App {
   }
 
   showDashboardDirect() {
+    console.log('[App] showDashboardDirect dipanggil');
     this.destroyCurrentPresenter();
     this.currentPresenter = new DashboardPresenter(this.dashboardModel);
     this.currentPresenter.init();
@@ -232,9 +238,19 @@ class App {
     localStorage.setItem('aurea_intro_completed', '1');
   }
 
+
   // Fungsi untuk hapus token intro (untuk reset/testing)
   removeIntroToken() {
     localStorage.removeItem('aurea_intro_completed');
+  }
+
+  // Method untuk cek dan redirect ke dashboard jika sudah selesai intro
+  _checkAndRedirectToDashboard() {
+    if (this.checkIntroToken()) {
+      window.location.pathname = '/dashboard';
+      return true;
+    }
+    return false;
   }
 
   destroyCurrentPresenter() {
@@ -295,32 +311,36 @@ class App {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new App();
 
-  // Make app available globally for testing/debugging
-  window.aureaVoiceApp = app;
+  // Seed DB jika perlu sebelum inisialisasi app
+  seedIfNeeded().then(() => {
+    const app = new App();
 
-  // Make router globally accessible for DashboardView
-  window.router = app.router;
+    // Make app available globally for testing/debugging
+    window.aureaVoiceApp = app;
 
-  // Add global helpers for testing
-  window.simulateIntroFlow = () => {
-    app.simulateIntroFlow();
-    console.log('🎬 Intro flow simulated - next dashboard navigation will show splash');
-  };
+    // Make router globally accessible for DashboardView
+    window.router = app.router;
 
-  window.forceShowSplash = () => {
-    app.forceShowSplash();
-    console.log('🎬 Splash screen forced');
-  };
+    // Add global helpers for testing
+    window.simulateIntroFlow = () => {
+      app.simulateIntroFlow();
+      console.log('🎬 Intro flow simulated - next dashboard navigation will show splash');
+    };
 
-  // Tambahkan global helper untuk reset intro agar user bisa mengulang intro flow
-  window.resetIntro = () => {
-    // Hapus token intro dari localStorage/sessionStorage
-    app.removeIntroToken();
-    app.hasCompletedIntro = false;
-    // Navigasi ke root agar intro muncul lagi
-    app.router.navigate('');
-    console.log('🔄 Intro flow direset, reload halaman utama untuk melihat intro.');
-  };
+    window.forceShowSplash = () => {
+      app.forceShowSplash();
+      console.log('🎬 Splash screen forced');
+    };
+
+    // Tambahkan global helper untuk reset intro agar user bisa mengulang intro flow
+    window.resetIntro = () => {
+      // Hapus token intro dari localStorage/sessionStorage
+      app.removeIntroToken();
+      app.hasCompletedIntro = false;
+      // Navigasi ke root agar intro muncul lagi
+      app.router.navigate('');
+      console.log('🔄 Intro flow direset, reload halaman utama untuk melihat intro.');
+    };
+  });
 });

@@ -4,15 +4,18 @@ class DashboardView {
   }
 
   render() {
+    console.log('[DashboardView] render() dipanggil');
     // Clear the app container and replace its content
     const appContainer = document.getElementById('app');
     if (appContainer) {
       appContainer.innerHTML = '';
+      console.log('[DashboardView] appContainer.innerHTML dikosongkan');
     }
 
     // Clean up existing container if it exists
     if (this.container) {
       this.container.remove();
+      console.log('[DashboardView] this.container dihapus dari DOM');
     }
 
     this.container = document.createElement('div');
@@ -140,8 +143,10 @@ class DashboardView {
     // Append to app container instead of body
     if (appContainer) {
       appContainer.appendChild(this.container);
+      console.log('[DashboardView] this.container ditambahkan ke appContainer');
     } else {
       document.body.appendChild(this.container);
+      console.log('[DashboardView] this.container ditambahkan ke body');
     }
 
     return this.container;
@@ -245,6 +250,7 @@ class DashboardView {
   }
 
   destroy() {
+    console.log('[DashboardView] destroy() dipanggil');
     // Clean up event listeners
     this.unbindEvents();
     
@@ -252,11 +258,13 @@ class DashboardView {
     const appContainer = document.getElementById('app');
     if (appContainer) {
       appContainer.innerHTML = '';
+      console.log('[DashboardView] appContainer.innerHTML dikosongkan (destroy)');
     }
 
     // Remove container from DOM
     if (this.container?.parentNode) {
       this.container.parentNode.removeChild(this.container);
+      console.log('[DashboardView] this.container dihapus dari DOM (destroy)');
     }
     
     // Clean up references

@@ -6,18 +6,15 @@ class FooterView {
   render(data) {
     this.element = document.createElement('footer');
     this.element.id = 'footer';
-    
     this.element.innerHTML = `
       <div class="footer-wrapper">
         <div class="container">
           <div class="footer-background-text">${data.backgroundText}</div>
-          
           <div class="footer-content">
             <div class="footer-section footer-brand">
               <h3 class="footer-brand-title">${data.brandName}</h3>
               <p class="footer-description">${data.description}</p>
             </div>
-
             <div class="footer-section">
               <h3 class="footer-title">Internal</h3>
               <ul class="footer-links">
@@ -26,7 +23,6 @@ class FooterView {
                 ).join('')}
               </ul>
             </div>
-
             <div class="footer-section">
               <h3 class="footer-title">Komunitas</h3>
               <ul class="footer-links">
@@ -35,7 +31,6 @@ class FooterView {
                 ).join('')}
               </ul>
             </div>
-
             <div class="footer-section">
               <h3 class="footer-title">Resources</h3>
               <ul class="footer-links">
@@ -45,9 +40,6 @@ class FooterView {
               </ul>
             </div>
           </div>
-
-          
-
           <div class="footer-bottom">
             <div class="copyright">
               <p>${data.copyrightText}</p>
@@ -56,16 +48,17 @@ class FooterView {
         </div>
       </div>
     `;
-
+    console.log('[FooterView] render() dipanggil, element:', this.element);
     return this.element;
   }
 
   mount(container) {
     if (!this.element) {
-      console.error('Footer element not rendered yet. Call render() first.');
+      console.error('[FooterView] Footer element not rendered yet. Call render() first.');
       return;
     }
     container.appendChild(this.element);
+    console.log('[FooterView] mount() dipanggil, footer dimasukkan ke:', container);
   }
 
   unmount() {

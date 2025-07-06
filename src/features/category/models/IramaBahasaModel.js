@@ -1,7 +1,7 @@
 // Model untuk Irama Bahasa
 
 const IramaBahasaModel = {
-  id: 'irama_bahasa',
+  id: 'irama-bahasa',
   title: 'Irama Bahasa',
   description: 'Irama dan intonasi adalah puncak dari piramida pelafalan. Menguasai elemen ini adalah kunci untuk menciptakan musik bahasa yang mengalir secara alami dan tidak terdengar "asing" atau kaku.',
   banner: {

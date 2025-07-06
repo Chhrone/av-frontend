@@ -1,7 +1,7 @@
 // Model untuk Struktur Suku Kata
 
 const SukuKataStructureModel = {
-  id: 'struktur_suku_kata',
+  id: 'struktur-suku-kata',
   title: 'Struktur Suku Kata',
   description: 'Struktur suku kata adalah "kerangka" tempat vokal dan konsonan disusun. Menguasai gugus konsonan Inggris yang kompleks tidak hanya memperbaiki pelafalan, tetapi juga secara langsung memperbaiki akurasi tata bahasa.',
   banner: {

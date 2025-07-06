@@ -1,7 +1,7 @@
 // Model untuk Inventaris Konsonan
 
 const KonsonanInventoryModel = {
-  id: 'konsonan',
+  id: 'inventaris-konsonan',
   title: 'Inventaris Konsonan',
   description: 'Meskipun banyak konsonan Bahasa Inggris memiliki padanan yang mirip dalam Bahasa Indonesia, ada perbedaan krusial—baik dalam bentuk bunyi yang baru maupun cara pengucapan bunyi yang familiar—yang secara signifikan memengaruhi kejelasan dan kealamian aksen.',
   banner: {

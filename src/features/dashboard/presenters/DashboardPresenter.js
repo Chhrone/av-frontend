@@ -1,6 +1,7 @@
 import DashboardView from '../views/DashboardView.js';
 import Chart from 'chart.js/auto';
-import { NavbarPresenter } from '../../../shared/index.js';
+import { NavbarPresenter, FooterPresenter } from '../../../shared/index.js';
+
 
 class DashboardPresenter {
   constructor(model) {
@@ -8,9 +9,11 @@ class DashboardPresenter {
     this.view = null;
     this.chart = null;
     this.navbar = new NavbarPresenter();
+    this.footerPresenter = null;
   }
 
   init() {
+    console.log('[DashboardPresenter] init dipanggil');
     // Add dashboard mode class to body
     document.body.classList.add('dashboard-mode');
 
@@ -45,6 +48,9 @@ class DashboardPresenter {
       this.navbar.view.bindScrollEvent();
     }
 
+    // Footer tidak perlu dimount ke dashboardContainer, cukup di luar (body/app) oleh App
+    // (Bagian ini dikosongkan agar tidak ada footer di dalam dashboard-container)
+
     // Initialize chart after view is rendered
     this.initializeChart();
 
@@ -62,6 +68,10 @@ class DashboardPresenter {
     }
     if (this.navbar) {
       this.navbar.destroy();
+    }
+    if (this.footerPresenter) {
+      this.footerPresenter.destroy();
+      this.footerPresenter = null;
     }
     document.body.classList.remove('dashboard-mode');
   }

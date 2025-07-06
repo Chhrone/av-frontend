@@ -10,10 +10,11 @@ class FooterPresenter {
 
   init() {
     if (this.isInitialized) {
+      console.log('[FooterPresenter] Sudah diinisialisasi, skip render ulang');
       return;
     }
-
     const footerData = this.getFooterData();
+    console.log('[FooterPresenter] Memanggil render FooterView dengan data:', footerData);
     this.view.render(footerData);
     this.isInitialized = true;
   }
@@ -34,6 +35,7 @@ class FooterPresenter {
     if (!this.isInitialized) {
       this.init();
     }
+    console.log('[FooterPresenter] Memanggil mount FooterView ke container:', container);
     this.view.mount(container);
   }
 

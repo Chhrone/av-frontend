@@ -2,6 +2,26 @@ import '../styles/practice-index.css';
 import MicrophoneIcon from '../../../assets/MicrophoneIcon';
 
 class PracticeTestView {
+  renderSessionProgress(currentSession, maxSession) {
+    // Remove old bar if exists
+    let oldBar = document.getElementById('practice-session-progress-bar');
+    if (oldBar) oldBar.remove();
+    const bar = document.createElement('div');
+    bar.id = 'practice-session-progress-bar';
+    bar.className = 'practice-session-progress-bar';
+    for (let i = 0; i < maxSession; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'practice-session-progress-segment';
+      if (i < currentSession - 1) seg.classList.add('completed');
+      else if (i === currentSession - 1) seg.classList.add('active');
+      bar.appendChild(seg);
+    }
+    document.body.appendChild(bar);
+  }
+  removeSessionProgress() {
+    let oldBar = document.getElementById('practice-session-progress-bar');
+    if (oldBar) oldBar.remove();
+  }
   getElement() {
     return this.testContainer;
   }
@@ -30,10 +50,14 @@ class PracticeTestView {
   }
 
   render(practiceText) {
+    // Convert *word* to <b>word</b>
+    const formattedText = practiceText
+      ? practiceText.replace(/\*(.*?)\*/g, '<b>$1</b>')
+      : '';
     this.testContainer.innerHTML = `
       <div class="practice-test-content">
         <div class="practice-top-group">
-          <p class="practice-text">${practiceText}</p>
+          <p class="practice-text">${formattedText}</p>
           <div id="practice-record-duration" class="practice-record-duration hide">00:00</div>
         </div>
         <div class="practice-record-wrapper">
