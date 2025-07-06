@@ -1,133 +1,136 @@
+
 # AureaVoice Frontend
 
-A single-page application (SPA) built with Vite and vanilla JavaScript using the MVP (Model-View-Presenter) pattern and hash routing.
+AureaVoice Frontend adalah aplikasi web single-page (SPA) modern yang dibangun dengan Vite dan JavaScript murni (tanpa framework), menerapkan arsitektur Model-View-Presenter (MVP) serta hash routing untuk navigasi client-side. Aplikasi ini dirancang modular, mudah dikembangkan, dan responsif untuk latihan serta pengujian kemampuan aksen berbicara.
 
-## Features
 
-- **MVP Architecture**: Clean separation of concerns with Models, Views, and Presenters
-- **Feature-Based Organization**: Code organized by features (intro, dashboard) with global components
-- **Hash Routing**: Client-side routing using URL hash fragments
-- **Style Components**: CSS-in-JS approach for consistent styling
-- **Responsive Design**: Neutral, eye-friendly color scheme
-- **Smooth Animations**: Entrance animations for better user experience
+## Fitur Utama
 
-## Architecture
+- **Arsitektur MVP**: Pemisahan logika aplikasi (Model), tampilan (View), dan pengendali (Presenter) secara tegas untuk maintainability dan scalability.
+- **Organisasi Berbasis Fitur**: Setiap fitur utama (intro, dashboard, practice, dsb) memiliki folder sendiri yang berisi model, view, presenter, style, dan utilitas terkait.
+- **Hash Routing**: Navigasi antar halaman dilakukan di sisi klien menggunakan hash (`#/route`) tanpa reload.
+- **Modular CSS**: CSS dipisah per fitur dan komponen, mudah diatur dan di-maintain.
+- **Responsif & Modern**: Tampilan adaptif di berbagai perangkat, warna netral, dan animasi transisi halus.
+- **Komponen Global**: Komponen seperti footer, navbar, dan utilitas dapat digunakan lintas fitur.
+- **Dukungan AI/Mock**: Bisa terhubung ke API deteksi aksen nyata atau mode demo/mock untuk pengembangan.
 
-### Clean Feature-Based Structure
-The application follows a clean, organized folder structure:
 
-- **Features** (`src/features/`): Each major feature has its own folder containing all related MVP components
-  - `intro/`: Welcome, test, and result pages
-  - `dashboard/`: Dashboard functionality
-- **Shared** (`src/shared/`): Components and utilities shared across multiple features
-  - Global components like footer that appear on all pages
-- **Global Resources** (`src/`): Core application resources
-  - `utils/`: Utility functions and helpers
-  - `assets/`: Reusable assets like icons
-  - `styles/`: Global CSS styles
-  - `config/`: Application configuration
+## Arsitektur & Struktur Folder
 
-### Import Strategy
-- Features export their components through `index.js` files for clean imports
-- Global utilities are imported directly from their respective folders
-- Feature-specific styles are co-located with their features
+### 1. Model-View-Presenter (MVP)
+- **Model**: Menyimpan dan mengelola data, logika bisnis, serta komunikasi dengan storage/API (misal: `DashboardModel.js`, `IntroModel.js`).
+- **View**: Bertanggung jawab atas rendering UI dan interaksi DOM (misal: `DashboardView.js`, `ResultView.js`).
+- **Presenter**: Penghubung antara Model dan View, menangani event, logika navigasi, dan orchestrasi data (misal: `DashboardPresenter.js`, `SplashPresenter.js`).
 
-## Project Structure
+### 2. Organisasi Berbasis Fitur
+Setiap fitur utama memiliki struktur seperti berikut:
+
+```
+src/features/
+  ├── intro/         # Welcome, test, result (intro flow)
+  ├── dashboard/     # Dashboard pengguna
+  ├── category/      # Kategori latihan
+  ├── practice/      # Latihan/praktik aksen
+  └── ...
+```
+Setiap folder fitur berisi:
+- `models/`      → Model data & logika bisnis
+- `views/`       → Komponen tampilan (UI)
+- `presenters/`  → Pengendali/interaksi fitur
+- `styles/`      → CSS modular khusus fitur
+
+### 3. Komponen & Utilitas Global
+- `src/shared/`  → Komponen global (footer, navbar, dsb)
+- `src/utils/`   → Helper, service, router, database, dsb
+- `src/assets/`  → Ikon, gambar, SVG
+- `src/styles/`  → CSS global (warna, layout, animasi)
+- `src/config/`  → Konfigurasi aplikasi (API endpoint, mode demo, dsb)
+
+### 4. Routing
+- **Hash Routing**: Navigasi antar halaman menggunakan hash (`#/welcome`, `#/test`, `#/result`, dsb) dengan router modular.
+- **SPA**: Semua halaman di-render secara dinamis tanpa reload browser.
+
+### 5. Entry Point
+- `src/main.js` → Inisialisasi aplikasi, setup router, dan pengelolaan presenter global.
+
+
+## Struktur Proyek (Contoh)
 
 ```
 src/
-├── assets/          # Reusable assets
-│
-├── config/          # Application configuration
-│
-├── features/        # Feature-based organization
-│   ├── intro/       # Introduction flow (welcome, test, result)
-│   ├── dashboard/   # Dashboard feature
-│   └── index.js     # Main feature exports
-│
-├── shared/          # Components shared across features
-│   ├── models/
-│   ├── presenters/
-│   ├── views/
-│   └── index.js     # Shared exports
-│
-├── styles/          # Global CSS modules
-│   
-├── utils/           # Utility functions and helpers
-│   
-└── main.js          # Application entry point
+├── assets/          # Ikon, SVG, gambar
+├── config/          # Konfigurasi aplikasi
+├── features/        # Fitur utama (intro, dashboard, category, practice, dst)
+│   ├── intro/
+│   ├── dashboard/
+│   ├── category/
+│   ├── practice/
+│   └── ...
+├── shared/          # Komponen global (footer, navbar, dsb)
+├── styles/          # CSS global
+├── utils/           # Helper, router, service, database
+└── main.js          # Entry point aplikasi
 ```
 
-## Pages
 
-### Welcome Page (`/`)
-- Displays the main question: "Wanna test how good your speaking skill is?"
-- Features a microphone button that navigates to the test page
-- Includes smooth entrance animations
+## Halaman Utama
 
-### Test Page (`/test`)
-- Shows the test text for reading practice
-- Features a floating microphone button for recording
-- Text is optimized for readability with 1200px+ width
-- Automatically processes recording and navigates to results
+- **Welcome Page (`#/welcome`)**: Halaman pembuka, ajakan tes aksen, tombol mikrofon, animasi masuk.
+- **Test Page (`#/test`)**: Teks latihan, tombol rekam, proses rekaman otomatis, transisi ke hasil.
+- **Result Page (`#/result`)**: Menampilkan skor confidence aksen US, feedback deskriptif, tombol coba lagi.
+- **Dashboard (`/dashboard`)**: Statistik latihan, grafik progres, rekomendasi latihan, dsb.
+- **Practice (`/practice/:categoryId/:practiceId`)**: Halaman latihan per kategori dan soal.
 
-### Result Page (`/result`)
-- Displays US accent confidence percentage
-- Shows descriptive feedback based on confidence level
-- Includes "Try Again" button to return to welcome page
-- Receives data from accent detection API
 
-## Configuration
+## Konfigurasi & Integrasi AI
 
-### AI Model Configuration
-The application supports both real AI model and demo mode:
+- **Mode AI/Mock**: Atur `USE_REAL_MODEL` di `src/config/AppConfig.js` untuk memilih antara API nyata atau demo.
+- **Endpoint API**: Konfigurasi endpoint di AppConfig, menerima file `.wav` dan mengembalikan `{ us_confidence: number }`.
+- **Demo Mode**: Untuk pengembangan, skor confidence diacak sesuai rentang yang diatur.
 
-- **Use Real AI Model**: Set `USE_REAL_MODEL: true` in `src/config/AppConfig.js`
-- **Use Demo Mode**: Set `USE_REAL_MODEL: false` for development/testing
-- **Demo Settings**: Customize delay and confidence ranges in AppConfig
 
-### API Configuration
-- **Endpoint**: Configure API endpoint in AppConfig
-- **Format**: API expects POST requests with .wav files
-- **Response**: Should return `{ us_confidence: number }`
-
-## Getting Started
+## Cara Menjalankan
 
 1. Install dependencies:
    ```bash
    npm install
    ```
-
-2. Start the development server:
+2. Jalankan server pengembangan:
    ```bash
    npm run dev
    ```
+3. Buka browser ke `http://localhost:5173/`
 
-3. Open your browser and navigate to `http://localhost:5173/`
 
-## Navigation
+## Navigasi
 
-- **Home**: `http://localhost:5173/#/` or `http://localhost:5173/`
+- **Home**: `http://localhost:5173/#/welcome`
 - **Test**: `http://localhost:5173/#/test`
 - **Result**: `http://localhost:5173/#/result`
+- **Dashboard**: `http://localhost:5173/dashboard`
+- **Practice**: `http://localhost:5173/practice/:categoryId/:practiceId`
 
-## Styling Approach
 
-This project uses a modular CSS approach with organized CSS files for different concerns. This provides:
+## Pendekatan Styling
 
-- Clear separation of styling concerns
-- Maintainable and organized CSS structure
-- Efficient browser caching of individual CSS modules
-- Easy maintenance and updates
+- **Modular CSS**: CSS dipisah per fitur dan komponen, mudah diatur dan di-maintain.
+- **Global Styles**: Warna, layout, animasi global diatur di `src/styles/`.
+- **Responsive**: Layout dan komponen responsif di berbagai perangkat.
 
-## Technologies Used
 
-- **Vite**: Fast build tool and development server
-- **Vanilla JavaScript**: No framework dependencies
-- **Modular CSS**: Organized CSS structure with separate modules
-- **Google Fonts**: Inter font family for typography
-- **SVG Icons**: Inline SVG microphone icon
+## Teknologi yang Digunakan
 
-## Browser Support
+- **Vite**: Build tool & dev server super cepat untuk aplikasi modern.
+- **JavaScript Murni (ES6+)**: Tidak menggunakan framework besar, seluruh logika dan UI diatur manual untuk fleksibilitas penuh.
+- **MVP Pattern**: Arsitektur Model-View-Presenter untuk pemisahan logika, tampilan, dan kontrol.
+- **Modular CSS**: CSS terorganisir per fitur dan komponen.
+- **IndexedDB**: Penyimpanan data latihan lokal (melalui helper di `utils/database/`).
+- **Fetch API**: Komunikasi dengan API deteksi aksen.
+- **Google Fonts**: Tipografi modern (Inter).
+- **SVG Icons**: Ikon mikrofon dan lainnya dalam format SVG inline.
+- **View Transition API**: Animasi transisi halaman yang halus (dengan fallback untuk browser lama).
 
-Modern browsers that support ES6 modules and CSS custom properties.
+
+## Dukungan Browser
+
+Aplikasi ini berjalan optimal di browser modern yang mendukung ES6 modules, CSS custom properties, dan (opsional) View Transition API.

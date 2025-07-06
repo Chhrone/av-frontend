@@ -13,20 +13,24 @@ class DashboardPresenter {
   }
 
   async init() {
-    console.log('[DashboardPresenter] init dipanggil');
     document.body.classList.add('dashboard-mode');
 
-    // Clean up existing view and chart if any
-    if (this.view) {
-      this.view.unmount();
-    }
+    // Clean up existing chart and view if any
     if (this.chart) {
       this.chart.destroy();
       this.chart = null;
     }
+    if (this.view) {
+      // Hapus container dari DOM jika masih ada
+      if (this.view.container && this.view.container.parentNode) {
+        this.view.container.parentNode.removeChild(this.view.container);
+      }
+      this.view = null;
+    }
 
+    // Render view baru
     this.view = new DashboardView();
-    this.view.render();
+    const container = this.view.render();
     this.view.bindEvents(this);
 
     // Mount navbar to dashboard container, positioned before dashboard-main
@@ -49,10 +53,11 @@ class DashboardPresenter {
       this.model.getScoreImprovement()
     ]);
 
-    // Initialize chart dengan data nyata
-    this.initializeChart(progressData);
-    // Tampilkan statistik user
-    this.view.updateStats(userStats);
+    // Pastikan container dan canvas sudah ada sebelum inisialisasi chart dan update stats
+    if (this.view && this.view.container && document.getElementById('progressChart')) {
+      this.initializeChart(progressData);
+      this.view.updateStats(userStats);
+    }
 
     // Atur tampilan score-improvement
     const improvementEl = document.querySelector('.score-improvement');
@@ -222,36 +227,40 @@ class DashboardPresenter {
 
   // loadUserStats() tidak diperlukan lagi, sudah digantikan oleh async init
 
-  handleStartTraining() {
-    console.log('Starting training...');
-    // For now, just show an alert. Later this can navigate to a training module
-    alert('Fitur latihan akan segera tersedia!');
+  async handleStartTraining() {
+    // Kategori rekomendasi: irama-bahasa
+    const recommendedCategory = 'irama-bahasa';
+    try {
+      // Import dinamis agar tidak circular
+      const { getPracticesByCategory } = await import('../../../utils/database/aureaVoiceDB.js');
+      const practices = await getPracticesByCategory(recommendedCategory);
+      if (practices && practices.length > 0) {
+        const randomPractice = practices[Math.floor(Math.random() * practices.length)];
+        const randomPracticeId = randomPractice.id_latihan;
+        // Navigasi ke halaman latihan
+        if (window.appRouter && typeof window.appRouter.navigate === 'function') {
+          window.appRouter.navigate(`/practice/${recommendedCategory}/${randomPracticeId}`);
+        } else {
+          window.location.pathname = `/practice/${recommendedCategory}/${randomPracticeId}`;
+        }
+      } else {
+        alert('Tidak ada latihan yang tersedia untuk kategori ini.');
+      }
+    } catch (err) {
+      alert('Gagal mengambil data latihan.');
+    }
   }
 
   handleCategorySelect(categoryId) {
-    console.log('handleCategorySelect called with categoryId:', categoryId);
-    
     if (!categoryId) {
       console.error('No categoryId provided');
       return;
     }
-    
-    const targetPath = `/categories/${categoryId}`;
-    console.log('Navigating to:', targetPath);
-    
-    // Use the router to navigate to the category
-    if (window.router && typeof window.router.navigateTo === 'function') {
-      console.log('Using router.navigateTo');
-      const success = window.router.navigateTo(targetPath);
-      console.log('Navigation result:', success);
-      
-      if (!success) {
-        console.warn('Router navigation failed, falling back to direct navigation');
-        window.location.href = targetPath;
-      }
+    const targetPath = `/practice/${categoryId}`;
+    if (window.appRouter && typeof window.appRouter.navigate === 'function') {
+      window.appRouter.navigate(targetPath);
     } else {
-      console.log('Router not available, using direct navigation');
-      window.location.href = targetPath;
+      window.location.pathname = targetPath;
     }
   }
 

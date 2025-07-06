@@ -16,10 +16,7 @@ class ViewTransitionHelper {
     const hasCSSSupport = CSS.supports('view-transition-name', 'none');
     const hasViewTransitionRule = CSS.supports('@view-transition', 'navigation: auto');
 
-    console.log('🔍 View Transition API Support Check:');
-    console.log('  - startViewTransition in document:', hasStartViewTransition);
-    console.log('  - CSS view-transition-name support:', hasCSSSupport);
-    console.log('  - CSS @view-transition support:', hasViewTransitionRule);
+    // ...log removed for production...
 
     return hasStartViewTransition || hasCSSSupport || hasViewTransitionRule;
   }
@@ -29,10 +26,8 @@ class ViewTransitionHelper {
    */
   init() {
     if (this.isSupported) {
-      console.log('✅ View Transition API is supported');
       this.setupViewTransitions();
     } else {
-      console.log('⚠️ View Transition API not supported, using fallbacks');
       this.setupFallbacks();
     }
   }
@@ -55,18 +50,14 @@ class ViewTransitionHelper {
    */
   setupViewTransitionEvents() {
     // Listen for view transition start (if available)
-    if ('startViewTransition' in document) {
-      console.log('📱 Document startViewTransition is available');
-    }
+    // ...log removed for production...
 
     // Monitor for view transition pseudo-elements
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
           const viewTransitionElements = document.querySelectorAll('::view-transition');
-          if (viewTransitionElements.length > 0) {
-            console.log('🎬 View transition elements detected!');
-          }
+          // ...log removed for production...
         }
       });
     });
@@ -115,7 +106,7 @@ class ViewTransitionHelper {
 
     // Listen for hash changes
     window.addEventListener('hashchange', (event) => {
-      console.log('🔄 Hash changed, triggering view transition');
+      // ...log removed for production...
       this.handleSPANavigation(event);
     });
   }
@@ -128,7 +119,7 @@ class ViewTransitionHelper {
       return;
     }
 
-    console.log('🎬 Starting view transition for SPA navigation');
+    // ...log removed for production...
 
     // The DOM change will happen automatically via the router
     // We just need to ensure the transition is captured
@@ -138,21 +129,17 @@ class ViewTransitionHelper {
    * Handle transition trigger clicks
    */
   handleTransitionTrigger(trigger, event) {
-    console.log('🎬 Transition triggered on:', trigger.className);
+    // ...log removed for production...
 
     if (this.isSupported) {
       // Let the browser handle the view transition
       trigger.classList.add('transitioning');
-      console.log('✨ Using View Transition API');
-
       // Remove transitioning class after animation
       setTimeout(() => {
         trigger.classList.remove('transitioning');
-        console.log('🎬 Transition completed');
       }, 600);
     } else {
       // Handle manual transition for unsupported browsers
-      console.log('🔄 Using fallback transition');
       this.performManualTransition(trigger);
     }
   }
@@ -162,7 +149,7 @@ class ViewTransitionHelper {
    */
   setupManualTransitions() {
     // Minimal fallback - let CSS handle the rest
-    console.log('🔄 Setting up fallback transitions');
+    // ...log removed for production...
   }
 
   /**

@@ -99,7 +99,7 @@ class IntroRouter {
       hash = '/';
     }
     
-    console.log('IntroRouter: Handling route change to:', hash);
+    // ...log removed for production...
     
     // Find matching route (exact match or parameterized route)
     let routeHandler = this.routes[hash];
@@ -144,7 +144,7 @@ class IntroRouter {
             });
           }
           
-          console.log(`IntroRouter: Successfully navigated to ${hash}`);
+          // ...log removed for production...
         } catch (error) {
           console.error(`Error executing route ${hash}:`, error);
           // Fallback to welcome on error for intro routes
@@ -160,10 +160,10 @@ class IntroRouter {
         execute();
       }
     } else {
-      console.warn(`IntroRouter: No route found for: ${hash}`);
+      // ...log removed for production...
       // For unknown intro routes, redirect to welcome
       if (this.isIntroRoute(hash)) {
-        console.log(`IntroRouter: Redirecting unknown intro route to /welcome`);
+        // ...log removed for production...
         this.navigate('/welcome');
       }
     }
@@ -187,7 +187,7 @@ class IntroRouter {
       } else {
         route();
       }
-      console.log(`🏁 Route changed to: ${hash}`);
+      // ...log removed for production...
     } catch (error) {
       console.error(`❌ Error executing route ${hash}:`, error);
       if (this.isIntroRoute(hash)) {

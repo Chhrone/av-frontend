@@ -9,6 +9,8 @@ export function setupMainRoutes(appInstance) {
   appRouter.addRoute(ROUTES.PRACTICE, () => appInstance.showPractice());
   appRouter.addRoute(ROUTES.PROFILE, () => appInstance.showProfile());
   appRouter.addRoute(ROUTES.CATEGORIES_DYNAMIC, (params) => appInstance.showCategory(params));
+  // Tambahkan route untuk /practice/:categoryId agar klik card kategori tidak error
+  appRouter.addRoute('/practice/:categoryId', (params) => appInstance.showCategory(params));
   appRouter.addRoute(ROUTES.PRACTICE_DYNAMIC, (params) => appInstance.showPractice(params));
   appRouter.addRoute(ROUTES.PRACTICE_RESULT_DYNAMIC, (params) => appInstance.showPracticeResult(params));
   appRouter.addRoute('/', () => {

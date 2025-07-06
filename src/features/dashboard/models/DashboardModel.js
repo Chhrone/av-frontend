@@ -23,48 +23,66 @@ class DashboardModel {
     try {
       const sessions = await getAllPracticeSessions();
       if (!sessions || sessions.length === 0) {
-        // fallback ke mock
+        // Jika tidak ada data, coba ambil skor terakhir dari localStorage (hasil tes intro)
+        let introScore = 0;
+        try {
+          const introResult = localStorage.getItem('intro_last_result');
+          if (introResult) {
+            const parsed = JSON.parse(introResult);
+            if (parsed && typeof parsed.confidence === 'number') {
+              introScore = Number(parsed.confidence);
+            }
+          }
+        } catch (e) {}
         return {
-          accentScore: 82,
-          completedExercises: 128,
-          todayExercises: 5,
-          trainingTime: '14 Jam',
-          latestCategory: 'Pronunciation',
-          categoriesMastered: 2,
-          needPractice: 'Intonation'
+          accentScore: introScore,
+          completedExercises: 0,
+          todayExercises: 0,
+          trainingTime: '0 Jam',
+          latestCategory: '-',
+          categoriesMastered: 0,
+          needPractice: '-'
         };
       }
 
       // completedExercises: total sesi latihan
-      const completedExercises = sessions.length;
+      const completedExercises = sessions && Array.isArray(sessions) ? sessions.length : 0;
 
       // todayExercises: sesi latihan hari ini
       const today = new Date();
       const todayStr = today.toISOString().slice(0, 10); // yyyy-mm-dd
-      const todayExercises = sessions.filter(s => (s.tanggal || '').slice(0, 10) === todayStr).length;
+      const todayExercises = sessions && Array.isArray(sessions)
+        ? sessions.filter(s => (s.tanggal || '').slice(0, 10) === todayStr).length
+        : 0;
 
       // trainingTime: total durasi (dalam jam, 1 angka di belakang koma)
       let totalSeconds = 0;
-      sessions.forEach(s => {
-        if (s.durasi) {
-          totalSeconds += Number(s.durasi) || 0;
-        }
-      });
-      const trainingTime = totalSeconds > 0 ? (totalSeconds / 3600).toFixed(1) + ' Jam' : '-';
+      if (sessions && Array.isArray(sessions)) {
+        sessions.forEach(s => {
+          if (s.durasi) {
+            totalSeconds += Number(s.durasi) || 0;
+          }
+        });
+      }
+      const trainingTime = totalSeconds > 0 ? (totalSeconds / 3600).toFixed(1) + ' Jam' : '0 Jam';
 
       // accentScore: rata-rata hasil_sesi (1 angka di belakang koma)
-      const scores = sessions.map(s => Number(s.hasil_sesi)).filter(n => !isNaN(n));
-      const accentScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : '-';
+      const scores = sessions && Array.isArray(sessions)
+        ? sessions.map(s => Number(s.hasil_sesi)).filter(n => !isNaN(n))
+        : [];
+      const accentScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
 
       // latestCategory: kategori dari sesi latihan terakhir
       let latestCategory = '-';
-      if (sessions.length > 0) {
+      if (sessions && Array.isArray(sessions) && sessions.length > 0) {
         const sorted = [...sessions].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
         latestCategory = sorted[0].nama_kategori || '-';
       }
 
       // categoriesMastered: jumlah kategori unik yang pernah dilatih (bisa diartikan sebagai dikuasai)
-      const uniqueCategories = new Set(sessions.map(s => s.nama_kategori));
+      const uniqueCategories = sessions && Array.isArray(sessions)
+        ? new Set(sessions.map(s => s.nama_kategori))
+        : new Set();
       const categoriesMastered = uniqueCategories.size;
 
       // needPractice: kategori dengan skor rata-rata terendah
@@ -95,15 +113,15 @@ class DashboardModel {
         needPractice
       };
     } catch (e) {
-      // fallback ke mock jika error
+      // Jika error, kembalikan statistik 0/default
       return {
-        accentScore: 82,
-        completedExercises: 128,
-        todayExercises: 5,
-        trainingTime: '14 Jam',
-        latestCategory: 'Pronunciation',
-        categoriesMastered: 2,
-        needPractice: 'Intonation'
+        accentScore: 0,
+        completedExercises: 0,
+        todayExercises: 0,
+        trainingTime: '0 Jam',
+        latestCategory: '-',
+        categoriesMastered: 0,
+        needPractice: '-'
       };
     }
   }
@@ -116,7 +134,8 @@ class DashboardModel {
     try {
       const sessions = await getAllPracticeSessions();
       if (!sessions || sessions.length === 0) {
-        return [75, 78, 77, 80, 82];
+        // Jika tidak ada data, kembalikan array 0
+        return [0, 0, 0, 0, 0];
       }
 
       // Kelompokkan sesi latihan berdasarkan minggu (5 minggu terakhir)
@@ -144,12 +163,13 @@ class DashboardModel {
         const avg = weekSessions.reduce((a, b) => a + Number(b.hasil_sesi), 0) / weekSessions.length;
         return Number(avg.toFixed(1));
       });
-      // Fallback ke mock jika semua null
-      if (weekScores.every(x => x === null)) return [75, 78, 77, 80, 82];
+      // Jika semua minggu null, kembalikan array 0
+      if (weekScores.every(x => x === null)) return [0, 0, 0, 0, 0];
       // Ganti null dengan 0
       return weekScores.map(x => x === null ? 0 : x);
     } catch (e) {
-      return [75, 78, 77, 80, 82];
+      // Jika error, kembalikan array 0
+      return [0, 0, 0, 0, 0];
     }
   }
 
@@ -194,15 +214,15 @@ class DashboardModel {
   }
 
   getRecommendations() {
-    // Mock recommendations based on user stats
+    // Recommendations based on user stats
     const stats = this.userStats || {
-      accentScore: 82,
-      completedExercises: 128,
-      todayExercises: 5,
-      trainingTime: '14 Jam',
-      latestCategory: 'Pronunciation',
-      categoriesMastered: 2,
-      needPractice: 'Intonation'
+      accentScore: 0,
+      completedExercises: 0,
+      todayExercises: 0,
+      trainingTime: '0 Jam',
+      latestCategory: '-',
+      categoriesMastered: 0,
+      needPractice: '-'
     };
     const recommendations = [];
 

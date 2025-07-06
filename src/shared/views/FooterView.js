@@ -48,7 +48,7 @@ class FooterView {
         </div>
       </div>
     `;
-    console.log('[FooterView] render() dipanggil, element:', this.element);
+    // ...log removed for production...
     return this.element;
   }
 
@@ -58,7 +58,7 @@ class FooterView {
       return;
     }
     container.appendChild(this.element);
-    console.log('[FooterView] mount() dipanggil, footer dimasukkan ke:', container);
+    // ...log removed for production...
   }
 
   unmount() {

@@ -12,7 +12,7 @@ import { savePracticeSession } from '../../../utils/database/aureaVoiceDB.js';
 
 class PracticePresenter {
   constructor(model, categoryId, practiceId) {
-    console.log('[LOG] PracticePresenter constructor dipanggil', { model, categoryId, practiceId });
+    // ...log removed for production...
     this.model = model;
     this.resultModel = new PracticeResultModel();
     this.categoryId = this.normalizeCategoryId(categoryId);
@@ -56,7 +56,7 @@ class PracticePresenter {
   }
 
   async init() {
-    console.log('[LOG] PracticePresenter.init dipanggil', { categoryId: this.categoryId, practiceId: this.practiceId });
+    // ...log removed for production...
     try {
       await this.recordingManager.initialize();
       const practiceText = await this.model.getPracticeText(this.categoryId, this.practiceId);
@@ -120,7 +120,7 @@ class PracticePresenter {
         };
         if (!this.sessionLogs) this.sessionLogs = [];
         this.sessionLogs.push(startLog);
-        console.log(`[LOG] Sesi ${startLog.session} dimulai pada ${startLog.time}`);
+        console.log(`Sesi ${startLog.session} dimulai pada ${startLog.time}`);
         try {
           await this.recordingManager.startRecording();
           console.log('Recording started');
@@ -140,7 +140,7 @@ class PracticePresenter {
         };
         if (!this.sessionLogs) this.sessionLogs = [];
         this.sessionLogs.push(endLog);
-        console.log(`[LOG] Sesi ${endLog.session} berakhir pada ${endLog.time}`);
+        console.log(`Sesi ${endLog.session} berakhir pada ${endLog.time}`);
         try {
           this.testView.setRecordingState(false, true);
           const recording = await this.recordingManager.stopRecording();
@@ -176,13 +176,7 @@ class PracticePresenter {
                 nama_latihan = this.model.getPracticeName(this.practiceId) || this.practiceId;
               }
               // Simpan ke IndexedDB dengan log sebelum dan sesudah
-              console.log('[LOG] Akan menyimpan sesi ke IndexedDB:', {
-                id_latihan: this.practiceId,
-                nama_kategori,
-                nama_latihan,
-                hasil_sesi: avgScore,
-                durasi: totalDuration
-              });
+              // ...log removed for production...
               savePracticeSession({
                 id_latihan: this.practiceId,
                 nama_kategori,
@@ -191,10 +185,10 @@ class PracticePresenter {
                 durasi: totalDuration
               })
                 .then(() => {
-                  console.log('[LOG] Sukses menyimpan sesi ke IndexedDB');
+                  // ...log removed for production...
                 })
                 .catch((err) => {
-                  console.error('[LOG] Gagal menyimpan sesi ke IndexedDB:', err);
+                  // ...log removed for production...
                 });
               // Tampilkan progress bar full sebelum result rata-rata
               this.testView.renderSessionProgress(this.maxSession, this.maxSession);
@@ -233,19 +227,19 @@ class PracticePresenter {
     }
     let viewData = {};
     // Logging perpindahan ke result view
-    console.log('[LOG] showResultView dipanggil, resultData:', resultData);
+    // ...log removed for production...
     // Clean up previous event listeners to avoid duplicate triggers
     // Remove from continue button
     const prevContinueBtn = this.resultView.getContinueButton && this.resultView.getContinueButton();
     if (prevContinueBtn && this._continueBtnHandler) {
       prevContinueBtn.removeEventListener('click', this._continueBtnHandler);
-      console.log('[LOG] Event handler continueBtn dihapus');
+      // ...log removed for production...
     }
     // Remove from return button
     const prevReturnBtn = this.resultView.getReturnButton && this.resultView.getReturnButton();
     if (prevReturnBtn && this._returnBtnHandler) {
       prevReturnBtn.removeEventListener('click', this._returnBtnHandler);
-      console.log('[LOG] Event handler returnBtn dihapus');
+      // ...log removed for production...
     }
 
     if (resultData && resultData.isAverage && typeof resultData.avgScore === 'number') {
@@ -256,13 +250,13 @@ class PracticePresenter {
         motivationalDescription,
         averageInfo: `Skor rata-rata dari 4 sesi: ${score.toFixed(2)}`
       };
-      console.log('[LOG] Menampilkan result rata-rata sesi, score:', score, 'viewData:', viewData);
+      // ...log removed for production...
       this.viewService.animateViewTransition(this.testView, this.resultView, viewData);
       this.currentView = 'result';
       // Pasang handler baru
       const returnBtn = this.resultView.getReturnButton && this.resultView.getReturnButton();
       this._returnBtnHandler = () => {
-        console.log('[LOG] Tombol kembali ke kategori diklik');
+        // ...log removed for production...
         if (window.appRouter) {
           window.appRouter.navigate(`/categories/${this.categoryId}`);
         } else {
@@ -271,7 +265,7 @@ class PracticePresenter {
       };
       if (returnBtn) {
         returnBtn.addEventListener('click', this._returnBtnHandler);
-        console.log('[LOG] Event handler returnBtn dipasang');
+        // ...log removed for production...
       }
       return;
     }
@@ -282,42 +276,41 @@ class PracticePresenter {
       score,
       motivationalDescription
     };
-    console.log('[LOG] Menampilkan result sesi biasa, score:', score, 'viewData:', viewData);
+    // ...log removed for production...
     this.viewService.animateViewTransition(this.testView, this.resultView, viewData);
     this.currentView = 'result';
     // Repeat button (jika ada)
     const repeatBtn = this.resultView.getRepeatButton && this.resultView.getRepeatButton();
     if (repeatBtn) {
       repeatBtn.addEventListener('click', () => {
-        console.log('[LOG] Tombol ulangi sesi diklik');
+        // ...log removed for production...
         this.backToTest();
       });
-      console.log('[LOG] Event handler repeatBtn dipasang');
+      // ...log removed for production...
     }
     // Continue button
     const continueBtn = this.resultView.getContinueButton && this.resultView.getContinueButton();
     if (continueBtn) {
-      console.log('[LOG] continueBtn ditemukan, akan dipasang event handler. Elemen:', continueBtn);
+      // ...log removed for production...
       // Handler dengan log event
       this._continueBtnHandler = (e) => {
-        console.log('[LOG] Tombol lanjut sesi berikutnya diklik, event:', e, 'event.type:', e?.type, 'event.isTrusted:', e?.isTrusted, 'event.detail:', e?.detail);
+        // ...log removed for production...
         this.handleContinueToNextSession();
       };
       continueBtn.addEventListener('click', this._continueBtnHandler);
-      console.log('[LOG] Event handler continueBtn dipasang');
+      // ...log removed for production...
     } else {
-      console.log('[LOG] continueBtn tidak ditemukan setelah render');
+      // ...log removed for production...
     }
   }
 
   async handleContinueToNextSession() {
-    console.log('[LOG] handleContinueToNextSession dipanggil, currentView:', this.currentView, 'sessionRecordings:', this.sessionRecordings.length, 'sessionScores:', this.sessionScores.length, 'sessionCount:', this.sessionCount);
-    console.trace('[TRACE] handleContinueToNextSession dipanggil dari:');
+    // ...log removed for production...
     this.viewService.animateViewTransition(this.resultView, this.testView);
     this.currentView = 'test';
     let nextSessionIdx = this.sessionRecordings.length;
     if (nextSessionIdx >= this.maxSession) {
-      console.log('[LOG] Reset session karena nextSessionIdx >= maxSession');
+      // ...log removed for production...
       nextSessionIdx = 0;
       this.sessionRecordings = [];
       this.sessionScores = [];
@@ -327,11 +320,11 @@ class PracticePresenter {
       try {
         const practiceText = await this.model.getPracticeText(this.categoryId, this.practiceId, nextSessionIdx);
         if (practiceText) {
-          console.log('[LOG] Render test baru untuk sesi ke', nextSessionIdx + 1, 'dengan text:', practiceText);
+          // ...log removed for production...
           this.viewService.renderTest(this.testView, this.resultView, practiceText);
           this.bindEvents();
         } else {
-          console.log('[LOG] Tidak ada practiceText ditemukan');
+          // ...log removed for production...
           this.testView.render('Latihan tidak ditemukan.');
         }
       } catch (error) {
@@ -342,7 +335,7 @@ class PracticePresenter {
   }
 
   backToTest() {
-    console.log('[LOG] backToTest dipanggil, currentView:', this.currentView);
+    // ...log removed for production...
     this.viewService.animateViewTransition(this.resultView, this.testView);
     this.currentView = 'test';
     this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
@@ -350,7 +343,7 @@ class PracticePresenter {
   }
 
   renderTest(practiceText) {
-    console.log('[LOG] renderTest dipanggil, currentView:', this.currentView, 'practiceText:', practiceText);
+    // ...log removed for production...
     this.viewService.renderTest(this.testView, this.resultView, practiceText);
     this.testView.renderSessionProgress(this.sessionCount + 1, this.maxSession);
   }

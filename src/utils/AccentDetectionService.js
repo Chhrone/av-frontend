@@ -91,7 +91,7 @@ class AccentDetectionService {
       if (result) {
         // Store result temporarily for the result page
         sessionStorage.setItem('accentResult', JSON.stringify(result));
-        console.log('Accent analysis result:', result);
+        // ...log removed for production...
       }
 
       // Navigate to result page to show confidence

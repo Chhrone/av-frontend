@@ -25,6 +25,14 @@ import './utils/ViewTransitionHelper.js'; // Initialize View Transition API supp
 import { categoryRouteMap, scrollToTop } from './utils/appHelpers.js';
 
 class App {
+  // Method to set intro token using ResultPresenter static method
+  setIntroToken() {
+    // Call the static method from ResultPresenter
+    if (typeof ResultPresenter.prototype.setIntroToken === 'function') {
+      // Use a temporary instance to call the method (since it's not static)
+      new ResultPresenter().setIntroToken();
+    }
+  }
   constructor() {
     // Initialize router instance
     this.router = appRouter;
@@ -68,13 +76,13 @@ class App {
 
   showProfile() {
     // Implement profile view logic here
-    console.log('Showing profile page');
+    // ...log removed for production...
     // You'll need to create and show the profile view
   }
 
   // Show category page
   showCategory(params) {
-    console.log('Navigating to category with params:', params);
+    // ...log removed for production...
     this.destroyCurrentPresenter();
     
     try {
@@ -88,7 +96,7 @@ class App {
         return;
       }
       
-      console.log('Loading category module for:', categoryId);
+      // ...log removed for production...
       
       // Show loading state
       const appContainer = document.getElementById('app');
@@ -98,7 +106,7 @@ class App {
       
       import('./features/category/index.js')
         .then(mod => {
-          console.log('Category module loaded successfully');
+          // ...log removed for production...
           try {
             const CategoryModel = mod.CategoryModel;
             const CategoryPresenter = mod.CategoryPresenter;
@@ -106,7 +114,7 @@ class App {
             this.currentPresenter = new CategoryPresenter(model);
             this.currentPresenter.init(categoryId);
             scrollToTop();
-            console.log('Category presenter initialized for:', categoryId);
+            // ...log removed for production...
           } catch (initError) {
             console.error('Error initializing category presenter:', initError);
             showError('Gagal memuat konten kategori');
@@ -125,7 +133,7 @@ class App {
   async showPractice(params) {
     try {
       const { categoryId, practiceId } = params;
-      console.log('showPractice params:', { categoryId, practiceId });
+      // ...log removed for production...
       if (!categoryId || !practiceId) {
         throw new Error('Category ID atau Practice ID tidak ditemukan');
       }
@@ -187,7 +195,7 @@ class App {
   showResult() {
     // Get the result data from sessionStorage
     const resultData = JSON.parse(sessionStorage.getItem('accentResult') || '{}');
-    console.log('Showing result with data:', resultData);
+    // ...log removed for production...
     
     this.destroyCurrentPresenter();
     this.currentPresenter = new ResultPresenter(resultData, this.introModel);
@@ -197,7 +205,7 @@ class App {
   }
 
   showDashboard() {
-    console.log('[App] showDashboard dipanggil, isFromIntroFlow:', this.isFromIntroFlow);
+    // ...log removed for production...
     // Show splash screen only if coming from intro flow
     if (this.isFromIntroFlow) {
       this.isFromIntroFlow = false; // Reset flag
@@ -216,7 +224,7 @@ class App {
   }
 
   showDashboardDirect() {
-    console.log('[App] showDashboardDirect dipanggil');
+    // ...log removed for production...
     this.destroyCurrentPresenter();
     this.currentPresenter = new DashboardPresenter(this.dashboardModel);
     this.currentPresenter.init();
@@ -227,21 +235,11 @@ class App {
     this.hasCompletedIntro = true;
   }
 
+
   // Fungsi untuk cek token intro
   checkIntroToken() {
-    // Bisa pilih localStorage atau sessionStorage, di sini pakai localStorage
+    // Tetap cek localStorage, tapi logic sudah dipindah ke presenter jika ingin digunakan di sana juga
     return !!localStorage.getItem('aurea_intro_completed');
-  }
-
-  // Fungsi untuk set token intro selesai
-  setIntroToken() {
-    localStorage.setItem('aurea_intro_completed', '1');
-  }
-
-
-  // Fungsi untuk hapus token intro (untuk reset/testing)
-  removeIntroToken() {
-    localStorage.removeItem('aurea_intro_completed');
   }
 
   // Method untuk cek dan redirect ke dashboard jika sudah selesai intro
@@ -299,12 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add global helpers for testing
     window.simulateIntroFlow = () => {
       app.simulateIntroFlow();
-      console.log('🎬 Intro flow simulated - next dashboard navigation will show splash');
+      // ...log removed for production...
     };
 
     window.forceShowSplash = () => {
       app.forceShowSplash();
-      console.log('🎬 Splash screen forced');
+      // ...log removed for production...
     };
 
     // Tambahkan global helper untuk reset intro agar user bisa mengulang intro flow
@@ -314,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       app.hasCompletedIntro = false;
       // Navigasi ke root agar intro muncul lagi
       app.router.navigate('');
-      console.log('🔄 Intro flow direset, reload halaman utama untuk melihat intro.');
+      // ...log removed for production...
     };
   });
 });

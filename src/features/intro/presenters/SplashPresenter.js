@@ -43,9 +43,11 @@ class SplashPresenter {
     this.startTime = Date.now();
     this.view.startLoadingAnimation();
 
-    // Start jackpot effect after 1.5 seconds
+    // Start jackpot effect after 1.5 seconds, only if view & element exist
     setTimeout(() => {
-      this.view.startJackpotEffect();
+      if (this.view && this.view.voiceElement) {
+        this.view.startJackpotEffect();
+      }
     }, 1500);
 
     // Complete loading after minimum time
@@ -69,7 +71,9 @@ class SplashPresenter {
 
   async finishSplash() {
     // Fade out animation
-    await this.view.fadeOut();
+    if (this.view && typeof this.view.fadeOut === 'function') {
+      await this.view.fadeOut();
+    }
 
     // Restore original body classes
     if (this.originalBodyClasses) {

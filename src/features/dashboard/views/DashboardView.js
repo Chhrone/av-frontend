@@ -4,18 +4,18 @@ class DashboardView {
   }
 
   render() {
-    console.log('[DashboardView] render() dipanggil');
+    // ...log removed for production...
     // Clear the app container and replace its content
     const appContainer = document.getElementById('app');
     if (appContainer) {
       appContainer.innerHTML = '';
-      console.log('[DashboardView] appContainer.innerHTML dikosongkan');
+      // ...log removed for production...
     }
 
     // Clean up existing container if it exists
     if (this.container) {
       this.container.remove();
-      console.log('[DashboardView] this.container dihapus dari DOM');
+      // ...log removed for production...
     }
 
     this.container = document.createElement('div');
@@ -64,7 +64,7 @@ class DashboardView {
             <div class="profile-card">
               <div class="main-gradient">
                 <p class="score-label">Skor Aksen Anda</p>
-                <p class="score-value" id="accent-score">82<span class="score-percentage">%</span></p>
+                <p class="score-value" id="accent-score"></p>
                 <p class="score-improvement" style="display:none;">
                   meningkat <span class="score-improvement-value">0</span>% dari minggu lalu!
                 </p>
@@ -79,27 +79,27 @@ class DashboardView {
                 <div class="stats-container">
                   <div class="stat-item">
                     <span class="stat-label">Latihan Selesai</span>
-                    <span class="stat-value" id="completed-exercises">128</span>
+                    <span class="stat-value" id="completed-exercises"></span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Latihan Hari Ini</span>
-                    <span class="stat-value" id="today-exercises">5</span>
+                    <span class="stat-value" id="today-exercises"></span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Waktu Latihan</span>
-                    <span class="stat-value" id="training-time">14 Jam</span>
+                    <span class="stat-value" id="training-time"></span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Kategori Termahir</span>
-                    <span class="stat-value" id="latest-category">Pronunciation</span>
+                    <span class="stat-value" id="latest-category"></span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Kategori Dikuasai</span>
-                    <span class="stat-value" id="categories-mastered">2</span>
+                    <span class="stat-value" id="categories-mastered"></span>
                   </div>
                   <div class="stat-item">
                     <span class="stat-label">Perlu Dilatih</span>
-                    <span class="stat-value" id="need-practice">Intonation</span>
+                    <span class="stat-value" id="need-practice"></span>
                   </div>
                 </div>
               </div>
@@ -142,8 +142,6 @@ class DashboardView {
       </main>
     `;
 
-    // Mount footer langsung di dashboard-container
-    // Hapus footer lama jika ada
     const existingFooter = this.container.querySelector('#footer');
     if (existingFooter) existingFooter.remove();
     // Import FooterPresenter secara dinamis agar tidak circular
@@ -155,10 +153,10 @@ class DashboardView {
     // Append to app container instead of body
     if (appContainer) {
       appContainer.appendChild(this.container);
-      console.log('[DashboardView] this.container ditambahkan ke appContainer');
+      // ...log removed for production...
     } else {
       document.body.appendChild(this.container);
-      console.log('[DashboardView] this.container ditambahkan ke body');
+      // ...log removed for production...
     }
 
     return this.container;
@@ -167,11 +165,11 @@ class DashboardView {
   bindEvents(presenter) {
     // Clean up any existing event listeners first
     this.unbindEvents();
-    
+
     // Store the presenter reference for cleanup
     this.presenter = presenter;
 
-    // Bind start training button
+    // Bind start training button (recommendation)
     const startTrainingBtn = this.container.querySelector('#start-training-btn');
     if (startTrainingBtn) {
       this.startTrainingHandler = (e) => {
@@ -186,24 +184,18 @@ class DashboardView {
 
     // Bind category card click events
     this.categoryCards = this.container.querySelectorAll('.category-card');
+    this.categoryCardHandlers = [];
     this.categoryCards.forEach(card => {
       const handler = (e) => {
         e.preventDefault();
         e.stopPropagation();
         const categoryId = card.dataset.categoryId;
-        if (categoryId && presenter) {
-          console.log('Category card clicked:', categoryId);
-          if (typeof presenter.handleCategorySelect === 'function') {
-            presenter.handleCategorySelect(categoryId);
-          } else if (typeof presenter.onCategorySelect === 'function') {
-            presenter.onCategorySelect(categoryId);
-          }
+        if (categoryId && presenter && typeof presenter.handleCategorySelect === 'function') {
+          presenter.handleCategorySelect(categoryId);
         }
         return false;
       };
-      
       card.addEventListener('click', handler, true);
-      this.categoryCardHandlers = this.categoryCardHandlers || [];
       this.categoryCardHandlers.push({ card, handler });
     });
   }
@@ -221,26 +213,27 @@ class DashboardView {
     const categoriesMastered = this.container.querySelector('#categories-mastered');
     const needPractice = this.container.querySelector('#need-practice');
 
-    if (accentScore && stats.accentScore) {
-      accentScore.innerHTML = `${stats.accentScore}<span class="score-percentage">%</span>`;
+    // Selalu update, meskipun 0 atau -
+    if (accentScore) {
+      accentScore.innerHTML = `${stats.accentScore || 0}<span class="score-percentage">%</span>`;
     }
-    if (completedExercises && stats.completedExercises) {
-      completedExercises.textContent = stats.completedExercises;
+    if (completedExercises) {
+      completedExercises.textContent = stats.completedExercises || 0;
     }
-    if (todayExercises && stats.todayExercises) {
-      todayExercises.textContent = stats.todayExercises;
+    if (todayExercises) {
+      todayExercises.textContent = stats.todayExercises || 0;
     }
-    if (trainingTime && stats.trainingTime) {
-      trainingTime.textContent = stats.trainingTime;
+    if (trainingTime) {
+      trainingTime.textContent = stats.trainingTime || '0 Jam';
     }
-    if (latestCategory && stats.latestCategory) {
-      latestCategory.textContent = stats.latestCategory;
+    if (latestCategory) {
+      latestCategory.textContent = stats.latestCategory || '-';
     }
-    if (categoriesMastered && stats.categoriesMastered) {
-      categoriesMastered.textContent = stats.categoriesMastered;
+    if (categoriesMastered) {
+      categoriesMastered.textContent = stats.categoriesMastered || 0;
     }
-    if (needPractice && stats.needPractice) {
-      needPractice.textContent = stats.needPractice;
+    if (needPractice) {
+      needPractice.textContent = stats.needPractice || '-';
     }
   }
 
@@ -262,7 +255,7 @@ class DashboardView {
   }
 
   destroy() {
-    console.log('[DashboardView] destroy() dipanggil');
+    // ...log removed for production...
     // Clean up event listeners
     this.unbindEvents();
     
@@ -270,13 +263,13 @@ class DashboardView {
     const appContainer = document.getElementById('app');
     if (appContainer) {
       appContainer.innerHTML = '';
-      console.log('[DashboardView] appContainer.innerHTML dikosongkan (destroy)');
+      // ...log removed for production...
     }
 
     // Remove container from DOM
     if (this.container?.parentNode) {
       this.container.parentNode.removeChild(this.container);
-      console.log('[DashboardView] this.container dihapus dari DOM (destroy)');
+      // ...log removed for production...
     }
     
     // Clean up references

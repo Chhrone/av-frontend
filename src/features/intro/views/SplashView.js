@@ -78,11 +78,13 @@ class SplashView {
   }
 
   mount(container) {
-    if (this.container) {
+    if (this.container && container) {
       container.appendChild(this.container);
       // Trigger entrance animation
       setTimeout(() => {
-        this.container.classList.add('visible');
+        if (this.container && this.container.parentNode) {
+          this.container.classList.add('visible');
+        }
       }, 100);
     }
   }
