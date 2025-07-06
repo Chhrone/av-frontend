@@ -12,9 +12,8 @@ class DashboardPresenter {
     // this.footerPresenter = null;
   }
 
-  init() {
+  async init() {
     console.log('[DashboardPresenter] init dipanggil');
-    // Add dashboard mode class to body
     document.body.classList.add('dashboard-mode');
 
     // Clean up existing view and chart if any
@@ -34,27 +33,43 @@ class DashboardPresenter {
     const dashboardContainer = document.getElementById('dashboard-container');
     const dashboardMain = dashboardContainer?.querySelector('.dashboard-main');
     if (dashboardContainer && dashboardMain) {
-      // Initialize and render navbar first
       if (this.navbar) {
         this.navbar.destroy();
       }
       this.navbar = new NavbarPresenter();
       this.navbar.init();
-
-      // Mount navbar directly to dashboard container before dashboard-main
       dashboardContainer.insertBefore(this.navbar.view.element, dashboardMain);
-
-      // Manually trigger scroll event binding since we're not using mount()
       this.navbar.view.bindScrollEvent();
     }
 
-    // Footer initialization removed
+    // Ambil data progres, stats, dan score improvement dari model secara async
+    const [progressData, userStats, scoreImprovement] = await Promise.all([
+      this.model.getProgressData(),
+      this.model.getUserStats(),
+      this.model.getScoreImprovement()
+    ]);
 
-    // Initialize chart after view is rendered
-    this.initializeChart();
+    // Initialize chart dengan data nyata
+    this.initializeChart(progressData);
+    // Tampilkan statistik user
+    this.view.updateStats(userStats);
 
-    // Load and display user stats
-    this.loadUserStats();
+    // Atur tampilan score-improvement
+    const improvementEl = document.querySelector('.score-improvement');
+    if (improvementEl) {
+      if (scoreImprovement && scoreImprovement.show && scoreImprovement.value > 0) {
+        improvementEl.style.display = '';
+        // Update angka improvement
+        const valueEl = improvementEl.querySelector('.score-improvement-value');
+        if (valueEl) {
+          valueEl.textContent = `+${scoreImprovement.value}`;
+        } else {
+          improvementEl.textContent = `+${scoreImprovement.value}`;
+        }
+      } else {
+        improvementEl.style.display = 'none';
+      }
+    }
   }
 
   destroy() {
@@ -75,19 +90,17 @@ class DashboardPresenter {
     document.body.classList.remove('dashboard-mode');
   }
 
-  initializeChart() {
+  initializeChart(progressData) {
     const progressCtx = document.getElementById('progressChart');
     if (!progressCtx) {
       console.error('Progress chart canvas not found');
       return;
     }
 
-    // Destroy existing chart if it exists
     if (this.chart) {
       this.chart.destroy();
     }
 
-    // Ambil warna dari CSS variable global
     const cssVars = getComputedStyle(document.documentElement);
     const colorPrimary = cssVars.getPropertyValue('--color-primary').trim();
     const colorPrimaryDark = cssVars.getPropertyValue('--color-primary-dark').trim();
@@ -107,7 +120,7 @@ class DashboardPresenter {
         labels: ['4 Minggu Lalu', '3 Minggu Lalu', '2 Minggu Lalu', 'Minggu Lalu', 'Minggu Ini'],
         datasets: [{
           label: 'Skor Aksen',
-          data: [75, 78, 77, 80, 82],
+          data: Array.isArray(progressData) && progressData.length === 5 ? progressData : [75, 78, 77, 80, 82],
           backgroundColor: colorPrimaryLight,
           borderColor: colorPrimary,
           tension: 0.4,
@@ -207,20 +220,7 @@ class DashboardPresenter {
     });
   }
 
-  loadUserStats() {
-    // Get stats from model or use default values
-    const stats = this.model.getUserStats() || {
-      accentScore: 82,
-      completedExercises: 128,
-      todayExercises: 5,
-      trainingTime: '14 Jam',
-      latestCategory: 'Pronunciation',
-      categoriesMastered: 2,
-      needPractice: 'Intonation'
-    };
-
-    this.view.updateStats(stats);
-  }
+  // loadUserStats() tidak diperlukan lagi, sudah digantikan oleh async init
 
   handleStartTraining() {
     console.log('Starting training...');

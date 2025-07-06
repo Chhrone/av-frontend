@@ -65,7 +65,9 @@ class DashboardView {
               <div class="main-gradient">
                 <p class="score-label">Skor Aksen Anda</p>
                 <p class="score-value" id="accent-score">82<span class="score-percentage">%</span></p>
-                <p class="score-improvement">meningkat 2% dari minggu lalu!</p>
+                <p class="score-improvement" style="display:none;">
+                  meningkat <span class="score-improvement-value">0</span>% dari minggu lalu!
+                </p>
               </div>
               <div class="profile-content">
                 <div class="profile-header">

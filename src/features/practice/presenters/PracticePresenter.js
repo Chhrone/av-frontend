@@ -7,6 +7,7 @@ import accentDetectionService from '../../../utils/AccentDetectionService.js';
 import PracticeRecordingService from '../services/PracticeRecordingService.js';
 import PracticeResultService from '../services/PracticeResultService.js';
 import PracticeViewService from '../services/PracticeViewService.js';
+import { savePracticeSession } from '../../../utils/database/aureaVoiceDB.js';
 
 
 class PracticePresenter {
@@ -147,19 +148,54 @@ class PracticePresenter {
           if (recording && recording.audioBlob) {
             const result = await accentDetectionService.analyzeAccent(recording.audioBlob);
             const score = this.resultService.getScoreFromResult(result);
+            // Pastikan durasi dalam detik (dibulatkan)
+            if (recording && typeof recording.duration === 'number') {
+              recording.duration = Math.round(recording.duration / 1000);
+            }
             this.sessionRecordings.push(recording);
             this.sessionScores.push(score);
             this.model.savePracticeRecording(this.categoryId, this.practiceId, recording, score);
             this.resultModel.setResultData(result);
             if (this.sessionRecordings.length >= this.maxSession) {
               const avgScore = this.resultService.getAverageScore(this.sessionScores);
-              this.model.savePracticeSession(
-                this.categoryId,
-                this.practiceId,
-                this.sessionRecordings,
-                this.sessionScores,
-                avgScore
-              );
+              // Hitung total durasi dari 4 rekaman
+              let totalDuration = 0;
+              if (this.sessionRecordings.length === this.maxSession) {
+                totalDuration = this.sessionRecordings.reduce((sum, rec) => {
+                  // rec.duration bisa berupa detik, fallback ke 0 jika tidak ada
+                  return sum + (rec.duration || 0);
+                }, 0);
+              }
+              // Ambil nama_kategori dan nama_latihan (jika ada di model)
+              let nama_kategori = this.categoryId;
+              let nama_latihan = this.practiceId;
+              if (typeof this.model.getCategoryName === 'function') {
+                nama_kategori = this.model.getCategoryName(this.categoryId) || this.categoryId;
+              }
+              if (typeof this.model.getPracticeName === 'function') {
+                nama_latihan = this.model.getPracticeName(this.practiceId) || this.practiceId;
+              }
+              // Simpan ke IndexedDB dengan log sebelum dan sesudah
+              console.log('[LOG] Akan menyimpan sesi ke IndexedDB:', {
+                id_latihan: this.practiceId,
+                nama_kategori,
+                nama_latihan,
+                hasil_sesi: avgScore,
+                durasi: totalDuration
+              });
+              savePracticeSession({
+                id_latihan: this.practiceId,
+                nama_kategori,
+                nama_latihan,
+                hasil_sesi: avgScore,
+                durasi: totalDuration
+              })
+                .then(() => {
+                  console.log('[LOG] Sukses menyimpan sesi ke IndexedDB');
+                })
+                .catch((err) => {
+                  console.error('[LOG] Gagal menyimpan sesi ke IndexedDB:', err);
+                });
               // Tampilkan progress bar full sebelum result rata-rata
               this.testView.renderSessionProgress(this.maxSession, this.maxSession);
               this.showResultView({

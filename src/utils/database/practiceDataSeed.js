@@ -293,70 +293,141 @@ export const practiceSeedData = [
       "Good evening, I have special assistance request. Can I pre-board with this mobility device? Is the jet bridge operational? Need help transferring at Singapore. Could you notify ground staff? What's the estimated walking distance to gate?",
     ],
   },
+  // Inventasi Vokal
+  {
+    id_latihan: "VI-001",
+    id_kategori: "inventaris-vokal",
+    nama_latihan: "Perbedaan /ɪ/ dan /iː/",
+    instruksi: "Ucapkan perbedaan antara /ɪ/ dan /iː/: bit vs beat",
+    kata_kata: [
+      "In this intriguing city, visitors witness a unique film festival featuring six different mystery screenings beginning precisely at six. Tickets are completely free for kids, giving families a quick glimpse of busy streets filled with boutique businesses. The historical district's illuminated buildings create a magical evening atmosphere.",
+      "Fifteen busy executives finished critical meetings before visiting the fitness gym, feeling genuinely relieved after completing tricky business initiatives. The building's intricate security system includes hidden switches and biometric screening. Important decisions were made regarding international shipping logistics.",
+      "The little kitten hid under a thick quilt during brilliant fireworks, its tiny whiskers twitching in the chilly winter breeze. Nearby, city officials discussed municipal business in brightly lit council buildings. Interesting proposals about public transportation improvements were being considered.",
+      "Six gifted musicians received invitations to perform intricate symphonies in the beautiful concert hall, bringing unique instruments including vintage fiddles and keyboards. The building's acoustics create magical listening experiences. This prestigious event highlights the city's commitment to cultural enrichment.",
+      "Tourists witnessed traditional sheep-shearing while sipping mint tea in cozy inns, listening to cheerful birds twittering in lilac trees. This immersive glimpse into rural living fascinated urban visitors. Village elders shared intriguing stories about local history and customs.",
+    ],
+  },
+  {
+    id_latihan: "VI-002",
+    id_kategori: "inventaris-vokal",
+    nama_latihan: "Vokal Panjang /ɑː/",
+    instruksi: "Latih vokal panjang /ɑː/: car, star, far",
+    kata_kata: [
+      "The artistic carpenter crafted marvelous garden arches after dark, working remarkably hard under sparkling stars far from crowded marketplaces. His large-scale project involves carving complex patterns into hardwood from distant farms. Marvelous creations gradually took shape beneath the calm night sky. Art gallery owners expressed keen interest in exhibiting his work.",
+      "After the alarming fire alert, guards marched smartly through apartment parking lots, carefully scanning corners before restarting security systems. They documented observations for morning briefings. The complex's advanced alarm apparatus prevented potential disasters. Security protocols were markedly enhanced following the incident.",
+      "Farmers harvested marvelous crops of oversized carrots and parsnips beneath calm, starry skies, their calloused hands moving rhythmically under distant moonlight. The heartwarming scene exemplified their hard work throughout the growing season. Large baskets overflowed with garden-fresh produce destined for farmer's markets. Starving communities gratefully received charitable donations.",
+      "The charming bartender served exotic tropical cocktails at the harbor bar, playing harmonic melodies carrying astonishingly far across calm bay waters. His remarkable talent transformed ordinary evenings into memorable experiences. Patrons marveled at his artistic flair and engaging personality. The bar's popularity skyrocketed following a favorable newspaper article.",
+      "Archaeologists made startling discoveries uncovering archaic artifacts within marble sarcophagi beneath monastery gardens, marking significant research advancements. Artifacts included remarkably preserved parchments and farming implements. Hard work in harsh conditions yielded invaluable historical insights. Laboratory analysis started immediately to date these marvelous findings.",
+    ],
+  },
+  {
+    id_latihan: "VI-003",
+    id_kategori: "inventaris-vokal",
+    nama_latihan: "Diphthong /aɪ/",
+    instruksi: "Ucapkan diphthong /aɪ/: my, time, light",
+    kata_kata: [
+      "Bright moonlight guided climbers through frightening night hikes, while researchers identified rare spiders using ultraviolet lights. Their timely discovery might revolutionize biological classification. Wildlife sightings included shy white ibises taking flight at sunrise. These findings will likely influence future conservation guidelines significantly.",
+      "I wisely finalized comprehensive financial analysis by Friday night despite tight timelines, aligning priorities with quarterly targets. This strategic choice might impact yearly bonus structures. Tight deadlines required working late into the night. Finalizing these reports was vital for investor relations.",
+      "Five determined cyclists arrived punctually for twilight rides along rugged coastlines, headlights shining brilliantly against darkening skies. The challenging route required physical endurance and mental fortitude. Nighttime navigation demanded bright lighting apparatus. Their arrival coincided perfectly with the rising moonlight.",
+      "The insightful scientist designed revolutionary devices potentially generating limitless renewable energy, combining photovoltaic cells with tidal technology. This groundbreaking invention might solve global energy crises. Bright minds collaborated internationally on this pioneering project. Future applications might include powering entire cities sustainably.",
+      "Patient photographers waited quietly while shy white ibises took flight at sunrise, capturing magnificent images of graceful glides over wetlands. Their priceless photographs documented rare nesting behaviors. Timely shutter clicks immortalized these fleeting moments beautifully. Identifying optimal shooting locations required extensive reconnaissance.",
+    ],
+  },
+  {
+    id_latihan: "VI-004",
+    id_kategori: "inventaris-vokal",
+    nama_latihan: "Perbandingan /ʊ/ dan /uː/",
+    instruksi: "Bandingkan /ʊ/ dan /uː/: book vs blue",
+    kata_kata: [
+      "The curious cook thoroughly looked through recipe books, selecting nutritious soup ingredients while blue butterflies floated into wooden booths near lagoons. The picturesque scene inspired new seafood stew creations. Cookbook pages contained helpful bulletproof techniques. Blueberry desserts completed the magnificent menu.",
+      "We pulled wool cushions closer to babbling brooks where smooth stones looked beautiful under full moons during neighborhood reunions. This tranquil spot provided perfect settings for heartfelt conversations. Wooden footbridges arched gracefully over clear waters. Full moonlight enhanced the blue hues remarkably.",
+      "The woman placed wooden footstools near overflowing bookshelves containing good cookbooks, then admired views of stunningly blue lagoons. Her afternoon ritual included reading while enjoying waterscapes. Childhood books evoked nostalgic feelings. Blue herons often fished in the shallow lagoon waters.",
+      "During lively neighborhood barbecues, skilled butchers broiled delicious pulled pork while guests brought homemade cookies to decorated outdoor booths. Mouthwatering aromas attracted visitors from surrounding blocks. Good fellowship flourished under twilight skies. Blue checkered tablecloths complemented the rustic decor.",
+      "Luminous full moons cast beautiful reflections over bubbling brooks where solitary wolves prowled near wooden footbridges, creating simultaneously soothing yet spooky atmospheres. Nighttime photographers captured haunting wilderness scenes. Wolf footprints were discovered near the brook's edge. Blue-tinted lighting enhanced the mystical ambiance.",
+    ],
+  },
+  {
+    id_latihan: "VI-005",
+    id_kategori: "inventaris-vokal",
+    nama_latihan: "Vokal Tengah /ɜː/",
+    instruksi: "Latih vokal tengah /ɜː/: bird, turn, learn",
+    kata_kata: [
+      "Early birds searched earnestly for earthworms after thunderstorms, while researchers observed behavior for environmental journals. The team worked tirelessly documenting foraging patterns. Urgent conservation measures were deemed necessary. Certain bird species demonstrated remarkable adaptability.",
+      "Dedicated service workers learned comprehensive emergency procedures during intensive workshops, rehearsing techniques for worst-case scenarios. Their training included simulated disasters requiring urgent decision-making. Earning certifications required passing rigorous examinations. Early intervention proved crucial during actual emergencies.",
+      "Investigative journalists uncovered disturbing truths about corporate environmental violations, working determinedly to preserve earth's fragile ecosystems. Their persistent efforts influenced government policy reforms. Certain industries resisted regulatory changes fiercely. Earth's delicate balance requires global cooperation.",
+      "Compassionate nurses worked early shifts at bustling urban clinics, expertly comforting nervous patients with reassuring words. Her gentle demeanor earned colleagues' respect. Earning patients' trust required both skill and empathy. Certain medical cases demanded extraordinary emotional resilience.",
+      "Eager students yearned to learn world history from distinguished professors, attentively turning textbook pages during engaging lectures. The curriculum covered turbulent periods including revolutions. Early civilizations demonstrated remarkable ingenuity. Certain historical figures inspired profound admiration.",
+    ],
+  },
   // Struktur Suku Kata
   {
-  id_latihan: "SK-001",
-  id_kategori: "struktur-suku-kata",
-  nama_latihan: "Gugus Konsonan Awal",
-  instruksi: "Latih penggabungan gugus awal: s-t-r... st-r... street. Ucapkan: strong, splash, screen.",
-  kata_kata: [
-    "The exceptionally strong athlete sprinted straight down the bustling city street. Spectators cheered enthusiastically as he made a huge splash jumping through the water obstacle. Afterwards, he carefully wiped droplets from the giant display screen.",
-    "Splendid multicolored stripes dramatically decorate the circus strongman's sparkling costume. He scrapes stubborn rust stains using coarse steel wool, while children scream loudly upon noticing suspicious strangers. These strangers lurk near playground equipment during wood-splitting demonstrations.",
-    "Strict mathematics teachers meticulously scrutinize students' complex scratch work solutions on the chalkboard. They must approve plans before students splurge on special imported spring strawberries. Meanwhile, technicians securely screw sturdy metal brackets onto the streamlined spacecraft. This craft will streak through the stratosphere.",
-    "Using delicate tools, craftsmen slowly scratch stubbornly sticky label residue from antique vases. They carefully smooth splintered wooden surfaces. Meanwhile, stray kittens gently scratch at reinforced screen doors. These actions implement strategic plans strengthening struggling tech startups through innovative financing.",
-    "Mysterious abstract sculptures strikingly stand near the babbling forest stream. Splashing children scream with pure delight during spring thunderstorms. These storms dramatically strike southern coastal states, while digital street screens continuously display rapidly scrolling news scripts."
-  ]
-},
-{
-  id_latihan: "SK-002",
-  id_kategori: "struktur-suku-kata",
-  nama_latihan: "Gugus Konsonan Akhir",
-  instruksi: "Latih gugus akhir dengan jelas. Ucapkan: fast, test, desk, ask.",
-  kata_kata: [
-    "The astonishingly fast diagnostic test results arrived last midnight. Doctors urgently ask about ergonomic desk lamp specifications before purchasing next week. Security personnel thoroughly inspect first guests who must pass through multiple checkpoints at the west coast forest reserve.",
-    "Historical past events inevitably cast long psychological shadows over current decisions. Best friends maintain absolute trust through difficult times. They understand that lost office keys might cost substantial replacement fees, despite being just administrative tasks requiring minimal effort.",
-    "Delicate mist-shrouded birds' nests rest precariously on highest pine branches. Floating dust particles glitter mysteriously in afternoon sunbeams. This reminds us that worst industrial accidents often tragically result from unnecessary haste during winter. Frost patterns form intricate designs.",
-    "Gentle soft whispers eerily drift through the museum's empty exhibition halls. Intricate craft projects demand extremely precise measurements. Unlike these, festive gift boxes wrapped in vibrantly bright paper get efficiently assembled by shift workers adapting to rotating schedules.",
-    "Patients' last medical requests deserve profoundly respectful consideration from treatment teams. This is especially important when observing bodybuilders' chest muscles dramatically flex during intense weightlifting sessions. These sessions influence complex next steps involving critical financial decisions about frequently misinterpreted text messages."
-  ]
-},
-{
-  id_latihan: "SK-003",
-  id_kategori: "struktur-suku-kata",
-  nama_latihan: "Akhiran Jamak (Plural -s)",
-  instruksi: "Latihan Kritis - Akhiran Jamak: Ucapkan 'books', 'cats', 'tasks', 'dogs', 'friends', 'words'.",
-  kata_kata: [
-    "Overflowing library books completely fill numerous ceiling-high shelves. Stray neighborhood cats efficiently hunt small birds in community gardens. Overwhelming daily tasks gradually accumulate without proper planning. Meanwhile, loyal guard dogs fiercely protect suburban families, and close childhood friends exchange meaningful words.",
-    "Specialized colored pencils effortlessly create astonishingly vivid botanical drawings. Professional chefs display these alongside razor-sharp knives requiring careful handling. Towering skyscrapers dominate metropolitan skylines where gentle ocean waves rhythmically lap sandy shores. Ancient redwood trees miraculously withstand powerful storms.",
-    "Numerous broken vintage watches hopelessly clutter the antique shop's dusty drawers. Forgotten picnic snacks dangerously attract swarms of hungry ants. Beautifully woven baskets hold exotic tropical fruits on weathered wooden tables. Extended family members regularly gather here despite hidden surveillance cameras discreetly capturing footage.",
-    "Waterproof printed labels clearly identify hundreds of archived storage boxes. These contain discarded plastic bottles severely polluting marine ecosystems globally. Energy-hungry electronic devices continuously consume significant resources. Unlike these, luxurious silk scarves add elegant finishing touches to protective leather jackets favored by adventurous motorcycle riders.",
-    "Exquisitely painted ceramic plates proudly display intricate artistic designs from local artisans. Durable rubber boots reliably withstand extremely muddy hiking conditions. Glass-walled observation decks reflect brilliant morning sunlight onto historic brick walls. These walls enclose magnificent private gardens connected by endless concrete sidewalks."
-  ]
-},
-{
-  id_latihan: "SK-004",
-  id_kategori: "struktur-suku-kata",
-  nama_latihan: "Akhiran Lampau (Past -ed)",
-  instruksi: "Latihan Kritis - Akhiran Lampau: Ucapkan 'helped', 'looked', 'watched', 'loved', 'cleaned', 'played'.",
-  kata_kata: [
-    "She compassionately helped her elderly neighbor carry heavy groceries yesterday. We nostalgically looked through decades-old photo albums documenting family history. They contentedly watched the fiery sunset over the ocean together since he passionately loved classical music intensely. Later, Mom thoroughly cleaned the entire kitchen while children energetically played soccer.",
-    "He skillfully fixed the damaged mountain bicycle using specialized tools. She meticulously brushed her waist-long hair preparing for the gala. They efficiently washed towering piles of dirty dishes following the banquet. We diligently practiced challenging pronunciation exercises throughout the night when it unexpectedly rained torrentially.",
-    "He firmly closed the ancient creaking garden gate at midnight. She rapidly typed the confidential legal document under deadline pressure. They joyfully danced under starlight until early hours. We cautiously hiked treacherous mountain trails during the storm before I successfully baked three dozen cookies.",
-    "He secretly wished for clearer weather during the outdoor wedding ceremony. She reverently touched the priceless archaeological artifact in the museum display. They triumphantly finished the intricate 5000-piece puzzle well before midnight. We remarkably reached our remote destination hours early after I genuinely thanked the volunteers.",
-    "He persistently knocked on the reinforced oak door using the heavy brass knocker. She precisely folded freshly laundered linens, arranging them perfectly. They blissfully relaxed in the spa after completing demanding work projects. We correctly guessed the obscure trivia answer during the game show after I steadily walked several miles."
-  ]
-},
-{
-  id_latihan: "SK-005",
-  id_kategori: "struktur-suku-kata",
-  nama_latihan: "Kejelasan Konsonan Berurutan",
-  instruksi: "Rekam suara Anda saat mengatakan 'He asked for six texts' dan periksa apakah semua konsonan akhir terdengar.",
-  kata_kata: [
-    "He specifically asked the librarian for six precisely exact academic texts. These are required next month covering mixed culinary techniques that unexpectedly tempt sophisticated taste buds. Fixed architectural brackets securely support complex glass structures where agile jumped foxes frequently cross dense wooded landscapes.",
-    "Dangerous wasps' nests dangerously rest between gnarled twisted branches. Courteously helped hotel guests politely request extra woolen blankets. Camped wilderness hikers eagerly expect refreshingly crisp mountain morning air. Meanwhile, limped marathon athletes gratefully accept professional medical assistance.",
-    "Newly developed scientific concepts continually spark innovative technological solutions. Properly washed hands effectively prevent harmful germ transmission in hospitals. Unlike these, missed flight connections create complicated international travel issues. Passed licensing tests clearly reflect months of diligent studying.",
-    "Unfortunately, lapsed insurance policies now require extremely urgent renewal processing. Emotionally mixed feelings naturally accompany major career decisions. Fixed monthly expenses severely limit household budget flexibility. Jumped premature conclusions often cause serious diplomatic misunderstandings.",
-    "Elaborately masked carnival performers creatively entertain enormous festival crowds. Competently tasked construction workers safely complete high-rise assigned projects before risking substantial financial resources. These potentially yield lucrative returns. Unlike these, disc jockeys expertly mix continuous popular dance tracks."
-  ]
-},
+    id_latihan: "SK-001",
+    id_kategori: "struktur-suku-kata",
+    nama_latihan: "Gugus Konsonan Awal",
+    instruksi:
+      "Latih penggabungan gugus awal: s-t-r... st-r... street. Ucapkan: strong, splash, screen.",
+    kata_kata: [
+      "Strong athletes stretched thoroughly before sprinting tracks, straining muscles strategically. Splendid spring streams sparkled brightly under sunlight. Screens displayed striking graphics showing structural designs. Strategic planners scrutinized spreadsheets showing quarterly growth.",
+      "Splashing children screamed shrilly while scrambling through slippery streams. Street performers strummed strings skillfully, spreading cheerful melodies. Strategic plans required scrutiny before implementation. Strict supervisors stressed strict standards for safety protocols.",
+      "Strict teachers stressed structured writing styles for student projects. Scrappy squirrels scrambled swiftly up scratchy tree trunks. Splintered wood split spectacularly when struck squarely. Strong swimmers practiced strenuous strokes in special sessions.",
+      "Scribbled notes sprawled strangely across scattered sketchbook pages. Struggling swimmers practiced strong strokes for survival training. Splendid sculptures stood prominently in spacious studio corners. Screaming fans streamed through stadium gates seeking star players.",
+      "Strategic planners scrutinized spreadsheets showing quarterly growth trends. Screaming fans streamed through stadium gates seeking star players. Splendid fireworks splashed colorful sparks across night skies. Strong winds scattered stray papers across city streets.",
+    ],
+  },
+  {
+    id_latihan: "SK-002",
+    id_kategori: "struktur-suku-kata",
+    nama_latihan: "Gugus Konsonan Akhir",
+    instruksi:
+      "Latih gugus akhir dengan jelas. Ucapkan: fast, test, desk, ask.",
+    kata_kata: [
+      "Swift athletes passed difficult tests assessing physical limits. Robust tasks demanded focused effort until dusk. Artists asked thoughtful questions during gallery discussions. Frost formed overnight on forest plants. Guests requested last drinks before closing.",
+      "Chefs tasted complex dishes testing flavor enhancements. Last guests requested warm drinks against evening frost. Crisp autumn winds rustled leaves across forest paths. Dust collected thickly on abandoned desks. Students masked uncertainty during oral exams.",
+      "Scientists conducted strict experiments testing chemical reactions. Firm desks withstood heavy books stacked haphazardly. Forest animals instinctively masked scents from predators. Mist enveloped coastal landscapes at dawn. Workers risked health without proper masks.",
+      "Final exams tested students' grasp of advanced concepts. Musicians adjusted instruments during orchestra practice breaks. Guests politely asked hosts about historical artifacts. Soft whispers passed between conference attendees. Artists sketched landscapes capturing morning frost.",
+      "Night shifts demanded maximum focus despite fatigue. Difficult tasks challenged even experienced professionals. Workers masked surfaces before painting walls carefully. West winds brought unexpected temperature drops. Scientists tasked teams with urgent projects.",
+    ],
+  },
+  {
+    id_latihan: "SK-003",
+    id_kategori: "struktur-suku-kata",
+    nama_latihan: "Akhiran Jamak (Plural -s)",
+    instruksi:
+      "Latihan Kritis - Akhiran Jamak: Ucapkan 'books', 'cats', 'tasks', 'dogs', 'friends', 'words'.",
+    kata_kata: [
+      "Library shelves held countless books about diverse subjects. Neighborhood cats chased playful mice through gardens. Daily tasks included organizing files and answering emails. Loyal dogs guarded homes while owners traveled. Childhood friends shared secrets during vacations.",
+      "Loyal dogs guarded homes while owners traveled abroad. Childhood friends shared secrets during summer vacations. Complex words required careful pronunciation during speeches. Digital tablets replaced heavy books in classrooms. Hungry birds snatched crumbs from tourists.",
+      "Digital tablets replaced heavy books in modern classrooms. Hungry birds snatched crumbs left by careless tourists. Challenging tasks demanded collaborative problem-solving approaches. Veterinary clinics treated injured neighborhood dogs. Trusted friends offered support during transitions.",
+      "Veterinarians treated injured dogs after neighborhood accidents. Trusted friends offered support during difficult transitions. Technical manuals listed specialized terms with definitions. Published books collected dust on office shelves. Stray cats sought shelter during storms.",
+      "Published books collected dust on neglected office shelves. Stray cats sought shelter during winter storms. Management assigned critical tasks to experienced teams. Guide dogs assisted visually impaired individuals. Foreign words required additional practice sessions.",
+    ],
+  },
+  {
+    id_latihan: "SK-004",
+    id_kategori: "struktur-suku-kata",
+    nama_latihan: "Akhiran Lampau (Past -ed)",
+    instruksi:
+      "Latihan Kritis - Akhiran Lampau: Ucapkan 'helped', 'looked', 'watched', 'loved', 'cleaned', 'played'.",
+    kata_kata: [
+      "Volunteers helped elderly residents cross busy streets safely. Children watched colorful parades with wide-eyed excitement. Families loved picnicking in blossoming spring parks. Custodians cleaned school classrooms thoroughly. Musicians played classical pieces beautifully.",
+      "Technicians cleaned laboratory equipment after completing experiments. Musicians played classical pieces during evening concerts. Historians looked through archived documents for evidence. Nurses helped patients walk during recovery. Tourists watched street performers enthusiastically.",
+      "Neighbors helped rebuild damaged fences after severe storms. Tourists watched breathtaking sunsets from coastal cliffs. Grandparents loved sharing stories about their youth. Janitors cleaned auditorium stages after events. Athletes played intense matches despite injuries.",
+      "Custodians cleaned school classrooms during summer vacations. Athletes played intense matches despite minor injuries. Researchers looked for patterns in collected data. Rescuers helped trapped animals escape danger. Audiences watched dramatic performances attentively.",
+      "Rescue teams helped stranded hikers descend mountains safely. Audiences watched dramatic performances with rapt attention. Artists loved experimenting with unconventional materials. Students cleaned dormitory kitchens weekly. Jazz bands played improvised melodies creatively.",
+    ],
+  },
+  {
+    id_latihan: "SK-005",
+    id_kategori: "struktur-suku-kata",
+    nama_latihan: "Kejelasan Konsonan Berurutan",
+    instruksi:
+      "Rekam suara Anda saat mengatakan 'He asked for six texts' dan periksa apakah semua konsonan akhir terdengar.",
+    kata_kata: [
+      "Scientists tested complex concepts against established facts. Next projects demanded exact plans before implementation. Strict judges assessed contestants' talents objectively. Mixed textures created interesting visual contrasts. Drafted documents required last adjustments.",
+      "Twisted branches snapped abruptly during fierce storms. Correct answers solved abstract mathematical problems. Mixed textures created interesting visual contrasts. Washed hands prevent germ transmission effectively. Jumped frogs escaped children quickly.",
+      "Finished products exceeded quality expectations consistently. Washed hands prevent germ transmission effectively. Drafted documents required last adjustments before signing. Fact-checked reports exposed misleading claims. Developed countries supported health initiatives.",
+      "Developed countries support global health initiatives. Washed clothes dried quickly on sunny days. Jumped frogs escaped curious children's hands. Strict tests evaluated language proficiency. Next steps depended on approved budgets.",
+      "Fact-checked reports exposed misleading claims convincingly. Drafted athletes trained intensely for championships. Mixed feelings complicated important decisions. Washed vegetables ensured food safety standards. Tested methods produced consistent results.",
+    ],
+  },
 ];

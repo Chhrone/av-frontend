@@ -1,16 +1,17 @@
 // Model untuk Irama Bahasa
 
 const IramaBahasaModel = {
-  id: 'irama-bahasa',
-  title: 'Irama Bahasa',
-  description: 'Irama dan intonasi adalah puncak dari piramida pelafalan. Menguasai elemen ini adalah kunci untuk menciptakan musik bahasa yang mengalir secara alami dan tidak terdengar "asing" atau kaku.',
+  id: "irama-bahasa",
+  title: "Irama Bahasa",
+  description:
+    'Irama dan intonasi adalah puncak dari piramida pelafalan. Menguasai elemen ini adalah kunci untuk menciptakan musik bahasa yang mengalir secara alami dan tidak terdengar "asing" atau kaku.',
   banner: {
-    title: 'Irama Bahasa',
-    subtitle: 'Latih ritme dan intonasi untuk bicara yang mengalir alami',
-    image: 'https://placehold.co/800x300/E2E8F0/475569?text=Irama+Bahasa'
+    title: "Irama Bahasa",
+    subtitle: "Latih ritme dan intonasi untuk bicara yang mengalir alami",
+    image: "https://placehold.co/800x300/E2E8F0/475569?text=Irama+Bahasa",
   },
   material: {
-    title: 'Panduan Irama dan Intonasi',
+    title: "Panduan Irama dan Intonasi",
     content: `
       <h2>Perbedaan Fundamental: Stress-timed vs. Syllable-timed</h2>
       <p>Akar dari perbedaan "melodi" antara Bahasa Inggris dan Indonesia terletak pada cara kedua bahasa mengatur ritme kalimat.</p>
@@ -25,91 +26,108 @@ const IramaBahasaModel = {
         <li><b>Intonasi Naik (Rising Intonation):</b> Nada suara naik di akhir. Digunakan untuk pertanyaan Yes/No dan untuk menunjukkan ketidakpercayaan atau meminta klarifikasi.</li>
       </ol>
     `,
-    readingTime: '10 menit'
+    readingTime: "10 menit",
   },
   pronunciationExamples: [
-    { word: 'happy', phonetic: '/ˈhæpi/' },
-    { word: 'banana', phonetic: '/bəˈnɑːnə/' },
-    { word: 'important', phonetic: '/ɪmˈpɔːrtənt/' },
-    { word: 'photograph', phonetic: '/ˈfəʊtəɡræf/' },
-    { word: 'understand', phonetic: '/ˌʌndəˈstænd/' }
+    { word: "happy", phonetic: "/ˈhæpi/" },
+    { word: "banana", phonetic: "/bəˈnɑːnə/" },
+    { word: "important", phonetic: "/ɪmˈpɔːrtənt/" },
+    { word: "photograph", phonetic: "/ˈfəʊtəɡræf/" },
+    { word: "understand", phonetic: "/ˌʌndəˈstænd/" },
   ],
   commonMistakes: [
     {
-      id: 'rhythm1',
-      title: 'Ritme Syllable-timed (Choppy Rhythm)',
-      description: 'Memberikan penekanan dan durasi yang sama pada semua kata dalam kalimat, termasuk kata fungsi (seperti to, the, a), yang membuat ucapan terdengar terpatah-patah.',
-      examples: ['Mengucapkan "I want to go" sebagai "I - want - to - go" dengan penekanan yang sama rata.']
+      id: "rhythm1",
+      title: "Ritme Syllable-timed (Choppy Rhythm)",
+      description:
+        "Memberikan penekanan dan durasi yang sama pada semua kata dalam kalimat, termasuk kata fungsi (seperti to, the, a), yang membuat ucapan terdengar terpatah-patah.",
+      examples: [
+        'Mengucapkan "I want to go" sebagai "I - want - to - go" dengan penekanan yang sama rata.',
+      ],
     },
     {
-      id: 'rhythm2',
-      title: 'Intonasi Datar (Flat Intonation)',
-      description: 'Bahasa Indonesia memiliki rentang intonasi yang lebih sempit. Jika ditransfer ke Bahasa Inggris, ucapan terdengar monoton, tidak bersemangat, atau bahkan tidak tertarik.',
-      examples: ['Mengucapkan kalimat pernyataan tanpa ada naik-turun nada pada kata kunci.']
+      id: "rhythm2",
+      title: "Intonasi Datar (Flat Intonation)",
+      description:
+        "Bahasa Indonesia memiliki rentang intonasi yang lebih sempit. Jika ditransfer ke Bahasa Inggris, ucapan terdengar monoton, tidak bersemangat, atau bahkan tidak tertarik.",
+      examples: [
+        "Mengucapkan kalimat pernyataan tanpa ada naik-turun nada pada kata kunci.",
+      ],
     },
     {
-      id: 'rhythm3',
-      title: 'Pola Intonasi yang Salah untuk Pertanyaan',
-      description: 'Menggunakan intonasi turun pada pertanyaan Yes/No, atau intonasi naik pada pernyataan, yang dapat membingungkan pendengar dan membuat penutur terdengar tidak yakin.',
-      examples: ['Mengatakan "You live here?" dengan nada turun, membuatnya terdengar seperti pernyataan, bukan pertanyaan.']
-    }
+      id: "rhythm3",
+      title: "Pola Intonasi yang Salah untuk Pertanyaan",
+      description:
+        "Menggunakan intonasi turun pada pertanyaan Yes/No, atau intonasi naik pada pernyataan, yang dapat membingungkan pendengar dan membuat penutur terdengar tidak yakin.",
+      examples: [
+        'Mengatakan "You live here?" dengan nada turun, membuatnya terdengar seperti pernyataan, bukan pertanyaan.',
+      ],
+    },
   ],
   practiceItems: [
-    { 
-      id: 'IB-001',
-      title: 'Intonasi WH- Questions',
-      instruction: 'Latih intonasi turun untuk pertanyaan WH-: "What is your name? ➘", "Where are you from? ➘"' 
+    {
+      id: "IB-001",
+      title: "Intonasi WH- Questions",
+      instruction:
+        'Latih intonasi turun untuk pertanyaan WH-: "What is your name? ➘", "Where are you from? ➘"',
     },
-    { 
-      id: 'IB-002',
-      title: 'Intonasi Yes/No Questions',
-      instruction: 'Latih intonasi naik untuk pertanyaan Yes/No: "Are you coming? ➚", "Is this your book? ➚"' 
+    {
+      id: "IB-002",
+      title: "Intonasi Yes/No Questions",
+      instruction:
+        'Latih intonasi naik untuk pertanyaan Yes/No: "Are you coming? ➚", "Is this your book? ➚"',
     },
-    { 
-      id: 'IB-003',
-      title: 'Penekanan pada Content Words',
-      instruction: 'Identifikasi dan tandai "content words" dalam sebuah paragraf, lalu baca dengan menekankan hanya kata-kata tersebut.' 
+    {
+      id: "IB-003",
+      title: "Penekanan pada Content Words",
+      instruction:
+        'Identifikasi dan tandai "content words" dalam sebuah paragraf, lalu baca dengan menekankan hanya kata-kata tersebut.',
     },
-    { 
-      id: 'IB-004',
-      title: 'Latihan Ritme Bahasa Inggris',
-      instruction: 'Gunakan metronom online untuk melatih ritme stress-timed. Pastikan kata yang bertekanan jatuh tepat pada ketukan.' 
+    {
+      id: "IB-004",
+      title: "Latihan Ritme Bahasa Inggris",
+      instruction:
+        "Gunakan metronom online untuk melatih ritme stress-timed. Pastikan kata yang bertekanan jatuh tepat pada ketukan.",
     },
-    { 
-      id: 'IB-005',
-      title: 'Intonasi untuk Kalimat Pilihan',
-      instruction: 'Latih intonasi untuk pilihan: "Would you like coffee➚ or tea➘?"' 
-    }
-  ],  
+    {
+      id: "IB-005",
+      title: "Intonasi untuk Kalimat Pilihan",
+      instruction:
+        'Latih intonasi untuk pilihan: "Would you like coffee➚ or tea➘?"',
+    },
+  ],
   moreMaterials: {
-    title: 'Materi Tambahan',
+    title: "Materi Tambahan",
     materials: [
       {
-        id: 'mat1',
+        id: "mat1",
         title: "Rachel's English - Intonation Playlist",
-        description: 'Koleksi video lengkap yang menjelaskan dan melatih berbagai pola intonasi dalam Bahasa Inggris Amerika.',
-        url: 'https://www.youtube.com/playlist?list=PLrqHrGoMJdTTSRNwRh0Dw',
-        type: 'youtube',
-        icon: '📺'
+        description:
+          "Koleksi video lengkap yang menjelaskan dan melatih berbagai pola intonasi dalam Bahasa Inggris Amerika.",
+        url: "https://www.youtube.com/playlist?list=PLrqHrGoMJdTTSRNwRh0VVjO_KXA1La4Dw",
+        type: "youtube",
+        icon: "📺",
       },
       {
-        id: 'mat2',
+        id: "mat2",
         title: "Accent's Way - English Rhythm Practice",
-        description: 'Latihan praktis dari Hadar Shemesh untuk merasakan dan memproduksi ritme stress-timed yang alami.',
-        url: 'https://hadarshemesh.com/magazine/english-rhythm-practice/',
-        type: 'website',
-        icon: '🌐'
+        description:
+          "Latihan praktis dari Hadar Shemesh untuk merasakan dan memproduksi ritme stress-timed yang alami.",
+        url: "https://hadarshemesh.com/magazine/english-rhythm-practice/",
+        type: "website",
+        icon: "🌐",
       },
       {
-        id: 'mat3',
-        title: 'Online Metronome',
-        description: 'Alat sederhana untuk melatih ritme. Atur kecepatan lambat dan pastikan kata yang bertekanan jatuh tepat pada ketukan.',
-        url: 'https://metronomeonline.com/',
-        type: 'website',
-        icon: '🌐'
-      }
-    ]
-  }
+        id: "mat3",
+        title: "Online Metronome",
+        description:
+          "Alat sederhana untuk melatih ritme. Atur kecepatan lambat dan pastikan kata yang bertekanan jatuh tepat pada ketukan.",
+        url: "https://metronomeonline.com/",
+        type: "website",
+        icon: "🌐",
+      },
+    ],
+  },
 };
 
 export default IramaBahasaModel;

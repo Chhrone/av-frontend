@@ -1,16 +1,17 @@
 // Model untuk Penekanan Kata
 
 const PenekananKataModel = {
-  id: 'penekanan-kata',
-  title: 'Penekanan Kata',
-  description: 'Penekanan kata adalah "detak jantung" dari sebuah kata dalam Bahasa Inggris. Menguasainya akan mengubah pelafalan dari datar menjadi dinamis dan alami, serta memastikan makna tersampaikan dengan benar.',
+  id: "penekanan-kata",
+  title: "Penekanan Kata",
+  description:
+    'Penekanan kata adalah "detak jantung" dari sebuah kata dalam Bahasa Inggris. Menguasainya akan mengubah pelafalan dari datar menjadi dinamis dan alami, serta memastikan makna tersampaikan dengan benar.',
   banner: {
-    title: 'Penekanan Kata',
-    subtitle: 'Kuasai melodi kata dengan penekanan & reduksi vokal yang tepat',
-    image: 'https://placehold.co/800x300/E2E8F0/475569?text=Penekanan+Kata'
+    title: "Penekanan Kata",
+    subtitle: "Kuasai melodi kata dengan penekanan & reduksi vokal yang tepat",
+    image: "https://placehold.co/800x300/E2E8F0/475569?text=Penekanan+Kata",
   },
   material: {
-    title: 'Panduan Penekanan Kata & Reduksi Vokal',
+    title: "Panduan Penekanan Kata & Reduksi Vokal",
     content: `
       <h2>Perbedaan Fundamental: Dapat Diprediksi vs. Leksikal</h2>
       <p>Akar masalah bagi penutur Indonesia adalah perbedaan sifat penekanan kata:</p>
@@ -30,98 +31,159 @@ const PenekananKataModel = {
       <p>Untuk membuat satu suku kata menonjol, suku kata lain yang <em>tidak bertekanan</em> harus dilemahkan. Vokal pada suku kata tak bertekanan ini seringkali direduksi menjadi bunyi netral dan pendek yang disebut <b>Schwa (/ə/)</b>. Ini adalah rahasia pelafalan yang alami.</p>
       <p>Contoh: <b>"banana"</b>. Pola tekanannya adalah ba-<b>NA</b>-na. Vokal 'a' pertama dan ketiga direduksi. Pelafalan yang benar: <b>/bəˈnænə/</b>.</p>
     `,
-    readingTime: '12 menit'
+    readingTime: "12 menit",
   },
   pronunciationExamples: [
-    { word: 'photograph', phonetic: '/ˈfoʊ.tə.ɡræf/' },
-    { word: 'photographer', phonetic: '/fəˈtɑː.ɡrə.fɚ/' },
-    { word: 'photographic', phonetic: '/ˌfoʊ.təˈɡræf.ɪk/' },
-    { word: 'record (noun)', phonetic: '/ˈrɛk.ɚd/' },
-    { word: 'record (verb)', phonetic: '/rɪˈkɔːrd/' },
-    { word: 'about', phonetic: '/əˈbaʊt/' }
+    { word: "photograph", phonetic: "/ˈfoʊ.tə.ɡræf/" },
+    { word: "photographer", phonetic: "/fəˈtɑː.ɡrə.fɚ/" },
+    { word: "photographic", phonetic: "/ˌfoʊ.təˈɡræf.ɪk/" },
+    { word: "record (noun)", phonetic: "/ˈrɛk.ɚd/" },
+    { word: "record (verb)", phonetic: "/rɪˈkɔːrd/" },
+    { word: "about", phonetic: "/əˈbaʊt/" },
   ],
   commonMistakes: [
     {
-      id: 'stress1',
-      title: 'Menerapkan Pola Stres Indonesia',
-      description: 'Secara tidak sadar menerapkan aturan penekanan pada suku kata kedua dari belakang, yang seringkali salah dalam Bahasa Inggris.',
-      examples: ['Mengucapkan "HOtel" (salah) → seharusnya "hoTEL"', 'Mengucapkan "deVE-lop" (salah) → seharusnya "de-VE-lop"']
+      id: "stress1",
+      title: "Menerapkan Pola Stres Indonesia",
+      description:
+        "Secara tidak sadar menerapkan aturan penekanan pada suku kata kedua dari belakang, yang seringkali salah dalam Bahasa Inggris.",
+      examples: [
+        'Mengucapkan "HOtel" (salah) → seharusnya "hoTEL"',
+        'Mengucapkan "deVE-lop" (salah) → seharusnya "de-VE-lop"',
+      ],
     },
     {
-      id: 'stress2',
-      title: 'Kurangnya Reduksi Vokal (Mengucapkan Sesuai Ejaan)',
-      description: 'Mengucapkan semua vokal dalam kata dengan nilai penuhnya, tanpa melemahkan vokal tak bertekanan menjadi schwa /ə/. Ini membuat ucapan terdengar datar dan kaku.',
-      examples: ['"about" diucapkan /a-baʊt/ (salah) → seharusnya /əˈbaʊt/', '"computer" diucapkan /kɔm-pju-tər/ (salah) → seharusnya /kəmˈpjuː.tər/']
+      id: "stress2",
+      title: "Kurangnya Reduksi Vokal (Mengucapkan Sesuai Ejaan)",
+      description:
+        "Mengucapkan semua vokal dalam kata dengan nilai penuhnya, tanpa melemahkan vokal tak bertekanan menjadi schwa /ə/. Ini membuat ucapan terdengar datar dan kaku.",
+      examples: [
+        '"about" diucapkan /a-baʊt/ (salah) → seharusnya /əˈbaʊt/',
+        '"computer" diucapkan /kɔm-pju-tər/ (salah) → seharusnya /kəmˈpjuː.tər/',
+      ],
     },
     {
-      id: 'stress3',
-      title: 'Kebingungan Heteronim (Noun vs. Verb)',
-      description: 'Tidak mengubah pola penekanan untuk kata yang sama yang memiliki fungsi berbeda (kata benda vs. kata kerja), sehingga mengubah makna.',
-      examples: ['"I need to reCORD (verb) the REcord (noun)." Keduanya sering diucapkan dengan penekanan yang sama.']
+      id: "stress3",
+      title: "Kebingungan Heteronim (Noun vs. Verb)",
+      description:
+        "Tidak mengubah pola penekanan untuk kata yang sama yang memiliki fungsi berbeda (kata benda vs. kata kerja), sehingga mengubah makna.",
+      examples: [
+        '"I need to reCORD (verb) the REcord (noun)." Keduanya sering diucapkan dengan penekanan yang sama.',
+      ],
     },
     {
-      id: 'stress4',
-      title: 'Stres yang Sama Rata (Equation Stress)',
-      description: 'Memberikan tingkat penekanan yang hampir sama pada semua suku kata, menghilangkan melodi internal kata tersebut.',
-      examples: ['Mengucapkan "in-for-ma-tion" dengan penekanan yang sama rata, bukan "in-for-MA-tion".']
-    }
+      id: "stress4",
+      title: "Stres yang Sama Rata (Equation Stress)",
+      description:
+        "Memberikan tingkat penekanan yang hampir sama pada semua suku kata, menghilangkan melodi internal kata tersebut.",
+      examples: [
+        'Mengucapkan "in-for-ma-tion" dengan penekanan yang sama rata, bukan "in-for-MA-tion".',
+      ],
+    },
   ],
   practiceItems: [
-    { 
-      id: 'PK-001',
-      title: 'Latihan Heteronim (Tegangan Berbeda)',
-      instruction: 'Latih heteronim: "PREsent" (noun) vs "preSENT" (verb), "OBject" (noun) vs "obJECT" (verb).' 
+    {
+      id: "PK-001",
+      title: "Latihan Heteronim (Tegangan Berbeda)",
+      instruction:
+        'Latih heteronim: "PREsent" (noun) vs "preSENT" (verb), "OBject" (noun) vs "obJECT" (verb).',
     },
-    { 
-      id: 'PK-002',
-      title: 'Latihan Reduksi Vokal /ə/',
-      instruction: 'Latih reduksi vokal. Ucapkan kata berikut dan rasakan vokal /ə/ yang lemah: a-BOUT, ba-NA-na, SO-fa, TA-ken.' 
+    {
+      id: "PK-002",
+      title: "Latihan Reduksi Vokal /ə/",
+      instruction:
+        "Latih reduksi vokal. Ucapkan kata berikut dan rasakan vokal /ə/ yang lemah: a-BOUT, ba-NA-na, SO-fa, TA-ken.",
     },
-    { 
-      id: 'PK-003',
-      title: 'Akhiran -tion/-sion',
-      instruction: 'Latih aturan akhiran. Ucapkan kata berakhiran -tion/-sion: inforMAtion, eduCAtion, deCIsion.' 
+    {
+      id: "PK-003",
+      title: "Akhiran -tion/-sion",
+      instruction:
+        "Latih aturan akhiran. Ucapkan kata berakhiran -tion/-sion: inforMAtion, eduCAtion, deCIsion.",
     },
-    { 
-      id: 'PK-004',
-      title: 'Tekanan Kata Benda Majemuk',
-      instruction: 'Latih kata benda majemuk. Tekanan selalu di kata pertama: GREENhouse, BOOKstore, FOOTball.' 
+    {
+      id: "PK-004",
+      title: "Tekanan Kata Benda Majemuk",
+      instruction:
+        "Latih kata benda majemuk. Tekanan selalu di kata pertama: GREENhouse, BOOKstore, FOOTball.",
     },
-    { 
-      id: 'PK-005',
-      title: 'Latihan Konteks Heteronim dalam Kalimat',
-      instruction: 'Rekam suara Anda saat mengucapkan "I need a permit to permit you inside" dan bandingkan dengan penutur asli.' 
-    }
-  ],  
+    {
+      id: "PK-005",
+      title: "Latihan Konteks Heteronim dalam Kalimat",
+      instruction:
+        'Rekam suara Anda saat mengucapkan "I need a permit to permit you inside" dan bandingkan dengan penutur asli.',
+    },
+  ],
   moreMaterials: {
-    title: 'Materi Tambahan',
+    title: "Materi Tambahan",
     materials: [
       {
-        id: 'mat1',
-        title: "Rachel's English - Introduction to Word Stress",
-        description: 'Video penjelasan mendalam tentang pentingnya penekanan kata dan reduksi vokal.',
-        url: 'https://www.youtube.com/watch?v=K-wF9I_g_aY',
-        type: 'youtube',
-        icon: '📺'
+        id: "mat1",
+        title:
+          "Rachel's English - Intro to Word Stress: American English Pronunciation",
+        description:
+          "Video penjelasan mendalam tentang pentingnya penekanan kata dan reduksi vokal dalam American English.",
+        url: "https://www.youtube.com/watch?v=pRXsIthxgH8",
+        type: "youtube",
+        icon: "📺",
       },
       {
-        id: 'mat2',
-        title: 'Pronuncian - Word Stress Lists',
-        description: 'Daftar kata yang dikelompokkan berdasarkan pola penekanan untuk latihan terfokus.',
-        url: 'https://pronuncian.com/word-stress',
-        type: 'website',
-        icon: '🌐'
+        id: "mat2",
+        title: "Pronuncian - Word Stress Lists",
+        description:
+          "Daftar kata yang dikelompokkan berdasarkan pola penekanan untuk latihan terfokus.",
+        url: "https://pronuncian.com/2syllable-word-stress",
+        type: "website",
+        icon: "🌐",
       },
       {
-        id: 'mat3',
-        title: 'Espresso English - Heteronyms',
-        description: 'Daftar kata heteronim (ejaan sama, penekanan & arti beda) dengan contoh kalimat dan audio.',
-        url: 'https://www.espressoenglish.net/common-english-heteronyms/',
-        type: 'website',
-        icon: '🌐'
-      }
-    ]
-  }
+        id: "mat3",
+        title: "Espresso English - Heteronyms",
+        description:
+          "Daftar kata heteronim (ejaan sama, penekanan & arti beda) dengan contoh kalimat dan audio.",
+        url: "https://www.espressoenglish.net/common-english-heteronyms/",
+        type: "website",
+        icon: "🌐",
+      },
+      {
+        id: "mat4",
+        title:
+          "Stress, Rhythm, Linking, and Word Reductions in American English - San Diego Voice and Accent (Playlist)",
+        description:
+          "Daftar putar yang menjelaskan penekanan, ritme, linking, dan reduksi kata dalam American English.",
+        url: "https://www.youtube.com/playlist?list=PLPGW9qP3ws5oig31iR3-Zv2KXlXiL3wa5",
+        type: "youtube",
+        icon: "📺",
+      },
+      {
+        id: "mat5",
+        title:
+          "Word Stress & Syllables - English Pronunciation Lesson Playlist - Tarle Speech",
+        description:
+          "Daftar putar yang membantu meningkatkan aksen dan kejelasan bicara dalam American English melalui penekanan kata dan suku kata.",
+        url: "https://www.youtube.com/playlist?list=PLxEs-su4NimUG4hCGdqUizAsHj7XWxXR2",
+        type: "youtube",
+        icon: "📺",
+      },
+      {
+        id: "mat6",
+        title: "Word Stress Rules in American English - ChatterFox",
+        description:
+          "Penjelasan tentang aturan penekanan kata dalam American English, termasuk penekanan primer dan sekunder, serta tips latihan.",
+        url: "https://chatterfox.com/word-stress-rules-in-american-english/",
+        type: "website",
+        icon: "🌐",
+      },
+      {
+        id: "mat7",
+        title: "Stress pattern practice - UC Berkeley Linguistics",
+        description:
+          "Latihan interaktif untuk mengidentifikasi pola penekanan kata dalam American English dengan contoh audio.",
+        url: "https://linguistics.berkeley.edu/~kjohnson/English_Phonetics/stress_selftest.html",
+        type: "website",
+        icon: "🌐",
+      },
+    ],
+  },
 };
 
 export default PenekananKataModel;

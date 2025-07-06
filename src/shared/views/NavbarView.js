@@ -8,13 +8,19 @@ class NavbarView {
     this.element = document.createElement('nav');
     this.element.className = 'dashboard-nav';
     
+    // Filter out profile links (by className or text)
+    const filteredLinks = data.navigationLinks.filter(link => {
+      const cls = (link.className || '').toLowerCase();
+      const txt = (link.text || '').toLowerCase();
+      return !cls.includes('profile') && txt !== 'profil' && txt !== 'profile';
+    });
     this.element.innerHTML = `
       <div class="nav-container">
         <div class="nav-logo">
           <span class="nav-logo-aurea">${data.brandParts.aurea}</span><span class="nav-logo-voice">${data.brandParts.voice}</span>
         </div>
         <div class="nav-buttons">
-          ${data.navigationLinks.map(link =>
+          ${filteredLinks.map(link =>
             `<a href="${link.href}" class="nav-button" data-type="${link.type}">${link.text}</a>`
           ).join('')}
         </div>
