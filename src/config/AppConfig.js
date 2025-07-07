@@ -3,11 +3,11 @@
  */
 class AppConfig {
   static get USE_REAL_MODEL() {
-    return false;
+    return true;
   }
 
   static get API_ENDPOINT() {
-    return 'http://localhost:8000/identify';
+    return 'http://localhost:8000/classify-us-accent';
   }
 
   // Demo/Mock mode settings (used when USE_REAL_MODEL = false)

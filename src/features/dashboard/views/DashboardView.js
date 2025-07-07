@@ -224,7 +224,7 @@ class DashboardView {
       todayExercises.textContent = stats.todayExercises || 0;
     }
     if (trainingTime) {
-      trainingTime.textContent = stats.trainingTime || '0 Jam';
+      trainingTime.textContent = stats.trainingTime || '0 Menit';
     }
     if (latestCategory) {
       latestCategory.textContent = stats.latestCategory || '-';
