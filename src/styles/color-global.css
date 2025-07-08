@@ -11,8 +11,8 @@
   
   /* Secondary/Accent Colors */
   --color-secondary: #b91c1c; /* Stronger red for clarity and contrast */
-  --color-secondary-light: rgba(185, 28, 28, 0.08);
-  --color-secondary-mid: rgba(185, 28, 28, 0.12);
+  --color-secondary-light: rgba(185, 28, 28, 0.2);
+  --color-secondary-mid: rgb(150, 21, 21, 0.12);
   --color-secondary-border: rgba(185, 28, 28, 0.25);
   --color-primary-shadow: rgba(13, 148, 136, 0.15);
   --color-primary-shadow-strong: rgba(13, 148, 136, 0.25);

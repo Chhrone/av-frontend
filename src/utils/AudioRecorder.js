@@ -11,6 +11,11 @@ class AudioRecorder {
     this.sourceNode = null;
     this.gainNode = null;
     this.destinationNode = null;
+
+    this.speechRecognition = null;
+    this.transcript = '';
+    this._lastInterimTranscript = '';
+    this.isSpeechRecognitionActive = false;
   }
 
   async initialize() {
@@ -50,6 +55,30 @@ class AudioRecorder {
       });
 
       this.setupMediaRecorderEvents();
+
+      // Inisialisasi SpeechRecognition jika tersedia
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        this.speechRecognition = new SpeechRecognition();
+        this.speechRecognition.continuous = true;
+        this.speechRecognition.interimResults = true;
+        this.speechRecognition.lang = 'en-US';
+        this.speechRecognition.onresult = (event) => {
+          let interimTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              this.transcript += event.results[i][0].transcript;
+            } else {
+              interimTranscript += event.results[i][0].transcript;
+            }
+          }
+          this._lastInterimTranscript = interimTranscript;
+        };
+        this.speechRecognition.onerror = (event) => {};
+      } else {
+        console.warn('[LOG] SpeechRecognition not supported');
+      }
+
       return true;
     } catch (error) {
       console.error('Failed to initialize AudioRecorder:', error);
@@ -88,6 +117,12 @@ class AudioRecorder {
       this.mediaRecorder.start(100);
       this.isRecording = true;
 
+      if (this.speechRecognition && !this.isSpeechRecognitionActive) {
+        this.transcript = '';
+        this.speechRecognition.start();
+        this.isSpeechRecognitionActive = true;
+      }
+
       return true;
     } catch (error) {
       console.error('Failed to start recording:', error);
@@ -104,6 +139,16 @@ class AudioRecorder {
       this.mediaRecorder.stop();
       this.isRecording = false;
       this.duration = Date.now() - this.startTime;
+
+      if (this.speechRecognition && this.isSpeechRecognitionActive) {
+        this.speechRecognition.stop();
+        this.isSpeechRecognitionActive = false;
+      }
+
+      // Jika transcript masih kosong, gunakan interim terakhir
+      if (!this.transcript && this._lastInterimTranscript) {
+        this.transcript = this._lastInterimTranscript;
+      }
 
       return new Promise((resolve) => {
         const originalOnStop = this.mediaRecorder.onstop;
@@ -136,7 +181,6 @@ class AudioRecorder {
         finalBlob = await this.convertToWav(audioBlob);
       }
 
-      // Store the processed recording
       this.lastRecording = {
         blob: finalBlob,
         duration: this.duration,
@@ -153,25 +197,16 @@ class AudioRecorder {
 
   async convertToWav(audioBlob) {
     try {
-      // Create audio buffer from blob
       const arrayBuffer = await audioBlob.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-
-      // Convert to WAV
       const wavBuffer = this.audioBufferToWav(audioBuffer);
       const wavBlob = new Blob([wavBuffer], { type: 'audio/wav' });
-
       return wavBlob;
     } catch (error) {
-      console.error('Failed to convert to WAV:', error);
-
-      // Create a proper WAV blob as fallback using a different method
       try {
         const fallbackWav = await this.createFallbackWav(audioBlob);
         return fallbackWav;
       } catch (fallbackError) {
-        console.error('Fallback WAV conversion also failed:', fallbackError);
-        // Last resort: return original blob but with WAV type
         return new Blob([audioBlob], { type: 'audio/wav' });
       }
     }
@@ -179,16 +214,10 @@ class AudioRecorder {
 
   async createFallbackWav(originalBlob) {
     try {
-      // Create a simple WAV header for the blob
-      // This is a basic approach that creates a valid WAV file structure
       const wavHeader = this.createWavHeader(originalBlob.size, 16000, 1);
-
-      // Combine WAV header with original audio data
       const wavBlob = new Blob([wavHeader, originalBlob], { type: 'audio/wav' });
-
       return wavBlob;
     } catch (error) {
-      console.error('Fallback WAV conversion failed:', error);
       throw error;
     }
   }
@@ -336,6 +365,10 @@ class AudioRecorder {
     } catch (error) {
       console.error('Error destroying AudioRecorder:', error);
     }
+  }
+
+  getTranscript() {
+    return this.transcript;
   }
 }
 

@@ -23,7 +23,6 @@ class RecordingManager {
       this.notifyListeners('stateChange', { initialized: true });
       return true;
     } catch (error) {
-      console.error('Failed to initialize RecordingManager:', error);
       this.notifyListeners('recordingError', error);
       throw error;
     }
@@ -53,7 +52,6 @@ class RecordingManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to start recording:', error);
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
 
@@ -74,12 +72,10 @@ class RecordingManager {
       }
 
       const recordingData = await this.audioRecorder.stopRecording();
-
+      const transcript = this.audioRecorder.getTranscript();
       if (!recordingData) {
         throw new Error('No recording data received');
       }
-
-      // Create temporary recording object without saving to IndexedDB
       const tempRecording = {
         audioBlob: recordingData.blob,
         name: metadata.name || 'Speech Test Recording',
@@ -89,27 +85,23 @@ class RecordingManager {
         format: recordingData.format,
         source: this.recordingStartedFromWelcome ? 'welcome' : 'test',
         timestamp: Date.now(),
+        transcript: transcript,
         ...metadata
       };
-
       this.currentRecording = tempRecording;
       this.isRecording = false;
       this.recordingStartedFromWelcome = false;
-
       this.notifyListeners('recordingStop', {
         recording: tempRecording,
         duration: recordingData.duration
       });
-
       this.notifyListeners('stateChange', {
         isRecording: false,
         lastRecording: tempRecording
       });
-
       await this.cleanup();
       return tempRecording;
     } catch (error) {
-      console.error('Failed to stop recording:', error);
       this.notifyListeners('recordingError', error);
       throw error;
     }
@@ -138,6 +130,16 @@ class RecordingManager {
       return this.audioRecorder.getRecordingDuration();
     }
     return 0;
+  }
+
+  getCurrentTranscript() {
+    if (this.audioRecorder) {
+      return this.audioRecorder.getTranscript();
+    }
+    if (this.currentRecording && this.currentRecording.transcript) {
+      return this.currentRecording.transcript;
+    }
+    return '';
   }
 
   addEventListener(event, callback) {

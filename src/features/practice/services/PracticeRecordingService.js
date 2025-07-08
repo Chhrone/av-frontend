@@ -11,6 +11,19 @@ class PracticeRecordingService {
     this.sessionLogs = [];
   }
 
+  /**
+   * Ambil hasil transcript dari recordingManager
+   */
+  getCurrentTranscript() {
+    if (this.recordingManager && typeof this.recordingManager.getCurrentTranscript === 'function') {
+      const transcript = this.recordingManager.getCurrentTranscript();
+      console.log('[LOG] PracticeRecordingService.getCurrentTranscript:', transcript);
+      return transcript;
+    }
+    console.log('[LOG] PracticeRecordingService.getCurrentTranscript: recordingManager null or no method');
+    return '';
+  }
+
   startRecordingTimer(setDurationCallback) {
     this.recordingStartTime = Date.now();
     setDurationCallback('00:00');

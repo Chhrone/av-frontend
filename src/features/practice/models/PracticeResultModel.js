@@ -1,6 +1,7 @@
 class PracticeResultModel {
   constructor() {
     this.resultData = null;
+    this.transcript = '';
     this.levelDescriptions = {
       excellent: "Luar biasa! Aksen Amerika kamu sangat kuat dan jelas.",
       great: "Kerja bagus! Kamu punya aksen Amerika yang baik dengan sedikit ruang untuk perbaikan.",
@@ -11,8 +12,29 @@ class PracticeResultModel {
     };
   }
 
+
   setResultData(data) {
     this.resultData = data;
+  }
+
+
+  /**
+   * Ambil transcript dari service dan simpan ke model
+   */
+  updateTranscriptFromService(practiceRecordingService) {
+    if (practiceRecordingService && typeof practiceRecordingService.getCurrentTranscript === 'function') {
+      this.transcript = practiceRecordingService.getCurrentTranscript();
+    } else {
+      this.transcript = '';
+    }
+  }
+
+  setTranscript(transcript) {
+    this.transcript = transcript;
+  }
+
+  getTranscript() {
+    return this.transcript;
   }
 
   getResultData() {

@@ -49,7 +49,7 @@ Styling PracticeResultView mengikuti style fitur intro dan color-global
 .practice-continue-btn, .practice-return-btn {
   padding: 12px 32px;
   border-radius: 8px;
-  background-color: var(--color-primary);
+  background: var(--color-primary);
   border: none;
   cursor: pointer;
   color: var(--color-white);
@@ -60,9 +60,97 @@ Styling PracticeResultView mengikuti style fitur intro dan color-global
   opacity: 1;
   margin-top: 8px;
 }
-
 .practice-continue-btn:hover, .practice-return-btn:hover {
-  background-color: var(--color-primary-dark);
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--color-primary-shadow-strong);
+}
+
+/* Styling untuk hasil transcript pada PracticeResultView */
+.practice-result-transcript {
+  width: 100%;
+  background: var(--color-bg-card-alt);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0 8px 0;
+  color: var(--color-text-main);
+  font-size: 1rem;
+  box-shadow: var(--color-shadow);
+  word-break: break-word;
+  text-align: left;
+}
+.practice-result-transcript b {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+.practice-result-transcript span {
+  display: block;
+  margin-top: 4px;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+/* Styling untuk tombol dan area perbandingan teks */
+.practice-compare-btn {
+  margin-top: 10px;
+  padding: 12px 24px;
+  border-radius: 0.5rem; /* Lebih modern */
+  background-color: var(--color-secondary);
+  color: var(--color-white); /* Kontras lebih baik */
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: var(--color-shadow-dashboard-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.practice-compare-btn:hover {
+  box-shadow: var(--color-shadow-hover);
+}
+
+.practice-compare-btn:active {
+  transform: translateY(0);
+}
+.practice-compare-area {
+  width: 100%;
+  margin: 16px 0 8px 0;
+  padding: 16px 12px;
+  background: var(--color-bg-card-alt);
+  border-radius: 10px;
+  box-shadow: var(--color-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.practice-compare-block {
+  margin-bottom: 8px;
+}
+.practice-compare-label {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 2px;
+}
+.practice-compare-text {
+  font-size: 1rem;
+  color: var(--color-text-main);
+  background: var(--color-white);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 2px;
+  box-shadow: var(--color-shadow-dashboard);
+  word-break: break-word;
+}
+.practice-compare-original {
+  border-left: 4px solid var(--color-primary);
+}
+.practice-compare-transcript {
+  border-left: 4px solid var(--color-secondary);
 }

@@ -29,6 +29,7 @@ class PracticeTestModel {
       const kalimatArr = selectedPractice.kata_kata || selectedPractice.kalimat || [];
       const text = kalimatArr.length > 0 ? kalimatArr[Math.floor(Math.random() * kalimatArr.length)] : null;
       this.practiceData.last = { id: selectedPractice.id_latihan, text };
+      this.lastPracticeText = text; // Simpan ke property global agar bisa diakses presenter
       return text;
     } catch (err) {
       console.error('Error fetching practice from DB:', err);
