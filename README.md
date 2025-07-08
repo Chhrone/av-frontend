@@ -62,24 +62,74 @@ src/
 - **View**: UI dan interaksi DOM
 - **Presenter**: Kontrol alur, hubungkan Model dan View
 
-### Routing & SPA
-- **Hash Routing**: Navigasi antar halaman menggunakan hash (`#/welcome`, `#/test`, `#/result`, dst) tanpa reload browser
-- **routerSetup.js**: Modularisasi routing utama aplikasi
-- **introRouter.js**: Routing khusus alur intro (welcome, test, result, splash)
-- **SPA**: Semua halaman di-render dinamis, tidak ada reload browser
+### Routing: SPA & History API
+- **SPA & View Transition API (Intro Pages Only)**: Halaman intro (`welcome`, `test`, `result`, `splash`) menggunakan Single Page Application (SPA) dengan hash routing (`#/welcome`, dst) dan animasi transisi halus via View Transition API.
+- **History Routing (Fitur Lain)**: Halaman selain intro (dashboard, category, practice) menggunakan HTML5 History API untuk navigasi URL yang lebih natural (`/dashboard`, `/practice/:categoryId/:practiceId`, dst), memungkinkan back/forward browser tanpa reload penuh.
+- **routerSetup.js**: Modularisasi routing utama aplikasi, mengatur history routing untuk fitur utama.
+- **introRouter.js**: Routing khusus alur intro berbasis hash dan SPA.
 
 ### Database Lokal
-- **IndexedDB**: Penyimpanan data latihan lokal melalui helper di `src/utils/database/`
+- **IndexedDB**: Penyimpanan data latihan lokal melalui helper di `src/utils/database/` (akses CRUD, seed data, dan sinkronisasi lokal)
 
 ---
 
 ## 🎯 User Flow
 
-1. **Intro**: Pengguna memulai dengan welcome → test → result → splash → dashboard
-2. **Dashboard**: Melihat statistik dan rekomendasi latihan
-3. **Category**: Memilih materi latihan dan melihat contoh
-4. **Practice**: Mengerjakan soal latihan dan mendapat feedback
-5. **Navigasi**: Semua halaman dapat diakses via hash routing
+1. **Intro**: Pengguna memulai dengan welcome → test → result → splash (SPA, hash routing, View Transition API)
+2. **Dashboard**: Melihat statistik dan rekomendasi latihan (history routing)
+3. **Category**: Memilih materi latihan dan melihat contoh (history routing)
+4. **Practice**: Mengerjakan soal latihan dan mendapat feedback (history routing)
+5. **Navigasi**: Halaman intro via hash routing, fitur utama via history routing
+
+---
+
+## ⚙️ Penjelasan Teknis Fitur
+
+- **Intro Flow** (`src/features/intro/`):
+  - Routing hash SPA, transisi animasi dengan View Transition API
+  - Model: `IntroModel.js`, `SplashModel.js` (logika data intro & splash)
+  - Presenter: `WelcomePresenter.js`, `TestPresenter.js`, `ResultPresenter.js`, `SplashPresenter.js` (kontrol alur, validasi, event)
+  - View: `ResultView.js`, dsb (render UI, event handler)
+
+- **Dashboard** (`src/features/dashboard/`):
+  - Routing via history API (`/dashboard`)
+  - Model: `DashboardModel.js` (statistik, progress, rekomendasi)
+  - Presenter: `DashboardPresenter.js` (sinkronisasi data, update view)
+  - View: `DashboardView.js` (render statistik, chart, dsb)
+  - CSS modular: `dashboard-*.css`
+
+- **Category** (`src/features/category/`):
+  - Routing via history API (`/category/:id`)
+  - Model: `CategoryModel.js`, `IramaBahasaModel.js`, dsb (struktur materi, data latihan)
+  - Presenter: `CategoryPresenter.js`, `CategoryNavbarPresenter.js` (navigasi, filter, event)
+  - View: `CategoryView.js`, `CategoryNavbarView.js` (UI materi, sidebar, dsb)
+  - CSS modular: `category-*.css`
+
+- **Practice** (`src/features/practice/`):
+  - Routing via history API (`/practice/:categoryId/:practiceId`)
+  - Model: latihan, hasil, feedback (per kategori)
+  - Presenter: kontrol soal, validasi, feedback
+  - View: render soal, input audio, feedback UI
+
+- **Global Components** (`src/shared/`):
+  - Navbar, Footer, dsb, reusable di seluruh aplikasi
+  - Model, Presenter, View terpisah untuk tiap komponen
+
+- **Utils & Services** (`src/utils/`):
+  - Routing modular: `routerSetup.js`, `introRouter.js`
+  - Audio: `AudioRecorder.js`, `RecordingManager.js` (rekam, kelola audio)
+  - Accent Detection: `AccentDetectionService.js` (integrasi API AI/deteksi aksen)
+  - Database: `database/` (IndexedDB, seed, CRUD)
+  - Helper: event, error handler, dsb
+
+- **Konfigurasi AI/Mock** (`src/config/AppConfig.js`):
+  - Pilih mode AI nyata atau demo/mock
+  - Endpoint API, pengaturan confidence score
+
+- **Styling** (`src/styles/`, per fitur):
+  - CSS modular, animasi, responsive, transisi
+
+---
 
 ---
 
