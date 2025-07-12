@@ -1,219 +1,250 @@
 # AureaVoice Frontend
 
-Aplikasi web single-page (SPA) modern untuk latihan dan pengujian aksen berbicara bahasa Inggris. Dibangun dengan **Vite** dan **JavaScript murni** tanpa framework besar, mengadopsi arsitektur **Model-View-Presenter (MVP)** dengan hash routing dan modularisasi berbasis fitur.
+Aplikasi web modern *single-page application* (SPA) yang dirancang untuk membantu pengguna melatih dan menguji aksen berbicara dalam bahasa Inggris. Dibangun menggunakan **JavaScript murni (vanilla)** tanpa *framework* eksternal, aplikasi ini mengimplementasikan arsitektur **Model-View-Presenter (MVP)** yang modular dan skalabel.
+
+Aplikasi ini menawarkan alur kerja yang terstruktur, mulai dari pengenalan awal, dasbor pengguna, hingga sesi latihan interaktif, dengan memanfaatkan teknologi web modern seperti **Vite**, **IndexedDB**, dan **View Transitions API**.
 
 ---
 
 ## 🚀 Fitur Utama
 
-- **Intro Flow**: Welcome, test, result, splash (alur pengenalan & tes awal)
-- **Dashboard**: Statistik, progress, rekomendasi latihan
-- **Category**: Materi pembelajaran, contoh pelafalan, latihan per kategori
-- **Practice**: Sesi latihan aksen, feedback, dan hasil
-- **Global Components**: Footer, navbar, dsb, reusable di seluruh aplikasi
-- **AI/Mock Support**: Bisa terhubung ke API deteksi aksen nyata atau mode demo/mock
+- **Alur Pengenalan (Intro Flow)**: Pengguna baru akan melalui serangkaian halaman pengenalan (`Welcome`, `Test`, `Result`) untuk mengukur kemampuan awal mereka.
+- **Dasbor Pengguna**: Menampilkan ringkasan kemajuan, statistik, dan rekomendasi latihan yang dipersonalisasi.
+- **Kategori Latihan**: Menyediakan materi pembelajaran yang terstruktur berdasarkan kategori fonetik (misalnya, vokal, konsonan, intonasi).
+- **Sesi Latihan Interaktif**: Pengguna dapat merekam suara mereka, mengirimkannya untuk dianalisis, dan menerima umpan balik langsung.
+- **Manajemen Data Lokal**: Semua kemajuan dan data latihan disimpan di sisi klien menggunakan IndexedDB, memungkinkan penggunaan offline.
+- **Dukungan Mode Ganda**: Aplikasi dapat dihubungkan ke API deteksi aksen berbasis AI atau berjalan dalam mode *mock* untuk pengembangan dan demonstrasi.
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-- **Vite**: Build tool & dev server super cepat
-- **JavaScript (ES6+)**: Tanpa framework besar, logika dan UI diatur manual
-- **IndexedDB**: Simpan data latihan secara lokal
-- **Fetch API**: Untuk komunikasi dengan backend
-- **Google Fonts**: Tipografi modern (Inter)
-- **SVG Icons**: Ikon dalam format inline
-- **View Transition API**: Animasi transisi halus antar halaman
-- **CSS Modules**: Styling modular dan terorganisir
+- **Build Tool**: **Vite** untuk pengembangan dan *bundling* yang super cepat.
+- **Bahasa**: **JavaScript (ES6+)** murni tanpa *framework* UI.
+- **Arsitektur**: **Model-View-Presenter (MVP)** untuk pemisahan tanggung jawab yang jelas.
+- **Routing**: Kombinasi **Hash Routing** (untuk alur intro) dan **History API** (untuk fitur utama).
+- **Animasi Transisi**: **View Transitions API** untuk transisi antar halaman yang mulus.
+- **Penyimpanan**: **IndexedDB** untuk menyimpan data aplikasi di peramban.
+- **Styling**: **CSS modular** dengan variabel global untuk konsistensi tema.
+- **Ikon**: **SVG** yang diimpor sebagai komponen JavaScript untuk fleksibilitas.
 
 ---
 
-## 📁 Struktur Folder & Arsitektur
+## 📂 Struktur Proyek dan Arsitektur
+
+Struktur proyek dirancang agar modular dan mudah dikelola, dengan setiap fitur utama terisolasi dalam direktorinya sendiri.
 
 ```text
 src/
-├── assets/      # Ikon, SVG, gambar reusable
-├── config/      # Konfigurasi aplikasi (endpoint, mode demo, dsb)
-├── features/    # Fitur utama aplikasi
-│   ├── intro/      # Welcome, test, result (alur pengenalan & tes awal)
-│   ├── dashboard/  # Dashboard pengguna (statistik, progres, rekomendasi)
-│   ├── category/   # Materi pembelajaran, contoh pelafalan, latihan per kategori
-│   ├── practice/   # Sesi latihan aksen, feedback, hasil
-│   └── ...         # Fitur tambahan
-├── shared/      # Komponen global (footer, navbar, dsb)
-├── styles/      # CSS global (warna, layout, animasi)
-├── utils/       # Helper, router, service, database (IndexedDB, router, dsb)
-└── main.js      # Entry point aplikasi
+├── assets/         # Ikon SVG dan aset statis lainnya.
+├── config/         # Konfigurasi aplikasi (misalnya, endpoint API, mode mock).
+├── features/       # Direktori utama untuk semua fitur aplikasi.
+│   ├── intro/      # Alur pengenalan (Welcome, Test, Result).
+│   ├── dashboard/  # Dasbor pengguna.
+│   ├── category/   # Halaman kategori dan materi latihan.
+│   └── practice/   # Sesi latihan interaktif.
+├── lib/            # Pustaka pihak ketiga atau internal.
+├── shared/         # Komponen UI global (Navbar, Footer).
+├── styles/         # File CSS global (variabel, layout dasar, animasi).
+├── utils/          # Utilitas dan service (Router, Audio Recorder, DB Helper).
+└── main.js         # Titik masuk (entry point) aplikasi.
 ```
 
-### Penjelasan Struktur
+---
 
-- **features/**: Setiap fitur utama memiliki folder sendiri berisi model, view, presenter, style, dan utilitas terkait (MVP modular)
-- **shared/**: Komponen global yang dapat digunakan lintas fitur (misal: navbar, footer)
-- **utils/**: Berisi helper, service, router modular (`routerSetup.js`, `introRouter.js`), serta database lokal (`database/`)
-- **main.js**: Entry point aplikasi, inisialisasi app, setup router, dan presenter global
+## 🌊 Alur Kerja Fitur (Feature Workflows)
+
+Setiap fitur memiliki alur kerja yang spesifik untuk memandu pengguna melalui aplikasi.
+
+### 1. Alur Pengenalan (Intro Flow)
+Fitur ini dirancang sebagai SPA mini di dalam aplikasi utama untuk memberikan pengalaman pertama yang mulus.
+- **Trigger**: Pengguna baru membuka aplikasi.
+- **Alur**:
+    1.  **Welcome (`/#/welcome`)**: Pengguna disambut dan diberikan pengantar singkat.
+    2.  **Test (`/#/test`)**: Pengguna diminta merekam beberapa kalimat sampel. `RecordingManager.js` digunakan untuk mengelola proses perekaman.
+    3.  **Analisis**: Rekaman dikirim ke `AccentDetectionService.js`, yang mengembalikan skor kepercayaan (baik dari API nyata atau *mock*).
+    4.  **Result (`/#/result`)**: Hasil analisis ditampilkan kepada pengguna.
+    5.  **Redirect**: Setelah melihat hasil, pengguna secara otomatis diarahkan ke dasbor utama.
+- **Teknologi**: Menggunakan `introRouter.js` (berbasis hash) dan **View Transitions API** untuk navigasi yang terasa instan tanpa memuat ulang halaman.
+
+```javascript
+// Cuplikan dari src/utils/introRouter.js
+// Menangani navigasi berbasis hash dan menerapkan View Transitions API
+handleRouteChange() {
+    let hash = window.location.hash.slice(1) || '/welcome';
+    const routeHandler = this.routes[hash];
+
+    if (routeHandler) {
+        const useTransition = this.isIntroRoute(hash) && 'startViewTransition' in document;
+
+        if (useTransition) {
+            document.startViewTransition(() => routeHandler());
+        } else {
+            routeHandler();
+        }
+    }
+}
+```
+
+### 2. Dasbor Pengguna
+Dasbor adalah halaman utama setelah pengguna menyelesaikan alur pengenalan.
+- **Trigger**: Pengguna mengunjungi rute `/dashboard`.
+- **Alur**:
+    1.  `DashboardPresenter.js` mengambil data kemajuan dari `aureaVoiceDB.js` (IndexedDB).
+    2.  Data ini mencakup riwayat latihan, skor rata-rata, dan kategori yang paling sering dilatih.
+    3.  `DashboardView.js` merender data ini dalam bentuk kartu statistik, grafik (jika ada), dan daftar rekomendasi latihan.
+    4.  Pengguna dapat menavigasi ke kategori atau sesi latihan yang direkomendasikan langsung dari dasbor.
+
+### 3. Sesi Latihan (Practice Flow)
+Ini adalah fitur inti di mana pengguna secara aktif melatih aksen mereka.
+- **Trigger**: Pengguna memilih sebuah materi dari halaman kategori dan memulai latihan (`/practice/:categoryId/:practiceId`).
+- **Alur**:
+    1.  `PracticePresenter.js` memuat detail latihan (kalimat yang harus dibaca, instruksi) dari model.
+    2.  `PracticeTestView.js` menampilkan kalimat dan mengaktifkan tombol rekam.
+    3.  Pengguna menekan tombol rekam, dan `AudioRecorder.js` mulai menangkap audio.
+    4.  Setelah selesai, rekaman dikirim ke `AccentDetectionService.js`.
+    5.  `PracticeResultView.js` menampilkan hasil analisis, termasuk skor dan umpan balik.
+    6.  Hasilnya disimpan ke IndexedDB untuk melacak kemajuan dari waktu ke waktu.
+
+```javascript
+// Cuplikan dari src/features/practice/presenters/PracticePresenter.js
+// Mengelola logika saat tombol rekam ditekan
+async toggleRecording() {
+    if (this.recordingService.isRecording) {
+        // Berhenti merekam dan proses hasil
+        this.recordingService.stopRecordingTimer();
+        const recording = await this.recordingManager.stopRecording();
+        const result = await accentDetectionService.analyzeAccent(recording.audioBlob);
+        const score = this.resultService.getScoreFromResult(result);
+        this.sessionScores.push(score);
+        this.showResultView(result);
+    } else {
+        // Mulai merekam
+        this.recordingService.startRecordingTimer(/*...*/);
+        await this.recordingManager.startRecording();
+    }
+}
+```
 
 ---
 
-## 🏗️ Pola Arsitektur
+## 🔧 Peran File-File Kunci
 
-### Model-View-Presenter (MVP)
-- **Model**: Logika bisnis dan data
-- **View**: UI dan interaksi DOM
-- **Presenter**: Kontrol alur, hubungkan Model dan View
+### `main.js`: Titik Masuk Aplikasi
+`main.js` adalah file pertama yang dieksekusi. Perannya adalah:
+1.  **Inisialisasi Global**: Mengimpor semua file CSS global dari `src/styles/` untuk memastikan gaya dasar diterapkan di seluruh aplikasi.
+2.  **Setup Database**: Memanggil fungsi `seedDB.js` untuk mengisi IndexedDB dengan data awal jika diperlukan.
+3.  **Inisialisasi Presenter Global**: Membuat instance dari `NavbarPresenter` dan `FooterPresenter` yang akan ditampilkan di semua halaman.
+4.  **Setup Router**: Memanggil `routerSetup()` dari `utils/routerSetup.js` untuk mengonfigurasi rute utama aplikasi (berbasis History API) dan `introRouter()` dari `utils/introRouter.js` untuk rute alur pengenalan (berbasis hash).
+5.  **Render Awal**: Menentukan halaman mana yang harus ditampilkan saat aplikasi pertama kali dimuat berdasarkan URL saat ini.
 
-### Routing: SPA & History API
-- **SPA & View Transition API (Intro Pages Only)**: Halaman intro (`welcome`, `test`, `result`, `splash`) menggunakan Single Page Application (SPA) dengan hash routing (`#/welcome`, dst) dan animasi transisi halus via View Transition API.
-- **History Routing (Fitur Lain)**: Halaman selain intro (dashboard, category, practice) menggunakan HTML5 History API untuk navigasi URL yang lebih natural (`/dashboard`, `/practice/:categoryId/:practiceId`, dst), memungkinkan back/forward browser tanpa reload penuh.
-- **routerSetup.js**: Modularisasi routing utama aplikasi, mengatur history routing untuk fitur utama.
-- **introRouter.js**: Routing khusus alur intro berbasis hash dan SPA.
+### Utilitas Penting (`src/utils/`)
+Direktori `utils` berisi modul-modul penting yang mendukung fungsionalitas aplikasi:
 
-### Database Lokal
-- **IndexedDB**: Penyimpanan data latihan lokal melalui helper di `src/utils/database/` (akses CRUD, seed data, dan sinkronisasi lokal)
+- **`appRouter.js` & `routes.js`**: Mengelola navigasi utama aplikasi. `routes.js` mendefinisikan pasangan rute (URL) dan presenter yang sesuai, sementara `appRouter.js` menangani logika untuk merender presenter yang benar berdasarkan URL.
 
----
+```javascript
+// Cuplikan dari src/utils/routes.js
+// Mendefinisikan rute aplikasi
+export const ROUTES = {
+  DASHBOARD: '/dashboard',
+  PRACTICE_DYNAMIC: '/practice/:categoryId/:practiceId',
+  // ...rute lainnya
+};
 
-## 🎯 User Flow
+// Cuplikan dari src/utils/appRouter.js
+// Menangani perubahan rute menggunakan History API
+async handleRouteChange() {
+    const path = window.location.pathname;
+    const { route, params } = this.findMatchingRoute(path);
+    if (route) {
+        await route.handler.call(this, params || {});
+    }
+}
+```
 
-1. **Intro**: Pengguna memulai dengan welcome → test → result → splash (SPA, hash routing, View Transition API)
-2. **Dashboard**: Melihat statistik dan rekomendasi latihan (history routing)
-3. **Category**: Memilih materi latihan dan melihat contoh (history routing)
-4. **Practice**: Mengerjakan soal latihan dan mendapat feedback (history routing)
-5. **Navigasi**: Halaman intro via hash routing, fitur utama via history routing
+- **`AudioRecorder.js`**: Sebuah kelas *wrapper* di atas `MediaRecorder API` yang menyederhanakan proses perekaman audio, termasuk memulai, menghentikan, dan mendapatkan hasil rekaman dalam format yang diinginkan.
 
----
+```javascript
+// Cuplikan dari src/utils/AudioRecorder.js
+// Menyederhanakan proses perekaman audio
+async startRecording() {
+    if (!this.mediaRecorder) throw new Error('Not initialized');
+    this.audioChunks = [];
+    this.mediaRecorder.start();
+    this.isRecording = true;
+}
 
-## ⚙️ Penjelasan Teknis Fitur
+async stopRecording() {
+    return new Promise(resolve => {
+        this.mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+            resolve({ audioBlob });
+        };
+        this.mediaRecorder.stop();
+        this.isRecording = false;
+    });
+}
+```
 
-- **Intro Flow** (`src/features/intro/`):
-  - Routing hash SPA, transisi animasi dengan View Transition API
-  - Model: `IntroModel.js`, `SplashModel.js` (logika data intro & splash)
-  - Presenter: `WelcomePresenter.js`, `TestPresenter.js`, `ResultPresenter.js`, `SplashPresenter.js` (kontrol alur, validasi, event)
-  - View: `ResultView.js`, dsb (render UI, event handler)
+- **`database/aureaVoiceDB.js`**: Menyediakan metode-metode praktis (seperti `get`, `put`, `getAll`) untuk berinteraksi dengan IndexedDB, menyembunyikan kompleksitas API aslinya.
 
-- **Dashboard** (`src/features/dashboard/`):
-  - Routing via history API (`/dashboard`)
-  - Model: `DashboardModel.js` (statistik, progress, rekomendasi)
-  - Presenter: `DashboardPresenter.js` (sinkronisasi data, update view)
-  - View: `DashboardView.js` (render statistik, chart, dsb)
-  - CSS modular: `dashboard-*.css`
-
-- **Category** (`src/features/category/`):
-  - Routing via history API (`/category/:id`)
-  - Model: `CategoryModel.js`, `IramaBahasaModel.js`, dsb (struktur materi, data latihan)
-  - Presenter: `CategoryPresenter.js`, `CategoryNavbarPresenter.js` (navigasi, filter, event)
-  - View: `CategoryView.js`, `CategoryNavbarView.js` (UI materi, sidebar, dsb)
-  - CSS modular: `category-*.css`
-
-- **Practice** (`src/features/practice/`):
-  - Routing via history API (`/practice/:categoryId/:practiceId`)
-  - Model: latihan, hasil, feedback (per kategori)
-  - Presenter: kontrol soal, validasi, feedback
-  - View: render soal, input audio, feedback UI
-
-- **Global Components** (`src/shared/`):
-  - Navbar, Footer, dsb, reusable di seluruh aplikasi
-  - Model, Presenter, View terpisah untuk tiap komponen
-
-- **Utils & Services** (`src/utils/`):
-  - Routing modular: `routerSetup.js`, `introRouter.js`
-  - Audio: `AudioRecorder.js`, `RecordingManager.js` (rekam, kelola audio)
-  - Accent Detection: `AccentDetectionService.js` (integrasi API AI/deteksi aksen)
-  - Database: `database/` (IndexedDB, seed, CRUD)
-  - Helper: event, error handler, dsb
-
-- **Konfigurasi AI/Mock** (`src/config/AppConfig.js`):
-  - Pilih mode AI nyata atau demo/mock
-  - Endpoint API, pengaturan confidence score
-
-- **Styling** (`src/styles/`, per fitur):
-  - CSS modular, animasi, responsive, transisi
-
----
-
----
-
-## 🧭 Navigasi Utama
-
-- Home: `/#/welcome`
-- Test: `/#/test`
-- Result: `/#/result`
-- Dashboard: `/dashboard`
-- Practice: `/practice/:categoryId/:practiceId`
+```javascript
+// Cuplikan dari src/utils/database/aureaVoiceDB.js
+// Menyimpan sesi latihan ke IndexedDB
+export async function savePracticeSession({ id_latihan, nama_kategori, hasil_sesi }) {
+  const db = await openDB();
+  const tx = db.transaction('practice_sessions', 'readwrite');
+  tx.objectStore('practice_sessions').add({ 
+      id_latihan, 
+      nama_kategori, 
+      hasil_sesi, 
+      tanggal: new Date().toISOString() 
+  });
+  return tx.complete;
+}
+```
 
 ---
 
-## 📐 Pola Desain & Best Practice
+## 🎨 Modularisasi CSS
 
-- **MVP Pattern**: Pemisahan tegas antara logika, tampilan, dan kontrol
-- **Modular CSS**: Styling per komponen, import via file index.css
-- **Reusable Component**: Navbar, footer, ikon, dsb
-- **Helper & Service**: Fungsi utilitas di `src/utils/`
-- **Routing Modular**: Dikelola di `utils/routerSetup.js` dan `utils/introRouter.js`
-- **View Transition**: Transisi halaman halus via View Transition API (dengan fallback)
-
----
-
-## 🤖 Konfigurasi & Integrasi AI
-
-- **Mode AI/Mock**: Atur `USE_REAL_MODEL` di `src/config/AppConfig.js` untuk memilih antara API nyata atau demo
-- **Endpoint API**: Konfigurasikan endpoint di `AppConfig.js`. Harus menerima file `.wav` dan mengembalikan `{ us_confidence: number }`
-- **Demo Mode**: Skor confidence diacak sesuai rentang untuk pengembangan offline
+Strategi styling dirancang agar mudah dikelola dan diskalakan:
+- **Global Styles (`src/styles/`)**: Direktori ini berisi file-file CSS yang berlaku secara global:
+    - `color-global.css`: Mendefinisikan semua variabel warna CSS.
+    - `base.css`: Aturan dasar seperti `box-sizing`, *font-family*, dan reset gaya.
+    - `layout.css`: Kelas-kelas utilitas untuk layout (misalnya, `.container`, `.grid`).
+    - `components.css`: Gaya untuk komponen kecil yang digunakan kembali (misalnya, tombol, kartu).
+    - `animations.css` & `transitions.css`: Animasi dan transisi global.
+- **Feature-Specific Styles (`src/features/*/styles/`)**: Setiap fitur memiliki direktorinya sendiri untuk gaya yang hanya berlaku untuk fitur tersebut. Misalnya, `src/features/dashboard/styles/` berisi `dashboard-cards.css` dan `dashboard-chart.css`. File-file ini diimpor hanya oleh presenter fitur yang relevan, sehingga tidak membebani halaman lain.
+- **Impor CSS**: File CSS diimpor langsung ke dalam file JavaScript yang relevan (misalnya, `DashboardPresenter.js` mengimpor gaya dasbor). Vite kemudian secara otomatis menangani *bundling* dan optimisasi CSS.
 
 ---
 
-## 🚀 Cara Menjalankan
+## ⚙️ Cara Menjalankan
 
 ```bash
-# Install dependencies
+# 1. Install dependensi
 npm install
 
-# Development server
+# 2. Jalankan server pengembangan
 npm run dev
 
-# Build for production
+# 3. Build untuk produksi
 npm run build
 
-# Preview production build
+# 4. Pratinjau hasil build produksi
 npm run preview
 ```
 
 ---
 
-## 🌐 Dukungan Browser
-
-- Chrome/Edge 88+
-- Firefox 85+
-- Safari 14+
-- Mendukung View Transition API dengan fallback untuk browser lama
-
----
-
-## 🧪 Catatan Pengembangan & Testing
-
-- **Tanpa Framework**: Semua logic UI, state, dan event diatur manual (pure JS), mudah dipahami dan dikembangkan
-- **Scalable**: Mudah menambah fitur baru dengan menambah folder di `features/`
-- **Testing**: Struktur mendukung penambahan unit test per fitur
-- **Integrasi AI**: Mudah dihubungkan ke API eksternal untuk deteksi aksen
-
----
-
 ## 🤝 Kontribusi
 
-1. Fork repository ini
-2. Buat branch fitur baru (`git checkout -b feature/amazing-feature`)
-3. Commit perubahan (`git commit -m 'Add some amazing feature'`)
-4. Push ke branch (`git push origin feature/amazing-feature`)
-5. Buka Pull Request
+Kontribusi sangat diterima! Silakan *fork* repositori ini, buat *branch* baru untuk fitur Anda, dan kirimkan *Pull Request*.
 
 ---
 
 ## 📄 Lisensi
 
-MIT License - lihat file [LICENSE](LICENSE) untuk detail lengkap.
-
----
-
-## 📞 Dukungan
-
-Jika Anda mengalami masalah atau memiliki pertanyaan, silakan buka [issue](https://github.com/username/aureavo-frontend/issues) di repository ini.
+Proyek ini dilisensikan di bawah [MIT License](LICENSE).
