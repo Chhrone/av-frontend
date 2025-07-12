@@ -1,65 +1,96 @@
-# Shared Components
+# Komponen Bersama
 
-## Overall
+## Gambaran Umum
 
-The `shared` directory contains reusable UI components that are used across multiple features of the application. These components, such as the navbar and footer, have their own MVP (Model-View-Presenter) structure, ensuring they are self-contained and easy to maintain. This approach promotes code reuse and a consistent user experience throughout the application.
+Direktori `shared` berisi komponen UI yang dapat digunakan kembali yang digunakan di berbagai fitur aplikasi. Komponen-komponen ini, seperti bilah navigasi dan footer, memiliki struktur MVP (Model-View-Presenter) sendiri, memastikan mereka mandiri dan mudah dipelihara. Pendekatan ini mendorong penggunaan kembali kode dan pengalaman pengguna yang konsisten di seluruh aplikasi.
 
-## Models
+## Model
 
 ### `NavbarModel.js`
 
-The `NavbarModel` is responsible for managing the data and state for the application's navigation bar.
+`NavbarModel` bertanggung jawab untuk mengelola data dan status untuk bilah navigasi aplikasi.
 
-- **Responsibilities**:
-    - Stores the application's brand name.
-    - Defines the navigation links that should be displayed in the navbar, including their text and destination URLs.
-    - Provides the brand name split into two parts (`Aurea` and `Voice`) for styling purposes.
+- **Tanggung Jawab**:
+    - Menyimpan nama merek aplikasi.
+    - Mendefinisikan tautan navigasi yang harus ditampilkan di bilah navigasi, termasuk teks dan URL tujuannya.
+    - Menyediakan nama merek yang dibagi menjadi dua bagian (`Aurea` dan `Voice`) untuk tujuan penataan gaya.
 
 ### `FooterModel.js`
 
-The `FooterModel` manages the content and data for the application's footer.
+`FooterModel` mengelola konten dan data untuk footer aplikasi.
 
-- **Responsibilities**:
-    - Stores the application's brand name and a brief description.
-    - Defines the various link sections in the footer, such as internal links, community links, and resources.
-    - Generates the copyright text, automatically updating the year.
-    - Stores a background text element (`AUREAVOICE`) that is used for decorative styling in the footer.
+- **Tanggung Jawab**:
+    - Menyimpan nama merek aplikasi dan deskripsi singkat.
+    - Mendefinisikan berbagai bagian tautan di footer, seperti tautan internal, tautan komunitas, dan sumber daya.
+    - Menghasilkan teks hak cipta, secara otomatis memperbarui tahun.
+    - Menyimpan elemen teks latar belakang (`AUREAVOICE`) yang digunakan untuk penataan gaya dekoratif di footer.
 
-## Presenters
+## Presenter
 
 ### `NavbarPresenter.js`
 
-The `NavbarPresenter` acts as the controller for the navigation bar.
+`NavbarPresenter` bertindak sebagai pengontrol untuk bilah navigasi.
 
-- **Responsibilities**:
-    - Initializes the `NavbarView` with data from the `NavbarModel`.
-    - Manages the lifecycle of the navbar, including mounting and unmounting it from the DOM.
-    - Ensures that the navbar is rendered correctly and that its data is up-to-date.
+- **Tanggung Jawab**:
+    - Menginisialisasi `NavbarView` dengan data dari `NavbarModel`.
+    - Mengelola siklus hidup bilah navigasi, termasuk memasang dan melepasnya dari DOM.
+    - Memastikan bahwa bilah navigasi dirender dengan benar dan datanya mutakhir.
 
 ### `FooterPresenter.js`
 
-The `FooterPresenter` is the controller for the application's footer.
+`FooterPresenter` adalah pengontrol untuk footer aplikasi.
 
-- **Responsibilities**:
-    - Initializes the `FooterView` with data from the `FooterModel`.
-    - Manages the mounting and unmounting of the footer.
-    - Provides methods to update the footer's content dynamically, such as changing the brand name or description.
+- **Tanggung Jawab**:
+    - Menginisialisasi `FooterView` dengan data dari `FooterModel`.
+    - Mengelola pemasangan dan pelepasan footer.
+    - Menyediakan metode untuk memperbarui konten footer secara dinamis, seperti mengubah nama merek atau deskripsi.
 
-## Views
+## Cuplikan Kode Penting
+
+`NavbarView.js` berisi bagian kode sederhana namun penting yang meningkatkan pengalaman pengguna dengan membuat bilah navigasi interaktif dan responsif terhadap pengguliran pengguna.
+
+```javascript
+// src/shared/views/NavbarView.js
+
+bindScrollEvent() {
+  const navContainer = this.element.querySelector('.nav-container');
+  const dashboardNav = this.element;
+  if (!navContainer || !dashboardNav) return;
+
+  this.scrollHandler = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > 50) {
+      navContainer.classList.add('scrolled');
+      dashboardNav.classList.add('scrolled');
+    } else {
+      navContainer.classList.remove('scrolled');
+      dashboardNav.classList.remove('scrolled');
+    }
+  };
+
+  window.addEventListener('scroll', this.scrollHandler);
+}
+```
+
+Cuplikan ini signifikan karena menunjukkan:
+- **Penataan Gaya Dinamis**: Ini menambah atau menghapus kelas `scrolled` ke bilah navigasi berdasarkan posisi gulir pengguna. Ini memungkinkan CSS untuk menerapkan gaya yang berbeda ketika bilah navigasi berada di bagian atas halaman dibandingkan ketika digulir ke bawah (misalnya, mengubah latar belakang dari transparan menjadi padat).
+- **Penanganan Acara yang Efisien**: Penanganan gulir hanya terikat sekali ketika bilah navigasi dipasang dan dilepas dengan benar ketika dilepas, mencegah kebocoran memori.
+- **Pengalaman Pengguna yang Ditingkatkan**: Fitur kecil ini memberikan nuansa yang halus dan profesional pada aplikasi, karena bilah navigasi dengan anggun mengubah penampilannya saat pengguna berinteraksi dengan halaman.
 
 ### `NavbarView.js`
 
-The `NavbarView` is responsible for rendering the HTML for the navigation bar.
+`NavbarView` bertanggung jawab untuk merender HTML untuk bilah navigasi.
 
-- **Responsibilities**:
-    - Creates the HTML structure for the navbar, including the logo and navigation buttons.
-    - Binds a scroll event listener to the window to add a `scrolled` class to the navbar when the user scrolls down, allowing for dynamic styling (e.g., a transparent-to-solid background transition).
-    - Handles clicks on the navigation links, delegating the navigation action to the browser's default behavior for route changes.
+- **Tanggung Jawab**:
+    - Membuat struktur HTML untuk bilah navigasi, termasuk logo dan tombol navigasi.
+    - Mengikat pendengar acara gulir ke jendela untuk menambahkan kelas `scrolled` ke bilah navigasi ketika pengguna menggulir ke bawah, memungkinkan penataan gaya dinamis (misalnya, transisi latar belakang transparan-ke-padat).
+    - Menangani klik pada tautan navigasi, mendelegasikan tindakan navigasi ke perilaku default browser untuk perubahan rute.
 
 ### `FooterView.js`
 
-The `FooterView` renders the HTML for the application's footer.
+`FooterView` merender HTML untuk footer aplikasi.
 
-- **Responsibilities**:
-    - Creates the complete HTML structure for the footer, including the brand information, link columns, and copyright notice.
-    - Provides methods to update specific parts of the footer's content, such as the brand name or description, without needing to re-render the entire component.
+- **Tanggung Jawab**:
+    - Membuat struktur HTML lengkap untuk footer, termasuk informasi merek, kolom tautan, dan pemberitahuan hak cipta.
+    - Menyediakan metode untuk memperbarui bagian tertentu dari konten footer, seperti nama merek atau deskripsi, tanpa perlu merender ulang seluruh komponen.

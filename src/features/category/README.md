@@ -1,29 +1,37 @@
-# Category Feature
+# Fitur Kategori
 
-Page kategori untuk aplikasi AureaVoice yang menampilkan materi pembelajaran, contoh pelafalan, dan item latihan.
+Halaman kategori untuk aplikasi AureaVoice yang menampilkan materi pembelajaran, contoh pelafalan, dan item latihan.
 
 ## Struktur
 
 ### 1. Banner
 - Menampilkan judul dan deskripsi kategori
-- Background gradient yang menarik
+- Latar belakang gradien yang menarik
 - Gambar ilustrasi kategori
 
-### 2. Main Content
+### 2. Konten Utama
 Terdiri dari dua bagian utama:
 
 #### Materi Kategori (Format Artikel)
 - Satu artikel lengkap dengan konten materi pembelajaran
-- Header artikel dengan judul, waktu baca, dan tanggal update
-- Konten artikel dengan typography yang baik (heading, paragraf, list)
+- Header artikel dengan judul, waktu baca, dan tanggal pembaruan
+- Konten artikel dengan tipografi yang baik (judul, paragraf, daftar)
 - Format HTML yang mendukung struktur artikel yang panjang
 
 #### Contoh Pelafalan
-- Grid layout untuk contoh-contoh pelafalan
-- Menampilkan kata, notasi fonetik, dan tombol play
-- Badge tingkat kesulitan (mudah, sedang, sulit)
+- Tata letak grid untuk contoh-contoh pelafalan
+- Menampilkan kata, notasi fonetik, dan tombol putar
+- Lencana tingkat kesulitan (mudah, sedang, sulit)
 
-### 3. Sidebar
+#### Kesalahan Umum (Common Errors)
+
+Bagian ini akan membahas kesalahan-kesalahan umum yang mungkin terjadi saat mengembangkan atau menggunakan fitur kategori, beserta solusi atau langkah-langkah penanganan yang direkomendasikan.
+
+#### Materi Tambahan (Additional Materials)
+
+Bagian ini akan berisi tautan atau referensi ke materi tambahan yang relevan, seperti dokumentasi eksternal, artikel, atau sumber daya lain yang dapat membantu pemahaman lebih lanjut tentang fitur kategori atau teknologi yang digunakan.
+
+### 3. Konten Samping
 - Item latihan yang tersedia
 - Setiap item memiliki judul, deskripsi, dan tingkat kesulitan
 - Tombol untuk memulai latihan
@@ -32,48 +40,102 @@ Terdiri dari dua bagian utama:
 
 ### CategoryModel
 - Mengelola data kategori
-- Menyediakan mock data untuk artikel materi, contoh pelafalan, dan latihan
-- Method untuk mengambil data berdasarkan kategori
+- Menyediakan data tiruan untuk artikel materi, contoh pelafalan, dan latihan
+- Metode untuk mengambil data berdasarkan kategori
 - Struktur data artikel dengan konten HTML yang lengkap
 
 ### CategoryView
-- Render UI untuk page kategori dengan format artikel
-- Method untuk update konten artikel secara dinamis
-- Event binding untuk interaksi user (pronunciation play, practice start)
-- Typography styling untuk konten artikel yang panjang
+- Merender antarmuka pengguna untuk halaman kategori dengan format artikel
+- Metode untuk memperbarui konten artikel secara dinamis
+- Pengikatan acara untuk interaksi pengguna (putar pelafalan, mulai latihan)
+- Penataan tipografi untuk konten artikel yang panjang
 
 ### CategoryPresenter
 - Koordinasi antara Model dan View
-- Handle user interactions
-- Method untuk update dan refresh konten
+- Menangani interaksi pengguna
+- Metode untuk memperbarui dan menyegarkan konten
 
-## Styling
+## Penataan Gaya
 
 ### category-base.css
-- Styling dasar untuk container, banner, dan layout
-- Styling untuk artikel materi dengan typography yang baik
-- Styling untuk contoh pelafalan dan difficulty badges
-- Typography untuk heading, paragraf, list dalam artikel
+- Penataan gaya dasar untuk wadah, spanduk, dan tata letak
+- Penataan gaya untuk artikel materi dengan tipografi yang baik
+- Penataan gaya untuk contoh pelafalan dan lencana kesulitan
+- Tipografi untuk judul, paragraf, daftar dalam artikel
 
 ### category-sidebar.css
-- Styling khusus untuk sidebar
-- Practice items dan tombol latihan
-- Sticky positioning untuk sidebar
+- Penataan gaya khusus untuk bilah sisi
+- Item latihan dan tombol latihan
+- Penempatan lengket untuk bilah sisi
 
 ### category-responsive.css
-- Responsive design untuk berbagai ukuran layar
-- Mobile-first approach
-- Print styles
+- Desain responsif untuk berbagai ukuran layar
+- Pendekatan mobile-first
+- Gaya cetak
 
 ## Demo
 
-Untuk melihat demo page kategori, buka file `category-demo.html` di browser.
+Untuk melihat demo halaman kategori, buka file `category-demo.html` di browser.
 
 ## Integrasi
 
-Feature ini sudah terintegrasi dengan struktur aplikasi utama melalui:
-- `src/features/category/index.js` - Export semua komponen
-- `src/features/index.js` - Import ke main features
+Fitur ini sudah terintegrasi dengan struktur aplikasi utama melalui:
+- `src/features/category/index.js` - Mengekspor semua komponen
+- `src/features/index.js` - Mengimpor ke fitur utama
+
+## Cuplikan Kode Penting
+
+`CategoryPresenter.js` sangat penting untuk menginisialisasi halaman kategori, mengambil data, dan menangani interaksi pengguna. Metode `init`, khususnya, menunjukkan logika inti dari fitur tersebut:
+
+```javascript
+// src/features/category/presenters/CategoryPresenter.js
+
+async init(categoryId = 'pronunciation') {
+  try {
+    // Clear the app container
+    const appContainer = document.getElementById('app');
+    if (appContainer) {
+      appContainer.innerHTML = '';
+    }
+
+    // Show loading state
+    if (appContainer) {
+      appContainer.innerHTML = '<div class="loading">Memuat konten...</div>';
+    }
+
+    // Set the current category in the model (awaits the async operation)
+    await this.model.setCurrentCategory(categoryId);
+
+    // Create and render the view
+    this.view = new CategoryView();
+    const categoryData = this.model.getCategoryData();
+    await this.render(categoryData);
+
+    // Bind event handlers
+    this.bindEvents();
+
+    // Mount footer inside .category-container after .category-content
+    const categoryContainer = document.querySelector('.category-container');
+    if (categoryContainer) {
+      if (!this.footerPresenter) {
+        this.footerPresenter = new FooterPresenter();
+      }
+      // Remove existing footer in categoryContainer if any (avoid duplicate)
+      const existingFooter = categoryContainer.querySelector('#footer');
+      if (existingFooter) existingFooter.remove();
+      this.footerPresenter.mount(categoryContainer);
+    }
+  } catch (error) {
+    console.error('Error initializing category presenter:', error);
+  }
+}
+```
+
+Cuplikan ini menunjukkan:
+- **Inisialisasi Asinkron**: Sifat `async` dari fungsi memungkinkan untuk `await` pengambilan data dari model sebelum merender tampilan.
+- **Manajemen Status**: Ini menunjukkan status pemuatan kepada pengguna saat data sedang diambil.
+- **Interaksi MVP**: Presenter mengambil data dari `model`, meneruskannya ke `view` untuk dirender, dan kemudian mengikat acara untuk menangani masukan pengguna.
+- **Komposisi Komponen**: Ini secara dinamis memasang `FooterPresenter` bersama, menunjukkan bagaimana komponen yang dapat digunakan kembali diintegrasikan.
 
 ## Penggunaan
 
@@ -90,17 +152,17 @@ categoryPresenter.init('pronunciation'); // atau kategori lainnya
 
 ## Fitur yang Belum Diimplementasi
 
-1. **Audio Playback** - Tombol play untuk contoh pelafalan
+1. **Audio Playback** - Tombol putar untuk contoh pelafalan
 2. **Navigation** - Integrasi dengan router aplikasi
 3. **Dynamic Data** - Koneksi dengan API atau database
 4. **Practice Sessions** - Implementasi sesi latihan
-5. **Progress Tracking** - Tracking progress user
+5. **Progress Tracking** - Pelacakan kemajuan pengguna
 
 ## Catatan
 
-Page ini dibuat sebagai struktur dasar dan belum disambungkan ke aplikasi utama. Untuk integrasi penuh, perlu:
+Halaman ini dibuat sebagai struktur dasar dan belum disambungkan ke aplikasi utama. Untuk integrasi penuh, perlu:
 
-1. Menambahkan route di router
-2. Mengintegrasikan dengan navbar/navigation
-3. Menambahkan data real dari backend
+1. Menambahkan rute di router
+2. Mengintegrasikan dengan bilah navigasi/navigasi
+3. Menambahkan data nyata dari backend
 4. Implementasi fitur audio dan latihan

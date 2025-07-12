@@ -1,106 +1,157 @@
-# Practice Feature
+# Fitur Latihan
 
-## Overall
+## Gambaran Umum
 
-The Practice feature is the core component of the application where users can actively train their American English accent. It provides a structured environment for users to complete practice sessions, receive immediate feedback on their pronunciation, and track their progress through a series of recordings. The feature is designed to be iterative, allowing users to repeat exercises and see their scores improve over time.
+Fitur Latihan adalah komponen inti dari aplikasi di mana pengguna dapat secara aktif melatih aksen bahasa Inggris Amerika mereka. Ini menyediakan lingkungan terstruktur bagi pengguna untuk menyelesaikan sesi latihan, menerima umpan balik langsung tentang pelafalan mereka, dan melacak kemajuan mereka melalui serangkaian rekaman. Fitur ini dirancang untuk berulang, memungkinkan pengguna untuk mengulang latihan dan melihat skor mereka meningkat dari waktu ke waktu.
 
-## Models
+## Model
 
 ### `PracticeTestModel.js`
 
-The `PracticeTestModel` is responsible for managing the data related to the practice tests.
+`PracticeTestModel` bertanggung jawab untuk mengelola data yang terkait dengan tes latihan.
 
-- **Responsibilities**:
-    - Fetches practice text from the database (`aureaVoiceDB.js`) based on the selected category and practice item.
-    - Provides a random practice sentence if a specific one isn't chosen.
-    - Stores the last used practice text for continuity.
-    - Saves recordings and their corresponding scores for a given practice session.
+- **Tanggung Jawab**:
+    - Mengambil teks latihan dari database (`aureaVoiceDB.js`) berdasarkan kategori dan item latihan yang dipilih.
+    - Menyediakan kalimat latihan acak jika tidak ada yang spesifik dipilih.
+    - Menyimpan teks latihan terakhir yang digunakan untuk kontinuitas.
+    - Menyimpan rekaman dan skor yang sesuai untuk sesi latihan tertentu.
 
 ### `PracticeResultModel.js`
 
-The `PracticeResultModel` handles the data for the practice result screen.
+`PracticeResultModel` menangani data untuk layar hasil latihan.
 
-- **Responsibilities**:
-    - Stores the accent analysis data received after a recording is processed.
-    - Retrieves and stores the speech-to-text transcript from the recording service.
-    - Provides motivational descriptions based on the user's score, offering encouragement and guidance.
+- **Tanggung Jawab**:
+    - Menyimpan data analisis aksen yang diterima setelah rekaman diproses.
+    - Mengambil dan menyimpan transkrip ucapan-ke-teks dari layanan perekaman.
+    - Memberikan deskripsi motivasi berdasarkan skor pengguna, menawarkan dorongan dan panduan.
 
-## Presenters
+## Presenter
 
 ### `PracticePresenter.js`
 
-The `PracticePresenter` is the central controller for the entire practice flow, managing the interactions between the models, views, and services.
+`PracticePresenter` adalah pengontrol pusat untuk seluruh alur latihan, mengelola interaksi antara model, tampilan, dan layanan.
 
-- **Responsibilities**:
-    - Initializes the practice session by fetching the practice text and rendering the initial test view.
-    - Manages the state of the practice session, including the number of recordings taken and the maximum number of sessions.
-    - Handles user interactions, such as starting and stopping recordings.
-    - Orchestrates the process of recording audio, sending it for analysis, and receiving the results.
-    - Saves the results of each practice session to the database.
-    - Transitions between the test view and the result view, passing the necessary data.
-    - Manages the overall flow of a 4-session practice, calculating the average score at the end.
+- **Tanggung Jawab**:
+    - Menginisialisasi sesi latihan dengan mengambil teks latihan dan merender tampilan tes awal.
+    - Mengelola status sesi latihan, termasuk jumlah rekaman yang diambil dan jumlah sesi maksimum.
+    - Menangani interaksi pengguna, seperti memulai dan menghentikan rekaman.
+    - Mengatur proses perekaman audio, mengirimkannya untuk analisis, dan menerima hasilnya.
+    - Menyimpan hasil setiap sesi latihan ke database.
+    - Transisi antara tampilan tes dan tampilan hasil, meneruskan data yang diperlukan.
+    - Mengelola alur keseluruhan latihan 4 sesi, menghitung skor rata-rata di akhir.
 
-## Services
+## Layanan
 
-The practice feature is broken down into several services, each with a specific responsibility, following a service-oriented architecture.
+Fitur latihan dipecah menjadi beberapa layanan, masing-masing dengan tanggung jawab tertentu, mengikuti arsitektur berorientasi layanan.
 
 ### `PracticeRecordingService.js`
 
-This service encapsulates the logic for handling audio recordings during a practice session.
+Layanan ini merangkum logika untuk menangani rekaman audio selama sesi latihan.
 
-- **Responsibilities**:
-    - Manages the state of the recording (e.g., `isRecording`).
-    - Starts and stops the recording timer and updates the UI with the elapsed time.
-    - Retrieves the speech-to-text transcript from the `RecordingManager`.
-    - Logs the start and end times of each recording session.
+- **Tanggung Jawab**:
+    - Mengelola status perekaman (misalnya, `isRecording`).
+    - Memulai dan menghentikan pengatur waktu perekaman dan memperbarui UI dengan waktu yang berlalu.
+    - Mengambil transkrip ucapan-ke-teks dari `RecordingManager`.
+    - Mencatat waktu mulai dan berakhir setiap sesi perekaman.
 
 ### `PracticeResultService.js`
 
-This service is responsible for processing and interpreting the results of a practice session.
+Layanan ini bertanggung jawab untuk memproses dan menafsirkan hasil sesi latihan.
 
-- **Responsibilities**:
-    - Extracts the accent confidence score from the analysis result.
-    - Provides a motivational description based on the score by interacting with the `PracticeResultModel`.
-    - Calculates the average score from a series of practice sessions.
+- **Tanggung Jawab**:
+    - Mengekstrak skor kepercayaan aksen dari hasil analisis.
+    - Memberikan deskripsi motivasi berdasarkan skor dengan berinteraksi dengan `PracticeResultModel`.
+    - Menghitung skor rata-rata dari serangkaian sesi latihan.
 
 ### `PracticeViewService.js`
 
-This service manages the UI transitions and updates for the practice views.
+Layanan ini mengelola transisi UI dan pembaruan untuk tampilan latihan.
 
-- **Responsibilities**:
-    - Handles the animated transitions between the test view and the result view.
-    - Renders the appropriate view with the necessary data.
-    - Binds and unbinds event listeners for UI elements as needed.
+- **Tanggung Jawab**:
+    - Menangani transisi animasi antara tampilan tes dan tampilan hasil.
+    - Merender tampilan yang sesuai dengan data yang diperlukan.
+    - Mengikat dan melepaskan pendengar acara untuk elemen UI sesuai kebutuhan.
 
-## Views
+## Tampilan
 
 ### `PracticeTestView.js`
 
-The `PracticeTestView` is the UI for the active practice session where the user records their speech.
+`PracticeTestView` adalah UI untuk sesi latihan aktif di mana pengguna merekam ucapan mereka.
 
-- **Responsibilities**:
-    - Renders the practice text for the user to read.
-    - Displays a progress bar indicating the current session number.
-    - Provides a record button that changes its state to reflect whether it's recording, processing, or idle.
-    - Shows a timer to display the duration of the current recording.
+- **Tanggung Jawab**:
+    - Merender teks latihan untuk dibaca pengguna.
+    - Menampilkan bilah kemajuan yang menunjukkan nomor sesi saat ini.
+    - Menyediakan tombol rekam yang mengubah statusnya untuk mencerminkan apakah sedang merekam, memproses, atau diam.
+    - Menampilkan pengatur waktu untuk menampilkan durasi rekaman saat ini.
 
 ### `PracticeResultView.js`
 
-The `PracticeResultView` displays the feedback after a user completes a recording.
+`PracticeResultView` menampilkan umpan balik setelah pengguna menyelesaikan rekaman.
 
-- **Responsibilities**:
-    - Renders the user's accent score for the recording.
-    - Displays a motivational message based on the score.
-    - Shows the speech-to-text transcript of the user's recording.
-    - Provides a button to compare the original text with the transcript.
-    - Includes buttons to either continue to the next session or return to the category page after the final session.
+- **Tanggung Jawab**:
+    - Merender skor aksen pengguna untuk rekaman.
+    - Menampilkan pesan motivasi berdasarkan skor.
+    - Menampilkan transkrip ucapan-ke-teks dari rekaman pengguna.
+    - Menyediakan tombol untuk membandingkan teks asli dengan transkrip.
+    - Termasuk tombol untuk melanjutkan ke sesi berikutnya atau kembali ke halaman kategori setelah sesi terakhir.
 
-## Utils
+## Cuplikan Kode Penting
 
-The Practice feature relies on several global utilities:
+`PracticePresenter.js` adalah mesin dari fitur latihan, dan metode `toggleRecording`-nya adalah logika paling penting. Metode ini menangani seluruh siklus hidup rekaman latihan tunggal, dari memulai rekaman hingga memproses hasilnya dan memutuskan apa yang harus dilakukan selanjutnya.
 
-- **`RecordingManager.js`**: The core utility for managing audio recording, used by the `PracticeRecordingService`.
-- **`AccentDetectionService.js`**: Used to send recorded audio for analysis and get the accent score.
-- **`aureaVoiceDB.js`**: The database interface for fetching practice texts and saving session results.
-- **`appRouter.js`**: Used for navigation, for example, to return to the category page.
-- **`MicrophoneIcon.js`**: A reusable UI component for the microphone icon.
+```javascript
+// src/features/practice/presenters/PracticePresenter.js
+
+async toggleRecording() {
+  // ... (state management and UI updates)
+
+  if (this.recordingService.isRecording) {
+    // ... (start recording logic)
+  } else {
+    // Stop recording logic
+    try {
+      this.testView.setRecordingState(false, true); // Set UI to processing
+      const recording = await this.recordingManager.stopRecording();
+      
+      if (recording && recording.audioBlob) {
+        const result = await accentDetectionService.analyzeAccent(recording.audioBlob);
+        const score = this.resultService.getScoreFromResult(result);
+
+        this.sessionRecordings.push(recording);
+        this.sessionScores.push(score);
+
+        if (this.sessionRecordings.length >= this.maxSession) {
+          // 4 sessions are complete, calculate average and save
+          const avgScore = this.resultService.getAverageScore(this.sessionScores);
+          savePracticeSession({ ... });
+          this.showResultView({ isAverage: true, avgScore });
+          // Reset session
+        } else {
+          // Show result for the single session
+          this.showResultView({ ...result });
+        }
+      }
+    } catch (error) {
+      // ... (error handling)
+    } finally {
+      this.testView.setRecordingState(false, false); // Reset UI
+    }
+  }
+}
+```
+
+Cuplikan ini penting karena menunjukkan:
+- **Manajemen Sesi**: Ini melacak jumlah rekaman dalam sesi dan menentukan apakah akan menampilkan hasil individu atau skor rata-rata akhir.
+- **Orkestrasi Layanan**: Ini secara mulus mengintegrasikan beberapa layanan: `recordingManager` untuk menangani audio, `accentDetectionService` untuk menganalisisnya, dan `resultService` untuk memproses skor.
+- **Persistensi Data**: Ketika latihan 4 sesi selesai, ia memanggil `savePracticeSession` untuk menyimpan hasilnya di database.
+- **Logika Status Kompleks**: Ini mengelola status UI di seluruh proses, dari perekaman hingga pemrosesan dan akhirnya ke tampilan hasil, memberikan pengalaman yang jelas dan responsif bagi pengguna.
+
+## Utilitas
+
+Fitur Latihan bergantung pada beberapa utilitas global:
+
+- **`RecordingManager.js`**: Utilitas inti untuk mengelola perekaman audio, digunakan oleh `PracticeRecordingService`.
+- **`AccentDetectionService.js`**: Digunakan untuk mengirim audio yang direkam untuk analisis dan mendapatkan skor aksen.
+- **`aureaVoiceDB.js`**: Antarmuka database untuk mengambil teks latihan dan menyimpan hasil sesi.
+- **`appRouter.js`**: Digunakan untuk navigasi, misalnya, untuk kembali ke halaman kategori.
+- **`MicrophoneIcon.js`**: Komponen UI yang dapat digunakan kembali untuk ikon mikrofon.

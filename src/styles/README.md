@@ -1,62 +1,92 @@
-# Styles
+# Gaya
 
-## Overall
+## Cuplikan Kode Penting
 
-The `styles` directory contains the global CSS files that define the visual appearance of the application. The styling is organized into separate files based on their concern, such as colors, layout, and animations. This modular approach makes the CSS easier to manage and maintain.
+File `color-global.css` adalah landasan identitas visual aplikasi. Dengan mendefinisikan seluruh palet warna sebagai properti kustom CSS, ini memungkinkan tema yang mudah dan memastikan konsistensi di semua komponen.
 
-The application uses a custom color palette defined in `color-global.css` and a modern, clean design aesthetic with a focus on user experience. The styles are designed to be responsive, ensuring that the application looks great on a variety of devices, from mobile phones to desktop monitors.
+```css
+/* src/styles/color-global.css */
+
+:root {
+  /* Primary Brand Colors */
+  --color-primary: #0d9488; /* Teal tone for more vibrancy */
+  --color-primary-dark: #0f766e; /* Darker teal */
+  --color-primary-light: #f0fdfa; /* Light teal background */
+  --color-primary-gradient: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  
+  /* Secondary/Accent Colors */
+  --color-secondary: #b91c1c; /* Stronger red for clarity and contrast */
+
+  /* ... other color variables ... */
+
+  /* Text Colors */
+  --color-text-main: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-accent: #0d9488;
+}
+```
+
+Cuplikan ini sangat penting karena menunjukkan:
+- **Tema Terpusat**: Semua warna didefinisikan di satu tempat, membuatnya mudah untuk memperbarui tampilan dan nuansa aplikasi. Mengubah satu variabel di sini akan menyebarkan perubahan ke seluruh aplikasi.
+- **Penamaan Semantik**: Variabel diberi nama secara semantik (misalnya, `--color-primary`, `--color-text-main`), yang membuat kode lebih mudah dibaca dan dipahami.
+- **Dapat Digunakan Kembali**: Variabel-variabel ini dapat dengan mudah digunakan kembali di file CSS lainnya, memastikan bahwa skema warna diterapkan secara konsisten di mana-mana.
+- **Pemeliharaan**: Pendekatan ini secara signifikan meningkatkan pemeliharaan basis kode. Alih-alih mencari dan mengganti kode hex di beberapa file, pengembang cukup memperbarui file tema pusat.
+
+Direktori `styles` berisi file CSS global yang mendefinisikan tampilan visual aplikasi. Penataan gaya diatur ke dalam file terpisah berdasarkan kepentingannya, seperti warna, tata letak, dan animasi. Pendekatan modular ini membuat CSS lebih mudah dikelola dan dipelihara.
+
+Aplikasi ini menggunakan palet warna kustom yang didefinisikan dalam `color-global.css` dan estetika desain modern yang bersih dengan fokus pada pengalaman pengguna. Gaya dirancang agar responsif, memastikan bahwa aplikasi terlihat bagus di berbagai perangkat, dari ponsel hingga monitor desktop.
 
 ### `animations.css`
 
-This file contains all the keyframe animations used throughout the application.
+File ini berisi semua animasi keyframe yang digunakan di seluruh aplikasi.
 
-- **Purpose**: To define reusable animations for loading indicators, recording states, and other dynamic UI elements.
-- **Key Animations**:
-    - `recording-pulse`: A pulsing animation used to indicate that a recording is in progress.
-    - `loading-spin`: A simple spinning animation for loading states.
+- **Tujuan**: Untuk mendefinisikan animasi yang dapat digunakan kembali untuk indikator pemuatan, status perekaman, dan elemen UI dinamis lainnya.
+- **Animasi Utama**:
+    - `recording-pulse`: Animasi berdenyut yang digunakan untuk menunjukkan bahwa perekaman sedang berlangsung.
+    - `loading-spin`: Animasi berputar sederhana untuk status pemuatan.
 
 ### `base.css`
 
-This file sets up the base styles for the entire application.
+File ini mengatur gaya dasar untuk seluruh aplikasi.
 
-- **Purpose**: To establish a consistent foundation for the typography, background colors, and other global styles.
-- **How it works**:
-    - It imports the `Inter` font from Google Fonts, which is used as the primary font for the application.
-    - It includes a CSS reset to ensure consistent rendering across different browsers.
-    - It defines the default styles for the `body` element, including the background color and text color.
-    - It also includes custom scrollbar styles to match the application's theme.
+- **Tujuan**: Untuk membangun fondasi yang konsisten untuk tipografi, warna latar belakang, dan gaya global lainnya.
+- **Cara kerjanya**:
+    - Ini mengimpor font `Inter` dari Google Fonts, yang digunakan sebagai font utama untuk aplikasi.
+    - Ini mencakup reset CSS untuk memastikan rendering yang konsisten di berbagai browser.
+    - Ini mendefinisikan gaya default untuk elemen `body`, termasuk warna latar belakang dan warna teks.
+    - Ini juga mencakup gaya bilah gulir kustom agar sesuai dengan tema aplikasi.
 
 ### `color-global.css`
 
-This file defines the global color palette for the application using CSS custom properties (variables).
+File ini mendefinisikan palet warna global untuk aplikasi menggunakan properti kustom CSS (variabel).
 
-- **Purpose**: To provide a single source of truth for all colors used in the application, making it easy to maintain a consistent color scheme.
-- **How it works**: It defines a set of CSS variables for primary, secondary, background, text, and other colors. These variables are then used throughout the other CSS files.
+- **Tujuan**: Untuk menyediakan satu sumber kebenaran untuk semua warna yang digunakan dalam aplikasi, membuatnya mudah untuk mempertahankan skema warna yang konsisten.
+- **Cara kerjanya**: Ini mendefinisikan serangkaian variabel CSS untuk warna primer, sekunder, latar belakang, teks, dan lainnya. Variabel-variabel ini kemudian digunakan di seluruh file CSS lainnya.
 
 ### `components.css`
 
-This file is intended to hold styles for global, non-feature-specific components. In the current structure, it is largely empty as most component styles are defined within their respective feature's CSS files.
+File ini dimaksudkan untuk menampung gaya untuk komponen global, non-fitur-spesifik. Dalam struktur saat ini, sebagian besar kosong karena sebagian besar gaya komponen didefinisikan dalam file CSS fitur masing-masing.
 
 ### `footer.css`
 
-This file contains all the styles for the application's shared footer component.
+File ini berisi semua gaya untuk komponen footer bersama aplikasi.
 
-- **Purpose**: To define the layout, typography, and responsive behavior of the footer.
-- **How it works**: It uses a combination of Flexbox and CSS Grid to create a responsive layout that adapts to different screen sizes. It also includes styles for the footer's text, links, and decorative background text.
+- **Tujuan**: Untuk mendefinisikan tata letak, tipografi, dan perilaku responsif footer.
+- **Cara kerjanya**: Ini menggunakan kombinasi Flexbox dan CSS Grid untuk membuat tata letak responsif yang beradaptasi dengan berbagai ukuran layar. Ini juga mencakup gaya untuk teks footer, tautan, dan teks latar belakang dekoratif.
 
 ### `layout.css`
 
-This file is intended for global layout styles that are not specific to any feature. Similar to `components.css`, it is currently minimal as most layout styles are handled within the feature-specific CSS.
+File ini dimaksudkan untuk gaya tata letak global yang tidak spesifik untuk fitur apa pun. Mirip dengan `components.css`, saat ini minimal karena sebagian besar gaya tata letak ditangani dalam CSS khusus fitur.
 
 ### `responsive.css`
 
-This file is intended for global responsive styles. It is currently minimal, with most responsive design handled within the CSS files for each feature and the shared components.
+File ini dimaksudkan untuk gaya responsif global. Saat ini minimal, dengan sebagian besar desain responsif ditangani dalam file CSS untuk setiap fitur dan komponen bersama.
 
 ### `transitions.css`
 
-This file manages the application's view transitions.
+File ini mengelola transisi tampilan aplikasi.
 
-- **Purpose**: To provide smooth, animated transitions between different views, enhancing the user experience.
-- **How it works**:
-    - It enables the browser's native View Transition API for seamless SPA (Single Page Application) navigation.
-    - It provides a simple fade-in animation as a fallback for browsers that do not support the View Transition API, ensuring a consistent, albeit simpler, experience for all users.
+- **Tujuan**: Untuk memberikan transisi animasi yang mulus antara tampilan yang berbeda, meningkatkan pengalaman pengguna.
+- **Cara kerjanya**: 
+    - Ini mengaktifkan View Transition API asli browser untuk navigasi SPA (Single Page Application) yang mulus.
+    - Ini menyediakan animasi memudar sederhana sebagai cadangan untuk browser yang tidak mendukung View Transition API, memastikan pengalaman yang konsisten, meskipun lebih sederhana, untuk semua pengguna.

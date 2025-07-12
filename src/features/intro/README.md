@@ -1,119 +1,150 @@
-# Intro Feature
+# Fitur Intro
 
-## Overall
+## Gambaran Umum
 
-The Intro feature provides the initial user experience, guiding new users through a splash screen, a welcome message, and an initial accent evaluation test. This flow is designed to be engaging and to provide immediate feedback on the user's American English accent. The feature captures a baseline of the user's pronunciation, which helps in recommending specific practice areas.
+Fitur Intro dirancang untuk memberikan pengalaman awal yang terstruktur bagi pengguna baru. Melalui tampilan pembuka, pesan sambutan, dan evaluasi awal aksen, pengguna dipandu secara bertahap untuk memahami fungsi utama aplikasi. Alur ini tidak hanya bertujuan untuk menarik perhatian, tetapi juga memberikan umpan balik langsung terkait aksen bahasa Inggris Amerika yang digunakan. Data pelafalan awal yang dikumpulkan digunakan sebagai dasar untuk merekomendasikan area latihan yang sesuai dengan kebutuhan masing-masing pengguna.
 
-## Models
+
+
+## Model
 
 ### `IntroModel.js`
 
-The `IntroModel` manages the state and content for the entire introductory flow.
+`IntroModel` mengelola status dan konten untuk seluruh alur pengantar.
 
-- **Responsibilities**:
-    - Stores and provides a random selection of text passages for the accent evaluation test.
-    - Holds all UI text content, such as the welcome message and button labels, in a centralized place.
-    - Contains the logic for generating descriptive feedback based on the user's accent confidence score.
-    - Manages the current state of the intro flow (e.g., which page is active, whether recording is in progress).
-    - Stores the result of the last accent test.
+- **Tanggung Jawab**:
+    - Menyimpan dan menyediakan pilihan acak teks untuk tes evaluasi aksen.
+    - Menyimpan semua konten teks UI, seperti pesan selamat datang dan label tombol, di satu tempat terpusat.
+    - Berisi logika untuk menghasilkan umpan balik deskriptif berdasarkan skor kepercayaan aksen pengguna.
+    - Mengelola status saat ini dari alur intro (misalnya, halaman mana yang aktif, apakah perekaman sedang berlangsung).
+    - Menyimpan hasil tes aksen terakhir.
 
 ### `SplashModel.js`
 
-The `SplashModel` is responsible for the content and behavior of the initial splash screen.
+`SplashModel` bertanggung jawab atas konten dan perilaku layar pembuka awal.
 
-- **Responsibilities**:
-    - Stores the application's brand name, tagline, and a brief description.
-    - Defines the minimum display time for the splash screen to ensure a smooth and visually appealing loading experience.
-    - Includes logic to determine whether the splash screen should be displayed.
+- **Tanggung Jawab**:
+    - Menyimpan nama merek aplikasi, slogan, dan deskripsi singkat.
+    - Menentukan waktu tampilan minimum untuk layar pembuka untuk memastikan pengalaman pemuatan yang mulus dan menarik secara visual.
+    - Termasuk logika untuk menentukan apakah layar pembuka harus ditampilkan.
 
-## Presenters
+## Presenter
 
 ### `SplashPresenter.js`
 
-The `SplashPresenter` controls the splash screen's lifecycle and animations.
+`SplashPresenter` mengontrol siklus hidup dan animasi layar pembuka.
 
-- **Responsibilities**:
-    - Initializes and renders the `SplashView` with data from the `SplashModel`.
-    - Manages the loading sequence, including a "jackpot" text animation effect.
-    - Ensures the splash screen is displayed for a minimum duration before transitioning to the next screen.
-    - Handles the fade-out animation and cleanup of the splash screen.
-    - Manages the visibility of the footer, hiding it during the splash sequence and showing it afterward.
+- **Tanggung Jawab**:
+    - Menginisialisasi dan merender `SplashView` dengan data dari `SplashModel`.
+    - Mengelola urutan pemuatan, termasuk efek animasi teks "jackpot".
+    - Memastikan layar pembuka ditampilkan untuk durasi minimum sebelum beralih ke layar berikutnya.
+    - Menangani animasi memudar dan pembersihan layar pembuka.
+    - Mengelola visibilitas footer, menyembunyikannya selama urutan pembuka dan menampilkannya setelahnya.
 
 ### `WelcomePresenter.js`
 
-The `WelcomePresenter` manages the welcome screen, which prompts the user to start the accent test.
+`WelcomePresenter` mengelola layar selamat datang, yang meminta pengguna untuk memulai tes aksen.
 
-- **Responsibilities**:
-    - Initializes and renders the `WelcomeView` with a welcome message from the `IntroModel`.
-    - Handles the user's click on the microphone button.
-    - Initiates the audio recording process via the `RecordingManager`.
-    - Triggers a smooth view transition to the test screen once recording has started.
+- **Tanggung Jawab**:
+    - Menginisialisasi dan merender `WelcomeView` dengan pesan selamat datang dari `IntroModel`.
+    - Menangani klik pengguna pada tombol mikrofon.
+    - Memulai proses perekaman audio melalui `RecordingManager`.
+    - Memicu transisi tampilan yang mulus ke layar tes setelah perekaman dimulai.
 
 ### `TestPresenter.js`
 
-The `TestPresenter` orchestrates the accent evaluation test.
+`TestPresenter` mengatur tes evaluasi aksen.
 
-- **Responsibilities**:
-    - Initializes and renders the `TestView` with a randomly selected text passage from the `IntroModel`.
-    - Manages the recording process, including starting and stopping the recording timer and updating the UI accordingly.
-    - Interacts with the `RecordingManager` to handle the technical aspects of audio recording.
-    - Communicates with the `AccentDetectionService` to process the recorded audio and receive the analysis results.
-    - Handles UI state changes (e.g., showing loading, recording, and processing states).
-    - Implements cleanup logic to ensure that recording is stopped if the user navigates away from the page.
+- **Tanggung Jawab**:
+    - Menginisialisasi dan merender `TestView` dengan teks yang dipilih secara acak dari `IntroModel`.
+    - Mengelola proses perekaman, termasuk memulai dan menghentikan pengatur waktu perekaman dan memperbarui UI yang sesuai.
+    - Berinteraksi dengan `RecordingManager` untuk menangani aspek teknis perekaman audio.
+    - Berkomunikasi dengan `AccentDetectionService` untuk memproses audio yang direkam dan menerima hasil analisis.
+    - Menangani perubahan status UI (misalnya, menampilkan status memuat, merekam, dan memproses).
+    - Mengimplementasikan logika pembersihan untuk memastikan bahwa perekaman dihentikan jika pengguna menavigasi jauh dari halaman.
 
 ### `ResultPresenter.js`
 
-The `ResultPresenter` is responsible for displaying the results of the accent test.
+`ResultPresenter` bertanggung jawab untuk menampilkan hasil tes aksen.
 
-- **Responsibilities**:
-    - Initializes and renders the `ResultView` with the accent analysis data.
-    - Saves the user's initial accent score to `localStorage` for use in other parts of the application (like the dashboard).
-    - Sets a token in `localStorage` to indicate that the user has completed the introductory flow.
-    - Handles the user's click on the "Try Again" (or similar) button, which navigates them to the dashboard.
+- **Tanggung Jawab**:
+    - Menginisialisasi dan merender `ResultView` dengan data analisis aksen.
+    - Menyimpan skor aksen awal pengguna ke `localStorage` untuk digunakan di bagian lain aplikasi (seperti dasbor).
+    - Menetapkan token di `localStorage` untuk menunjukkan bahwa pengguna telah menyelesaikan alur pengantar.
+    - Menangani klik pengguna pada tombol "Coba Lagi" (atau yang serupa), yang mengarahkan mereka ke dasbor.
 
-## Views
+## Tampilan
 
 ### `SplashView.js`
 
-The `SplashView` renders the initial splash screen.
+`SplashView` merender layar pembuka awal.
 
-- **Responsibilities**:
-    - Creates the HTML structure for the splash screen, including the brand name and tagline.
-    - Implements a "jackpot" animation effect on the brand name for visual appeal.
-    - Handles the fade-out animation when the splash screen is dismissed.
+- **Tanggung Jawab**:
+    - Membuat struktur HTML untuk layar pembuka, termasuk nama merek dan slogan.
+    - Mengimplementasikan efek animasi "jackpot" pada nama merek untuk daya tarik visual.
+    - Menangani animasi memudar ketika layar pembuka ditutup.
 
 ### `WelcomeView.js`
 
-The `WelcomeView` displays the welcome message and the initial call to action.
+`WelcomeView` menampilkan pesan selamat datang dan panggilan awal untuk bertindak.
 
-- **Responsibilities**:
-    - Renders the welcome text and a large microphone button.
-    - Uses the View Transition API to ensure a smooth visual transition of the microphone button to the next screen.
+- **Tanggung Jawab**:
+    - Merender teks selamat datang dan tombol mikrofon besar.
+    - Menggunakan View Transition API untuk memastikan transisi visual yang mulus dari tombol mikrofon ke layar berikutnya.
 
 ### `TestView.js`
 
-The `TestView` displays the text for the accent evaluation and the recording controls.
+`TestView` menampilkan teks untuk evaluasi aksen dan kontrol perekaman.
 
-- **Responsibilities**:
-    - Renders the text passage that the user needs to read.
-    - Displays the microphone button, which changes its state to reflect the recording process (e.g., loading, recording, processing).
-    - Shows a timer to indicate the duration of the recording.
-    - Provides visual feedback to the user about the current state of the test.
+- **Tanggung Jawab**:
+    - Merender teks yang perlu dibaca pengguna.
+    - Menampilkan tombol mikrofon, yang mengubah statusnya untuk mencerminkan proses perekaman (misalnya, memuat, merekam, memproses).
+    - Menampilkan pengatur waktu untuk menunjukkan durasi perekaman.
+    - Memberikan umpan balik visual kepada pengguna tentang status tes saat ini.
 
 ### `ResultView.js`
 
-The `ResultView` presents the user's accent analysis score and feedback.
+`ResultView` menyajikan skor analisis aksen pengguna dan umpan balik.
 
-- **Responsibilities**:
-    - Renders the user's accent confidence score and a descriptive text that explains the score.
-    - Displays a button that allows the user to proceed to the main application (dashboard).
-    - Ensures that the result is displayed clearly and immediately without complex animations.
+- **Tanggung Jawab**:
+    - Merender skor kepercayaan aksen pengguna dan teks deskriptif yang menjelaskan skor.
+    - Menampilkan tombol yang memungkinkan pengguna untuk melanjutkan ke aplikasi utama (dasbor).
+    - Memastikan bahwa hasilnya ditampilkan dengan jelas dan segera tanpa animasi yang kompleks.
 
-## Utils
+## Cuplikan Kode Penting
 
-The Intro feature relies on several global utilities:
+`TestPresenter.js` adalah inti dari fitur intro, karena mengelola seluruh proses evaluasi aksen. Metode `stopRecording` sangat penting, karena menunjukkan integrasi yang mulus antara `RecordingManager` dan `AccentDetectionService`.
 
-- **`RecordingManager.js`**: Manages all aspects of audio recording, including starting, stopping, and saving recordings. It ensures that recording state is handled consistently.
-- **`AccentDetectionService.js`**: A crucial service that takes a recorded audio file, sends it to a backend for analysis, and then navigates the user to the result page with the returned data.
-- **`ViewTransitionHelper.js`**: A utility that simplifies the use of the browser's View Transition API, allowing for smooth and animated transitions between different views (e.g., from the welcome screen to the test screen).
-- **`MicrophoneIcon.js`**: A reusable asset that provides the SVG for the microphone icon used across the intro views.
+```javascript
+// src/features/intro/presenters/TestPresenter.js
+
+async stopRecording() {
+  try {
+    const savedRecording = await RecordingManager.stopRecording({
+      name: 'Speech Test Recording',
+      category: 'speech-test'
+    });
+    this.showProcessingUI();
+    await AccentDetectionService.processRecordingAndShowResult(savedRecording);
+  } catch (error) {
+    this.stopRecordingUI();
+  }
+}
+```
+
+Cuplikan ini mengilustrasikan:
+- **Orkestrasi Layanan**: Presenter pertama-tama memanggil `RecordingManager.stopRecording()` untuk menghentikan pengambilan audio dan mendapatkan data yang direkam.
+- **Manajemen Status UI**: Ini segera memanggil `showProcessingUI()` untuk memberikan umpan balik visual kepada pengguna bahwa rekaman mereka sedang dianalisis.
+- **Pemrosesan Asinkron**: Kemudian `await` `AccentDetectionService` untuk memproses rekaman dan menangani navigasi ke halaman hasil.
+- **Penanganan Kesalahan**: Blok `try...catch` memastikan bahwa jika ada bagian dari proses yang gagal, UI diatur ulang ke status stabil.
+
+Metode ini adalah contoh sempurna tentang bagaimana presenter bertindak sebagai koordinator pusat, mengelola status UI, dan mengatur interaksi antara berbagai layanan untuk mencapai tugas yang kompleks.
+
+## Utilitas
+
+Fitur Intro bergantung pada beberapa utilitas global:
+
+- **`RecordingManager.js`**: Mengelola semua aspek perekaman audio, termasuk memulai, menghentikan, dan menyimpan rekaman. Ini memastikan bahwa status perekaman ditangani secara konsisten.
+- **`AccentDetectionService.js`**: Layanan penting yang mengambil file audio yang direkam, mengirimkannya ke backend untuk analisis, dan kemudian mengarahkan pengguna ke halaman hasil dengan data yang dikembalikan.
+- **`ViewTransitionHelper.js`**: Utilitas yang menyederhanakan penggunaan View Transition API browser, memungkinkan transisi yang mulus dan animasi antara tampilan yang berbeda (misalnya, dari layar selamat datang ke layar tes).
+- **`MicrophoneIcon.js`**: Aset yang dapat digunakan kembali yang menyediakan SVG untuk ikon mikrofon yang digunakan di seluruh tampilan intro.

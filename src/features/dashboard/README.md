@@ -1,54 +1,87 @@
-# Dashboard Feature
+# Fitur Dasbor
 
-## Overall
+## Gambaran Umum
 
-The Dashboard feature serves as the main hub for users after they log in. It provides a comprehensive overview of their progress, including key statistics, a chart visualizing their accent score improvement over time, and quick access to practice categories. The dashboard is designed to motivate users by highlighting their achievements and offering clear, actionable recommendations for further practice.
+Fitur Dasbor berfungsi sebagai pusat utama bagi pengguna setelah mereka masuk. Ini menyediakan gambaran umum yang komprehensif tentang kemajuan mereka, termasuk statistik utama, grafik yang memvisualisasikan peningkatan skor aksen mereka dari waktu ke waktu, dan akses cepat ke kategori latihan. Dasbor dirancang untuk memotivasi pengguna dengan menyoroti pencapaian mereka dan menawarkan rekomendasi yang jelas dan dapat ditindaklanjuti untuk latihan lebih lanjut.
 
-## Models
+## Model
 
 ### `DashboardModel.js`
 
-The `DashboardModel` is responsible for managing all data related to the user's dashboard.
+`DashboardModel` bertanggung jawab untuk mengelola semua data yang terkait dengan dasbor pengguna.
 
-- **Responsibilities**:
-    - Fetches and processes user statistics from IndexedDB, such as total practice sessions, session duration, and accent scores.
-    - Calculates derived stats like the number of exercises completed today, total training time, and categories that need more practice.
-    - Retrieves and formats progress data for the accent score chart, showing a week-by-week comparison.
-    - Computes the user's score improvement from the previous week to the current one.
-    - Provides mock data as a fallback if no real data is available, ensuring the dashboard remains functional for new users.
-    - Offers recommendations for practice based on the user's current stats.
+- **Tanggung Jawab**:
+    - Mengambil dan memproses statistik pengguna dari IndexedDB, seperti total sesi latihan, durasi sesi, dan skor aksen.
+    - Menghitung statistik turunan seperti jumlah latihan yang diselesaikan hari ini, total waktu latihan, dan kategori yang membutuhkan lebih banyak latihan.
+    - Mengambil dan memformat data kemajuan untuk grafik skor aksen, menunjukkan perbandingan minggu demi minggu.
+    - Menghitung peningkatan skor pengguna dari minggu sebelumnya ke minggu ini.
+    - Menyediakan data tiruan sebagai cadangan jika tidak ada data nyata yang tersedia, memastikan dasbor tetap berfungsi untuk pengguna baru.
+    - Menawarkan rekomendasi untuk latihan berdasarkan statistik pengguna saat ini.
 
-## Presenters
+## Presenter
 
 ### `DashboardPresenter.js`
 
-The `DashboardPresenter` acts as the intermediary between the `DashboardModel` and the `DashboardView`.
+`DashboardPresenter` bertindak sebagai perantara antara `DashboardModel` dan `DashboardView`.
 
-- **Responsibilities**:
-    - Initializes the dashboard by fetching all necessary data from the model (user stats, progress data, etc.).
-    - Renders the main dashboard view and injects the dynamic data into it.
-    - Initializes and manages the lifecycle of the progress chart (using Chart.js), feeding it data from the model.
-    - Handles user interactions, such as clicking the "Start Training" button or selecting a practice category, and navigates the user to the appropriate page.
-    - Manages the lifecycle of the navbar and footer presenters, ensuring they are correctly displayed within the dashboard layout.
-    - Cleans up resources, such as destroying the chart instance and removing event listeners, when the dashboard is no longer active.
+- **Tanggung Jawab**:
+    - Menginisialisasi dasbor dengan mengambil semua data yang diperlukan dari model (statistik pengguna, data kemajuan, dll.).
+    - Merender tampilan dasbor utama dan menyuntikkan data dinamis ke dalamnya.
+    - Menginisialisasi dan mengelola siklus hidup grafik kemajuan (menggunakan Chart.js), memberinya data dari model.
+    - Menangani interaksi pengguna, seperti mengklik tombol "Mulai Latihan" atau memilih kategori latihan, dan mengarahkan pengguna ke halaman yang sesuai.
+    - Mengelola siklus hidup presenter bilah navigasi dan footer, memastikan keduanya ditampilkan dengan benar dalam tata letak dasbor.
+    - Membersihkan sumber daya, seperti menghancurkan instans grafik dan menghapus pendengar acara, ketika dasbor tidak lagi aktif.
 
-## Views
+## Tampilan
 
 ### `DashboardView.js`
 
-The `DashboardView` is responsible for rendering the entire dashboard UI.
+`DashboardView` bertanggung jawab untuk merender seluruh antarmuka pengguna dasbor.
 
-- **Responsibilities**:
-    - Creates the HTML structure for the dashboard, including the main layout, header, statistics cards, progress chart canvas, and category selection grid.
-    - Provides methods to dynamically update the UI with data, such as populating the user's accent score, completed exercises, and other stats.
-    - Binds event listeners for all interactive elements on the page (e.g., buttons, links) and delegates the handling of these events to the presenter.
-    - Manages the mounting and unmounting of the view from the DOM, ensuring a clean and efficient lifecycle.
-    - Dynamically loads and mounts the footer component.
+- **Tanggung Jawab**:
+    - Membuat struktur HTML untuk dasbor, termasuk tata letak utama, header, kartu statistik, kanvas grafik kemajuan, dan kisi pemilihan kategori.
+    - Menyediakan metode untuk memperbarui antarmuka pengguna secara dinamis dengan data, seperti mengisi skor aksen pengguna, latihan yang diselesaikan, dan statistik lainnya.
+    - Mengikat pendengar acara untuk semua elemen interaktif di halaman (misalnya, tombol, tautan) dan mendelegasikan penanganan acara ini ke presenter.
+    - Mengelola pemasangan dan pelepasan tampilan dari DOM, memastikan siklus hidup yang bersih dan efisien.
+    - Memuat dan memasang komponen footer secara dinamis.
 
-## Utils
+## Cuplikan Kode Penting
 
-The Dashboard feature does not have its own dedicated `utils` folder but relies on global utilities for core functionalities:
+`DashboardPresenter.js` adalah pusat fungsionalitas dasbor. Metode `init`-nya mengatur seluruh proses pengambilan data, merender tampilan, dan menginisialisasi grafik kemajuan. Cuplikan ini sangat penting karena menunjukkan bagaimana presenter menangani beberapa operasi asinkron secara bersamaan untuk memberikan pengalaman pengguna yang cepat dan responsif.
 
-- **`aureaVoiceDB.js`**: Used to fetch all practice session data from IndexedDB, which is then processed by the `DashboardModel` to generate user statistics and progress charts.
-- **`appRouter.js`**: Used by the `DashboardPresenter` to handle navigation when a user clicks on a practice category or the "Start Training" button.
-- **Shared Presenters (`NavbarPresenter`, `FooterPresenter`)**: The `DashboardPresenter` initializes and manages the shared navbar and footer, ensuring a consistent look and feel across the application.
+```javascript
+// src/features/dashboard/presenters/DashboardPresenter.js
+
+async init() {
+  // ... (view and navbar setup) ...
+
+  // Ambil data progres, stats, dan score improvement dari model secara async
+  const [progressData, userStats, scoreImprovement] = await Promise.all([
+    this.model.getProgressData(),
+    this.model.getUserStats(),
+    this.model.getScoreImprovement()
+  ]);
+
+  // Pastikan container dan canvas sudah ada sebelum inisialisasi chart dan update stats
+  if (this.view && this.view.container && document.getElementById('progressChart')) {
+    this.initializeChart(progressData);
+    this.view.updateStats(userStats);
+  }
+
+  // ... (score improvement display logic) ...
+}
+```
+
+Cuplikan ini menyoroti:
+- **Pengambilan Data Bersamaan**: Menggunakan `Promise.all`, presenter mengambil semua data yang diperlukan dari model secara paralel. Ini adalah optimasi kinerja penting yang mencegah permintaan berurutan yang memblokir.
+- **Pemisahan Kekhawatiran**: Presenter mendelegasikan tugas pengambilan data ke `model` dan pembaruan UI ke `view`, sesuai dengan pola MVP.
+- **Pembaruan UI Dinamis**: Setelah data diambil, presenter memanggil metode pada tampilan (`initializeChart` dan `updateStats`) untuk mengisi dasbor dengan informasi pengguna.
+- **Ketahanan**: Kode memeriksa keberadaan kanvas grafik sebelum mencoba menginisialisasi grafik, mencegah potensi kesalahan runtime.
+
+## Utilitas
+
+Fitur Dasbor tidak memiliki folder `utils` khusus sendiri tetapi bergantung pada utilitas global untuk fungsionalitas inti:
+
+- **`aureaVoiceDB.js`**: Digunakan untuk mengambil semua data sesi latihan dari IndexedDB, yang kemudian diproses oleh `DashboardModel` untuk menghasilkan statistik pengguna dan grafik kemajuan.
+- **`appRouter.js`**: Digunakan oleh `DashboardPresenter` untuk menangani navigasi ketika pengguna mengklik kategori latihan atau tombol "Mulai Latihan".
+- **Presenter Bersama (`NavbarPresenter`, `FooterPresenter`)**: `DashboardPresenter` menginisialisasi dan mengelola bilah navigasi dan footer bersama, memastikan tampilan dan nuansa yang konsisten di seluruh aplikasi.
